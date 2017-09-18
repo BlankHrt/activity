@@ -74,7 +74,6 @@ export class HotAddComponent implements OnInit, OnDestroy {
                 for (let i = 0; i < this.imageList.length; i++) {
                     this.imageList[i] = '\"' + this.imageList[i] + '\"';
                 }
-                console.log(this.imageList);
                 this.hotService.insert(this.article, this.user.user.id, this.articleType,
                     this.schoolId, this.imageList).subscribe(data => {
                         this.router.navigate(['../list'], { relativeTo: this.route });
@@ -94,7 +93,6 @@ export class HotAddComponent implements OnInit, OnDestroy {
     }
 
     imageRemoved(e) {
-        console.log(e);
         for (let i = 0; i < this.imageList.length; i++) {
             if (this.imageList[i] === e.serverResponse.text()) {
                 this.imageList.splice(i, 1);
