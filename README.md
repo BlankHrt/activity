@@ -9,6 +9,6 @@ using jquery
 lqh,kj
 
 # Bug
-unsubscribe(activity,travel) 参考hot
-换掉form(activity,hot,travel)
-添加timepicker
+unsubscribe(activity,travel) 参考hot    
+换掉form(activity,hot,travel)   \<br>
+添加timepicker  
