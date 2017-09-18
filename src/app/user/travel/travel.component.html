@@ -1,0 +1,22 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+        <button md-icon-button (click)="back()">
+                <i class="fa fa-long-arrow-left" style="float:left"></i>
+              </button>
+        <div style="text-align:center;width:100%">旅游列表</div>
+    </md-toolbar>
+</md-sidenav-container>
+
+<md-card *ngFor="let a of articleList">
+    <md-card-header (click)="gotoArticleDetail(a.id)">
+        <md-card-title>
+            {{a.title}}
+        </md-card-title>
+    </md-card-header>
+    <md-card-content>
+        <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{a.countSupportNumber}}
+        <i class="fa fa-commenting" style="color:#eb7350"></i>{{a.countCommentNumber}}
+        <i class="fa fa-eye" style="color:#eb7350"></i>{{a.readNumber}}
+        <small>{{a.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,98 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+  <md-toolbar style="background-color:#87cefa">
+
+    <button md-icon-button (click)="sidenav.open()">
+        <i class="fa fa-bars" style="float:left"></i>
+        <span class="bg-red" *ngIf="notificationLength"></span>
+      </button>
+    <div style="text-align:center;width:100%">动动七号</div>
+  </md-toolbar>
+  <md-sidenav #sidenav class="sidenav">
+    <div *ngIf="user?.isLogin">
+      <div (click)="personInformation()" class="primary">
+        <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user.user&&user.user.headUrl">
+        <img src="../../../assets/img/default.jpeg" class="img-rounded circle" *ngIf="!user.user">
+        <div style="font-size:20px;">
+          <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+        </div>
+      </div>
+      <div (click)="personDongDong()" class="primary">
+        <i class="fa fa-envelope"></i> <span class="margin-left">我的旅游</span>
+      </div>
+      <div (click)="personMessage()" class="primary">
+        <i class="fa fa-bell-o"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
+      </div>
+      <div (click)="logout()" class="primary">
+        <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
+      </div>
+      <div (click)="feedback()" class="primary">
+        <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+      </div>
+    </div>
+    <div *ngIf="!user?.isLogin">
+      <div (click)="login()" class="primary">
+        <i class="fa fa-sign-in"></i> <span class="margin-left">登陆</span>
+      </div>
+      <div (click)="register()" class="primary">
+        <i class="fa fa-user"></i> <span class="margin-left">注册</span>
+      </div>
+      <div (click)="feedback()" class="primary">
+        <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+      </div>
+    </div>
+  </md-sidenav>
+  <app-travel-gonglue></app-travel-gonglue>
+</md-sidenav-container>
+<style>
+  .sidenav {
+    padding: 20px;
+    width: 200px;
+    background-color: #ccc;
+    opacity: 0.9;
+  }
+
+  .margin-left {
+    margin-left: 10px;
+  }
+
+  .bg-red {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    float: left;
+  }
+
+  .primary {
+    text-align: left;
+    font-size: 20px;
+    margin: 5px;
+  }
+
+  .circle {
+    line-height: 0;
+    /* remove line-height */
+    display: inline-block;
+    /* circle wraps image */
+    margin: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    /* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    height: 100px;
+    width: 100px;
+  }
+
+  .circle img {
+    border-radius: 50%;
+    /* relative value for
+             adjustable image size */
+  }
+
+  .circle:hover {
+    transition: ease-out 0.2s;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    -webkit-transition: ease-out 0.2s;
+  }
+</style>

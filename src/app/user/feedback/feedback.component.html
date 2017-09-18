@@ -1,0 +1,58 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+        <md-toolbar style="background-color:#87cefa">
+            <button md-icon-button (click)="back()">
+                    <i class="fa fa-long-arrow-left" style="float:left"></i>
+                      </button>
+            <div style="text-align:center;width:100%">我要吐槽</div>
+        </md-toolbar>
+    </md-sidenav-container>
+    <form [formGroup]="form" class="example-form">
+        <md-form-field class="example-full-width">
+            <textarea rows="10" mdInput placeholder="少年，请吐槽～" [formControl]="content" ></textarea>
+        </md-form-field>
+        <div class="text-right">
+            <button (click)="commit()" #commitButton [disabled]="form.invalid" style="background:#eb7350;">
+              <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
+              </md-progress-spinner>
+              <span  *ngIf="!showSpinner" >
+                    fuck
+              </span>
+            </button>
+        </div>
+    </form>
+    <style>
+      .mat-progress-spinner {
+        width: 20px;
+        height: 20px;
+        margin: 0 auto;
+      }
+    
+      .example-margin {
+        margin: 0 10px;
+      }
+    
+      .mat-input-container {
+        width: 100%!important;
+      }
+    
+      /deep/ .button {
+               --active-color: #eb7350;
+               border-radius: 30px;
+               font-size: 10px!important;
+             }
+    
+      /deep/ .button span {
+               /* background-color: yellow!important; */
+             }
+    
+        .example-form {
+            min-width: 150px;
+            max-width: 500px;
+            width: 100%;
+        }
+    
+        .example-full-width {
+            width: 100%;
+        }
+    </style>
+    

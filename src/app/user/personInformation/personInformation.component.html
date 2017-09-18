@@ -1,0 +1,124 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+  <md-toolbar style="background-color:#87cefa">
+    <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
+    <div style="text-align:center;width:100%">个人信息</div>
+    <i class="fa fa-home" style="float:right" (click)="home()"></i>
+  </md-toolbar>
+</md-sidenav-container>
+<div *ngIf="!show">
+  <div class="row" style="margin: 0;padding: 0;width: 100%">
+    <div class="col-xs-12 text-center linear">
+      <img src="../../../../assets/img/default.jpeg" class="circle" *ngIf="!user?.headUrl" />
+      <img src="{{user?.headUrl}}" class="circle" *ngIf="user?.headUrl" />
+      <div style="font-size:18px;">
+        学校:{{user?.school?.name}}
+      </div>
+      <div style="font-size:18px;">
+        用户名:{{user?.name}}
+      </div>
+      <div style="font-size:18px;">
+        昵称:{{user?.nickname}}
+      </div>
+      <div style="font-size:18px;">
+        手机号:{{user?.phone}}
+      </div>
+      <div style="font-size:18px;">
+        性别:{{user?.sex===false?'男':'女'}}
+      </div>
+      <div style="font-size:18px;">
+        签名:{{user?.description}}
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="show">
+  <div class="row">
+    <div class="col-xs-12" style="margin:10px">
+      <div>
+        <div>
+          <img src="../../../../assets/img/default.jpeg" class="circle" *ngIf="!user.headUrl" (click)="showUpload=false" />
+          <img src="{{user.headUrl}}" class="circle" *ngIf="user.headUrl" (click)="showUpload()" />
+        </div>
+        <div [hidden]="true">
+          <image-upload [max]="1" [url]="'http://192.168.1.108:8000/upload/head'" [buttonCaption]="'头像'" [dropBoxMessage]="''" [extensions]="['jpg','png','gif']"
+            [preview]="false" (onFileUploadFinish)="imageUploaded($event)" [maxFileSize]="1048576/2" #imageView></image-upload>
+        </div>
+      </div>
+      <div>
+        <h4 style="display:inline">用户名</h4>
+        <input [(ngModel)]="user.name" name="name" />
+      </div>
+      <div>
+        <h4 style="display:inline">昵称</h4>
+        <input [(ngModel)]="user.nickname" name="nickname" />
+      </div>
+      <div>
+        <h4>所属学校 &nbsp;{{user?.school?.name}}</h4>
+        <md-select placeholder="选择省份" (change)="getSchoolByProvince(selectedProvince)" [(ngModel)]="selectedProvince" [ngModelOptions]="{standalone: true}"
+          name="province">
+          <md-option *ngFor="let province of provinceList" [value]="province.id">{{ province.name }}</md-option>
+        </md-select>
+        <md-select placeholder="选择学校" [(ngModel)]="selectedSchool" name="school" [ngModelOptions]="{standalone: true}">
+          <md-option *ngFor="let school of schoolList" [value]="school.id">{{ school.name }}</md-option>
+        </md-select>
+      </div>
+      <div>
+        <h4 style="display:inline">性别：</h4>
+        <input type="radio" name="sex" [(ngModel)]="user.sex" [value]=false /> 男
+        <input type="radio" name="sex" [(ngModel)]="user.sex" [value]=true /> 女
+      </div>
+      <div>
+        <h4>手机号:{{user.phone}}</h4>
+      </div>
+      <div>
+        <h4>个性描述:<input [(ngModel)]="user.description" /></h4>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-info btn-block" (click)="edit()" *ngIf="!show">修改</button>
+<button class="btn btn-info btn-block" (click)="save()" *ngIf="show">保存</button>
+<style>
+  .circle {
+    line-height: 0;
+    /* remove line-height */
+    display: inline-block;
+    /* circle wraps image */
+    margin: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    /* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    height: 80px;
+    width: 80px;
+  }
+
+  .circle img {
+    border-radius: 50%;
+    /* relative value for
+             adjustable image size */
+  }
+
+  .circle:hover {
+    transition: ease-out 0.2s;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    -webkit-transition: ease-out 0.2s;
+  }
+
+  /deep/ .button {
+    --active-color: #eb7350;
+    border-radius: 30px;
+    font-size: 10px!important;
+  }
+
+  /deep/ .button span {
+    /* background-color: yellow!important; */
+  }
+
+  /deep/.image-upload {
+    color: yellow;
+  }
+</style>

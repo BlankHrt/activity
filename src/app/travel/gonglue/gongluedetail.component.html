@@ -1,0 +1,179 @@
+<md-toolbar style="margin: 0;padding: 0;width: 100%">
+  <md-toolbar style="background-color:#87cefa">
+    <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
+    <div style="text-align:center;width:100%">详情</div>
+    <i class="fa fa-home" style="float:right" (click)="home()"></i>
+  </md-toolbar>
+</md-toolbar>
+
+<div style="margin:10px;padding:10px;">
+  <div style="text-align:center;">
+    <h3>
+      {{article?.title}}
+    </h3>
+    <div>
+      <img [src]="article.user.headUrl" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle" *ngIf="article.user.headUrl">
+      <img src="../../../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle"
+        *ngIf="!article.user.headUrl">
+      <small>
+            {{article?.user?.name}} {{article?.publishTime|date:'yyyy-MM-dd HH:mm'}}
+        </small> </div>
+  </div>
+
+  <div class="row" style="border-top:1px solid #FCFCFC;">
+    <div class="col-xs-4">
+      <button md-icon-button><i class="fa fa-eye" style="color:#999">{{article?.readNumber}}</i>
+              </button>
+    </div>
+    <div class="col-xs-4">
+      <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{article?.countCommentNumber}}</i></button>
+    </div>
+    <div class="col-xs-4">
+      <button md-icon-button *ngIf="!isUserSupport" (click)="support(article)"><i class="fa fa-thumbs-o-up"  style="color:#999">{{article?.countSupportNumber}}</i>
+              </button>
+      <button md-icon-button *ngIf="isUserSupport" (click)="unSupport(article)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{article?.countSupportNumber}}</i>
+              </button>
+    </div>
+  </div>
+
+  <div id="summernote"></div>
+  <div>
+    <ngx-gallery *ngIf="imageList?.length" [options]="galleryOptions" [images]="imageList" #view></ngx-gallery>
+  </div>
+  <div>
+  </div>
+  <div class="row">
+    <div class="col-xs-9 col-sm-9">
+      <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="comment" />
+    </div>
+    <div class="col-xs-2 col-sm-2">
+      <button class="btn btn-info" (click)="publish()" #commitButton [disabled]="!this.comment">
+          <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
+          </md-progress-spinner>
+          <span  *ngIf="!showSpinner" >
+                  发表
+          </span>
+        </button>
+    </div>
+  </div>
+
+  <div *ngIf="commentList.length">
+    <md-card *ngFor="let c of commentList;let i=index" class="full-width">
+      <md-card-header>
+        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
+          *ngIf="c.user.headUrl"></div>
+        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}"
+          *ngIf="!c.user.headUrl"></div>
+        <md-card-title>
+          {{c?.user.name}}
+        </md-card-title>
+        <md-card-subtitle>
+          <small>{{c?.time|date:'yyyy-MM-dd HH:mm'}}</small>
+        </md-card-subtitle>
+      </md-card-header>
+      <md-card-content>
+        <div>{{c?.comment}}</div>
+        <div class="child-comment">
+          <div *ngFor="let child of c?.childrenCommentList | limit:2">
+            <a style="margin:15px;" (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
+          </div>
+        </div>
+        <a (click)="loadMoreChildComment(c)" *ngIf="c?.childrenCommentList?.length>2">共{{c?.childrenCommentList?.length}}条评论>></a>
+      </md-card-content>
+      <md-card-actions>
+        <div>
+          <button md-icon-button (click)="c.showChildComment=true"><i class="fa fa-commenting" style="color:#999;">{{c.countCommentNumber}}</i></button>
+          <!--<button md-icon-button *ngIf="!c.activityUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{c.countSupportNumber}}</i>-->
+          <!--</button>-->
+          <!--<button md-icon-button *ngIf="c&&c.activityUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{c.countSupportNumber}}</i>-->
+          <!--</button>-->
+        </div>
+        <div class="row" *ngIf="c.showChildComment">
+          <div class="col-xs-9 col-sm-9">
+            <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" />
+          </div>
+          <div class="col-xs-2 col-sm-2">
+            <button class="btn btn-info" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
+                <md-progress-spinner *ngIf="showChildSpinner" mode="indeterminate" strokeWidth="15" color="accent">
+                </md-progress-spinner>
+                <span  *ngIf="!showChildSpinner" >
+                  发表
+                </span>
+              </button>
+            <button class="btn btn-danger col-xs-6 col-sm-6" (click)="c.showChildComment=false">取消</button>
+          </div>
+        </div>
+      </md-card-actions>
+    </md-card>
+  </div>
+  <div *ngIf="!commentList.length" style="text-align:center; margin-top:8px; ">
+    暂无评论
+  </div>
+</div>
+
+<style>
+  .full-width {
+    width: 100%;
+    padding: 20px;
+    margin-top: 8px;
+  }
+
+  .circle {
+    line-height: 0;
+    /* remove line-height */
+    display: inline-block;
+    /* circle wraps image */
+    margin: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    /* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    height: 40px;
+    width: 40px;
+  }
+
+  .circle img {
+    border-radius: 50%;
+    /* relative value for
+             adjustable image size */
+  }
+
+  .circle:hover {
+    transition: ease-out 0.2s;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    -webkit-transition: ease-out 0.2s;
+  }
+
+  .child-comment {
+    width: 95%;
+    margin: 0px auto;
+    background: #eee;
+  }
+
+  .mat-progress-spinner {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+  }
+
+  .example-margin {
+    margin: 0 10px;
+  }
+
+  .mat-input-container {
+    width: 100%!important;
+  }
+
+  /deep/ .button {
+    --active-color: #eb7350;
+    border-radius: 30px;
+    font-size: 10px!important;
+  }
+
+  /deep/ .button span {
+    /* background-color: yellow!important; */
+  }
+</style>

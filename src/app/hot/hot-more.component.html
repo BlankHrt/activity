@@ -1,0 +1,15 @@
+<md-toolbar style="margin: 0;padding: 0;width: 100%">
+  <md-toolbar style="background-color:#87cefa">
+    <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
+    <div style="text-align:center;width:100%">七号话题榜</div>
+  </md-toolbar>
+</md-toolbar>
+<md-list>
+  <md-list-item *ngFor="let a of articleList;let i=index;">
+    <div style="text-align:center;margin:15px;">
+      <a (click)="gotoHotDetail(a)">{{i+1}} {{ a.title }}</a>
+    </div>
+  </md-list-item>
+</md-list>

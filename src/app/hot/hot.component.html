@@ -1,0 +1,178 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+        <button md-icon-button (click)="sidenav.open()">
+                <i class="fa fa-bars" style="float:left"></i>
+                <span class="bg-red" *ngIf="notificationLength"></span>
+              </button>
+        <div style="text-align:center;width:100%">动动七号</div>
+    </md-toolbar>
+    <md-sidenav #sidenav class="sidenav">
+        <div *ngIf="user?.isLogin">
+            <div (click)="personInformation()" class="primary">
+                <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user.user&&user.user.headUrl">
+                <img src="../../../assets/img/default.jpeg" class="img-rounded circle" *ngIf="!user.user">
+                <div style="font-size:20px;">
+                    <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+                </div>
+            </div>
+            <div (click)="personDongDong()" class="primary">
+                <i class="fa fa-envelope"></i> <span class="margin-left">我的驿站</span>
+            </div>
+            <div (click)="personMessage()" class="primary">
+                <i class="fa fa-bell-o"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
+            </div>
+            <div (click)="logout()" class="primary">
+                <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
+            </div>
+            <div (click)="feedback()" class="primary">
+                <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+            </div>
+        </div>
+        <div *ngIf="!user?.isLogin">
+            <div (click)="home()" class="primary">
+            </div>
+            <div (click)="login()" class="primary">
+                <i class="fa fa-sign-in"></i> <span class="margin-left">登陆</span>
+            </div>
+            <div (click)="register()" class="primary">
+                <i class="fa fa-user"></i> <span class="margin-left">注册</span>
+            </div>
+            <div (click)="feedback()" class="primary">
+                <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+            </div>
+        </div>
+    </md-sidenav>
+
+    <md-input-container class="container-width">
+        <input mdInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
+    </md-input-container>
+    <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
+    <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
+    <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+    <md-card>
+        <div class="row">
+            <div style="color:#eb7350;border-bottom:1px solid #eee;">
+                <span style="font-size:16px;">七号话题榜</span>
+                <span style="font-size:12px;" (click)="getMoreHot()">查看更多话题>></span>
+            </div>
+            <div *ngFor="let t of todayHotList" (click)="gotoDetail(t)" class="col-xs-6 text-center" style="font-weight:400;margin:5px 0;">
+                {{t.title|filterHanzi:8}}
+            </div>
+        </div>
+    </md-card>
+    <md-card *ngFor="let h of hotList" class="full-width" (click)="gotoDetail(h)">
+        <md-card-header>
+            <div (click)="gotoPersonDetail(h)" md-card-avatar [ngStyle]="{'background-image': 'url('+h.user.headUrl+')','background-size': 'cover'}"
+                *ngIf="h.user.headUrl"></div>
+            <div (click)="gotoPersonDetail(h)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}"
+                *ngIf="!h.user.headUrl"></div>
+            <md-card-title>{{h.user.name}}</md-card-title>
+            <md-card-subtitle>
+                <small>{{h.publishTime|timeAgo}}</small>
+            </md-card-subtitle>
+        </md-card-header>
+        <md-card-content>
+            <div>
+                {{h.title}}
+            </div>
+            <ngx-gallery *ngIf="h?.imageList?.length" [options]="galleryOptions" [images]="h?.imageList" #view></ngx-gallery>
+        </md-card-content>
+        <md-card-actions>
+            <div class="row" style="border-top:1px solid #FCFCFC;">
+                <div class="col-xs-4">
+                    <button md-icon-button><i class="fa fa-eye" style="color:#999">{{h.readNumber}}</i>
+                            </button>
+                </div>
+                <div class="col-xs-4">
+                    <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{h.countCommentNumber}}</i></button>
+                </div>
+                <div class="col-xs-4">
+                    <button md-icon-button *ngIf="!h.articleUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{h.countSupportNumber}}</i>
+                            </button>
+                    <button md-icon-button *ngIf="h.articleUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{h.countSupportNumber}}</i>
+                            </button>
+                </div>
+            </div>
+        </md-card-actions>
+    </md-card>
+    <div class="text-center" *ngIf="!hotList">
+        正在加载
+    </div>
+    <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载所有热点</button>
+    <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载所有搜索热点</button>
+    <div *ngIf="!hotList.length" class="btn-block">暂无数据</div>
+    <div *ngIf="bottomStatus === 1" class="btn-block">已经到底了</div>
+</md-sidenav-container>
+<style>
+    .sidenav {
+        padding: 20px;
+        width: 200px;
+        background-color: #ccc;
+        opacity: 0.9;
+    }
+
+    .margin-left {
+        margin-left: 10px;
+    }
+
+    .bg-red {
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 50%;
+        float: left;
+    }
+
+    .primary {
+        text-align: left;
+        font-size: 20px;
+        margin: 5px;
+    }
+
+    .circle {
+        line-height: 0;
+        /* remove line-height */
+        display: inline-block;
+        /* circle wraps image */
+        margin: 5px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        /* relative value */
+        /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+        transition: linear 0.25s;
+        height: 100px;
+        width: 100px;
+    }
+
+    .circle img {
+        border-radius: 50%;
+        /* relative value for
+                             adjustable image size */
+    }
+
+    .circle:hover {
+        transition: ease-out 0.2s;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        -webkit-transition: ease-out 0.2s;
+    }
+
+    .container-width {
+        width: 60%;
+        padding: 5px;
+    }
+
+    .search-results {
+        height: 50rem;
+        overflow: scroll;
+    }
+
+    .full-width {
+        width: 100%;
+        padding: 20px;
+        margin-top: 8px;
+    }
+
+    .supported {
+        color: aqua
+    }
+</style>

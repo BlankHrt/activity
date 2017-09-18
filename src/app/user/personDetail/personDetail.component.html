@@ -1,0 +1,95 @@
+<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+  <md-toolbar style="background-color:#87cefa">
+    <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
+    <div style="text-align:center;width:100%">{{user.name}}的资料</div>
+    <i class="fa fa-home" style="float:right" (click)="home()"></i>
+  </md-toolbar>
+</md-sidenav-container>
+
+
+<div class="row" style="margin: 0;padding: 0;width: 100%">
+  <div class="col-xs-12 text-center linear" style="margin-bottom:40px;">
+    <img src="../../../../assets/img/default.jpeg" class="circle" *ngIf="!user?.headUrl" />
+    <img src="{{user?.headUrl}}" class="circle" *ngIf="user?.headUrl" />
+    <div style="font-size:18px;">
+      学校:{{user?.school?.name}}
+    </div>
+    <div style="font-size:18px;">
+      性别:{{user?.sex===false?'男':'女'}}
+    </div>
+    <div style="font-size:18px;">
+      签名:{{user?.description}}
+    </div>
+  </div>
+</div>
+<div>
+  <div style="border-bottom:1px solid #eee" (click)="gotoActivity()">
+    <h4>
+      活动
+      <span class="label">
+        &gt;
+      </span>
+    </h4>
+  </div>
+  <div style="border-bottom:1px solid #eee" (click)="gotoTravel()">
+    <h4>
+      旅游
+      <span class="label">
+          &gt;
+        </span>
+    </h4>
+  </div>
+  <div style="border-bottom:1px solid #eee" (click)="gotoHot()">
+    <h4>
+      话题
+      <span class="label">
+          &gt;
+        </span>
+    </h4>
+  </div>
+</div>
+
+<style>
+  /deep/ .mat-tab-label {
+    min-width: 50% !important;
+  }
+
+  .circle {
+    line-height: 0;
+    /* remove line-height */
+    display: inline-block;
+    /* circle wraps image */
+    margin: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    /* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    height: 80px;
+    width: 80px;
+  }
+
+  .circle img {
+    border-radius: 50%;
+    /* relative value for
+             adjustable image size */
+  }
+
+  .circle:hover {
+    transition: ease-out 0.2s;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    -webkit-transition: ease-out 0.2s;
+  }
+
+  .linear {
+    height: 100%;
+    background-image: linear-gradient(0deg, skyblue, #3385ff);
+  }
+
+  .label {
+    font-size: 18px;
+    float: right;
+  }
+</style>
