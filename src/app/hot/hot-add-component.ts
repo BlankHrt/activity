@@ -8,6 +8,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store';
 import { Common } from '../shared/Common';
 import { HotService } from './hot.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-hot-add',
@@ -30,7 +31,14 @@ export class HotAddComponent implements OnInit, OnDestroy {
 
     imageList = [];
     showSpinner = false;
+
+    // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+    // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+    storeSubscribe: Subscription;
+    routerSubscribe: Subscription;
+
     @ViewChild('commitButton') commitButton: ElementRef;
+
     constructor( @Inject(ElementRef) elementRef: ElementRef,
         private renderer: Renderer, private store: Store<any>, private formBuilder: FormBuilder,
         private router: Router, private hotService: HotService,
@@ -40,18 +48,18 @@ export class HotAddComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.route.queryParams.subscribe(params => {
+        this.routerSubscribe = this.route.queryParams.subscribe(params => {
             if (params.id) {
                 this.articleType = params.id;
             } else {
                 this.router.navigate(['/404']);
             }
         });
-        this.store.select('user').subscribe(data => {
+        this.storeSubscribe = this.store.select('user').subscribe(data => {
             this.user = data;
             if (this.user && this.user.user.id) {
-                this.hotService.select(this.user.user.id).subscribe(data => {
-                    this.schoolId = data.schoolId;
+                this.hotService.select(this.user.user.id).subscribe(school => {
+                    this.schoolId = school.schoolId;
                 });
             }
         });
@@ -63,9 +71,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
             content: this.content,
         });
     }
-    lableChange(e) {
-        this.labelList = e.split(' ').filter(a => !!a);
-    }
+
     commit() {
         this.showSpinner = true;
         this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
@@ -97,16 +103,16 @@ export class HotAddComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-        console.log(this.imageList);
     }
 
     imageUploaded(e) {
         this.imageList.push(
             e.serverResponse.text()
         );
-        console.log(this.imageList);
     }
 
     ngOnDestroy() {
+        this.storeSubscribe.unsubscribe();
+        this.routerSubscribe.unsubscribe();
     }
 }

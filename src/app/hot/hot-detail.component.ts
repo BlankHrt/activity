@@ -2,20 +2,21 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MdDialog } from '@angular/material';
 import { HotService } from './hot.service';
 import { HotDialogComponent } from './hot.dialog';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-hot-detail',
   templateUrl: './hot-detail.component.html',
 })
 
-export class HotDetailComponent implements OnInit {
+export class HotDetailComponent implements OnInit, OnDestroy {
 
   showSpinner = false;
   showChildSpinner = false;
@@ -40,16 +41,24 @@ export class HotDetailComponent implements OnInit {
     publishTime: null
   };
 
-  @ViewChild('commitButton') commitButton: ElementRef;
-  @ViewChild('commitChildButton') commitChildButton: ElementRef;
-  constructor(public dialog: MdDialog, private store: Store<any>, private hotService: HotService, private renderer: Renderer,
-    private location: Location, private router: Router, private route: ActivatedRoute) { }
   galleryOptions = [
     { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
+
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  routerSubscribe: Subscription;
+  storeSubscribe: Subscription;
+
+  @ViewChild('commitButton') commitButton: ElementRef;
+  @ViewChild('commitChildButton') commitChildButton: ElementRef;
+
+  constructor(public dialog: MdDialog, private store: Store<any>, private hotService: HotService, private renderer: Renderer,
+    private location: Location, private router: Router, private route: ActivatedRoute) { }
+
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.hotService.read(params.id).subscribe();
         this.getArticleByIdWithUser(params.id);
@@ -64,7 +73,7 @@ export class HotDetailComponent implements OnInit {
           }
           this.imageList = list;
         });
-        this.store.select('user').subscribe(data => {
+        this.storeSubscribe = this.store.select('user').subscribe(data => {
           this.user = data;
           if (this.user && this.user.user && this.user.user.id) {
             this.hotService.getArticleSupportByUserIdAndArticleID(this.user.user.id, params.id).subscribe(support => {
@@ -228,5 +237,10 @@ export class HotDetailComponent implements OnInit {
     });
     e.stopPropagation();
     this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscribe.unsubscribe();
+    this.storeSubscribe.unsubscribe();
   }
 }

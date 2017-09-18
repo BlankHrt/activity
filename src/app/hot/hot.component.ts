@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer, ViewChildren, QueryList, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer, ViewChildren, QueryList, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -8,13 +8,16 @@ import { Common } from '../shared/Common';
 import { MdDialog } from '@angular/material';
 import { HotDialogComponent } from './hot.dialog';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/interval';
 
 @Component({
     selector: 'app-hot',
     templateUrl: './hot.component.html',
 })
 
-export class HotComponent implements OnInit {
+export class HotComponent implements OnInit, OnDestroy {
+
 
     @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
 
@@ -38,12 +41,18 @@ export class HotComponent implements OnInit {
         { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
         { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
     ];
+
+    // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+    // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+    storeSubscribe: Subscription;
+    intervalSubscribe;
+
     constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService, private store: Store<any>,
         private hotService: HotService, private router: Router, private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-        this.store.select('user').subscribe((data: any) => {
+        this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
             this.user = data;
             this.getHot();
             if (this.user && this.user.user.id) {
@@ -280,11 +289,12 @@ export class HotComponent implements OnInit {
             this.hotService.getUnReadArticleSupportByUserIDAndArticleType(id, this.articleType),
             this.hotService.getUnReadArticleCommentByUserIDAndArticleType(id, this.articleType)
         );
-        setInterval(() => {
+
+        this.intervalSubscribe = Observable.interval(2000).subscribe(() => {
             notification.subscribe(data => {
                 this.notificationLength = data[0] + data[1];
             });
-        }, 2000);
+        });
     }
 
     getMoreHot() {
@@ -299,5 +309,10 @@ export class HotComponent implements OnInit {
             }
         });
         this.router.navigate(['/user/feedback']);
+    }
+
+    ngOnDestroy(): void {
+        this.intervalSubscribe.unsubscribe();
+        this.storeSubscribe.unsubscribe();
     }
 }
