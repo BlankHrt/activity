@@ -22,7 +22,9 @@ export class HotComponent implements OnInit {
     user = {
         isLogin: null,
         user: {
-            id: null
+            id: null,
+            headUrl: null,
+            name: null
         }
     };
     searchWord = '';
@@ -167,7 +169,8 @@ export class HotComponent implements OnInit {
         }
     }
 
-    gotoPersonDetail(hot) {
+    gotoPersonDetail(e, hot) {
+        e.stopPropagation();
         this.router.navigate(['/user/personDetail'], { queryParams: { id: hot.publishUserId } });
     }
 

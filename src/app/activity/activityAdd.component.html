@@ -32,12 +32,12 @@
 
     <tr>
       <h4><i class="fa fa-map-marker" style="color:green;margin:10px;"></i>活动开始时间</h4>
-      <datetime [ngModelOptions]="{standalone: true}" [(ngModel)]="startTime" [timepicker]="timepickerOpts" [datepicker]="datepickerOpts"></datetime>
+      <!-- <datetime [ngModelOptions]="{standalone: true}" [(ngModel)]="startTime" [timepicker]="timepickerOpts" [datepicker]="datepickerOpts"></datetime> -->
     </tr>
 
     <tr>
       <h4><i class="fa fa-map-marker" style="color:green;margin:10px;"></i>活动结束时间</h4>
-      <datetime [ngModelOptions]="{standalone: true}" [(ngModel)]="endTime" [timepicker]="timepickerOpts" [datepicker]="datepickerOpts"></datetime>
+      <!-- <datetime [ngModelOptions]="{standalone: true}" [(ngModel)]="endTime" [timepicker]="timepickerOpts" [datepicker]="datepickerOpts"></datetime> -->
     </tr>
 
     <tr>
@@ -46,13 +46,13 @@
         <input mdInput placeholder="请输入联系方式" [formControl]="publish_user_contact">
       </md-input-container>
       <div [hidden]="publish_user_contact.valid || publish_user_contact.untouched" style="color:#a94442">
-          <div [hidden]="!publish_user_contact.hasError('required')">请输入发布者联系方式</div>
-        </div>
+        <div [hidden]="!publish_user_contact.hasError('required')">请输入发布者联系方式</div>
+      </div>
     </tr>
 
     <tr>
       <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="''" [extensions]="['jpg','png','gif']"
-                    (onFileUploadFinish)="imageUploaded($event)" (onRemove)="imageRemoved($event)"></image-upload>
+        (onFileUploadFinish)="imageUploaded($event)" (onRemove)="imageRemoved($event)"></image-upload>
     </tr>
 
     <tr>
@@ -88,12 +88,12 @@
   }
 
   /deep/ .button {
-           --active-color: #eb7350;
-           border-radius: 30px;
-           font-size: 10px!important;
-         }
+    --active-color: #eb7350;
+    border-radius: 30px;
+    font-size: 10px!important;
+  }
 
   /deep/ .button span {
-           /* background-color: yellow!important; */
-         }
+    /* background-color: yellow!important; */
+  }
 </style>

@@ -481,7 +481,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     });
     this.router.navigate(['/user/feedback']);
   }
-
+  home() { }
   ngOnDestroy(): void {
     // this.notification.unSubscribe();
   }

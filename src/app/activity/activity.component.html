@@ -31,8 +31,6 @@
       </div>
     </div>
     <div *ngIf="!user?.isLogin">
-      <div (click)="home()" class="primary">
-      </div>
       <div (click)="login()" class="primary">
         <i class="fa fa-sign-in"></i> <span class="margin-left">登陆</span>
       </div>
@@ -53,7 +51,7 @@
   <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
   <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
 
-  <md-select placeholder="按照学校筛选" [(ngModel)]="status" name="food" (change)="changeStatus()">
+  <md-select placeholder="按照学校筛选" [(ngModel)]="status" (change)="changeStatus()">
     <md-option [value]="0">
       所有
     </md-option>
@@ -70,7 +68,7 @@
       <div (click)="gotoPersonDetail($event,activity)" md-card-avatar
            [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
            *ngIf="!activity.user.headUrl"></div>
-      <md-card-title>{{activity.user.name}}</md-card-title>
+      <md-card-title>{{activity?.user?.name}}</md-card-title>
       <md-card-subtitle>
         {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list"></i>
       </md-card-subtitle>
@@ -78,7 +76,7 @@
 
     <md-card-content>
       <div>
-        {{activity.startTime|date:'MM月dd号HH:mm'}}到{{activity.endTime|date:'MM月dd号HH:mm'}}--{{activity.school.name}}
+        {{activity.startTime|date:'MM月dd号HH:mm'}}到{{activity.endTime|date:'MM月dd号HH:mm'}}--{{activity?.school?.name}}
       </div>
       <div>
         {{activity.title}}

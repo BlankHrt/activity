@@ -9,7 +9,7 @@
   <md-card-header>
     <div (click)="gotoPersonDetail($event,travelGonglue)" md-card-avatar [ngStyle]="{'background-image': 'url('+travelGonglue.user.headUrl+')','background-size': 'cover'}"
       *ngIf="travelGonglue.user.headUrl"></div>
-    <div (click)="gotoPersonDetail( event,travelGonglue)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}"
+    <div (click)="gotoPersonDetail($event,travelGonglue)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}"
       *ngIf="!travelGonglue.user.headUrl"></div>
     <md-card-title>{{travelGonglue.user.name}}</md-card-title>
     <md-card-subtitle>
