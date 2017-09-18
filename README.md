@@ -35,11 +35,15 @@ __removed__
           </div>
 
 ```
-```css
- .child-comment {
-    width: 95%;
-    margin: 0px auto;
-    padding: 10px;
-    background: #eee;
-  }
+###
+详情页面去掉 **thumbnails** 参考 hot-detail.component
+```html
+ galleryOptions = [
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true},
+    { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
+  ];
 ```
+
+###
+评论样式 参考 hot-detail.component
+####style

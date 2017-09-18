@@ -42,7 +42,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   };
 
   galleryOptions = [
-    { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
 
@@ -145,7 +145,13 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadMoreChildComment(childComponent) {
+  childCommentCancel(e, childComment) {
+    e.stopPropagation();
+    childComment.showChildComment = false;
+  }
+
+  loadMoreChildComment(e, childComponent) {
+    e.stopPropagation();
     this.router.navigate(['/hot/comment'], { queryParams: { comment: JSON.stringify(childComponent.childrenCommentList) } });
   }
 

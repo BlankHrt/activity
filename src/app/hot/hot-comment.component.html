@@ -10,7 +10,7 @@
 <md-card *ngFor="let a of commentList | sort:'time'">
     <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
         <div class="circle" *ngIf="!a.read"></div>
         <md-card-title>
             <div>
