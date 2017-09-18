@@ -20,13 +20,14 @@ export class HotAddComponent implements OnInit, OnDestroy {
     schoolId;
     HttpUrl = Common.HttpUrl;
     ArticleUrl = Common.ArticleUpload;
-    ArticleUpload = Common.ArticleUpload;
     articleType;
-    form: FormGroup;
-    title: FormControl;
-    content: FormControl;
-    label: String = '';
-    labelList: Array<any> = [];
+
+    // form
+    article = {
+        title: null,
+        content: null
+    };
+
     elementRef: ElementRef;
 
     imageList = [];
@@ -44,7 +45,6 @@ export class HotAddComponent implements OnInit, OnDestroy {
         private router: Router, private hotService: HotService,
         private route: ActivatedRoute) {
         this.elementRef = elementRef;
-
     }
 
     ngOnInit() {
@@ -63,28 +63,25 @@ export class HotAddComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        this.title = new FormControl('', [Validators.required, Validators.maxLength(30)]);
-        this.content = new FormControl('', [Validators.maxLength(50)]);
 
-        this.form = this.formBuilder.group({
-            title: this.title,
-            content: this.content,
-        });
     }
 
     commit() {
-        this.showSpinner = true;
-        this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
-        if (this.user.user.id) {
-            for (let i = 0; i < this.imageList.length; i++) {
-                this.imageList[i] = '\"' + this.imageList[i] + '\"';
+        if (this.article.title) {
+            this.showSpinner = true;
+            this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+            if (this.user.user.id) {
+                for (let i = 0; i < this.imageList.length; i++) {
+                    this.imageList[i] = '\"' + this.imageList[i] + '\"';
+                }
+                console.log(this.imageList);
+                this.hotService.insert(this.article, this.user.user.id, this.articleType,
+                    this.schoolId, this.imageList).subscribe(data => {
+                        this.router.navigate(['../list'], { relativeTo: this.route });
+                    });
+            } else {
+                alert('登陆超时，请重新登录');
             }
-            this.hotService.insert(this.form.value, this.user.user.id, this.articleType,
-                this.schoolId, [this.imageList]).subscribe(data => {
-                    this.router.navigate(['../list'], { relativeTo: this.route });
-                });
-        } else {
-            alert('登陆超时，请重新登录');
         }
     }
 
@@ -97,6 +94,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
     }
 
     imageRemoved(e) {
+        console.log(e);
         for (let i = 0; i < this.imageList.length; i++) {
             if (this.imageList[i] === e.serverResponse.text()) {
                 this.imageList.splice(i, 1);

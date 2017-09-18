@@ -7,33 +7,33 @@
         <i class="fa fa-home" style="float:right" (click)="home()"></i>
     </md-toolbar>
 </md-toolbar>
-<form [formGroup]="form" style="padding:5px">
+<form novalidate style="padding:5px">
     <table style="width:100%">
         <tr>
             <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>话题</h4>
             <md-input-container>
-                <input mdInput placeholder="话题" maxlength="30" [formControl]="title" #title0>
-                <md-hint align="end">{{title0.value.length}} / 30</md-hint>
+                <input mdInput placeholder="话题" required maxlength="30" name="title" [(ngModel)]="article.title" #title="ngModel">
+                <md-hint align="end">{{title.model?.length}} / 30</md-hint>
             </md-input-container>
-            <div [hidden]="title.valid || title.untouched" style="color:#a94442">
-                <div [hidden]="!title.hasError('required')">请填写话题</div>
+            <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
+                <div *ngIf="title.hasError('required')">请填写话题</div>
             </div>
         </tr>
         <tr>
             <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>补充内容</h4>
             <md-input-container>
-                <input mdInput placeholder="补充内容" maxlength="30" [formControl]="content">
+                <input mdInput placeholder="补充内容" name="content" maxlength="30" [(ngModel)]="article.content" #content="ngModel">
             </md-input-container>
             <div [hidden]="content.valid || content.untouched" style="color:#a94442">
                 <div [hidden]="!content.hasError('required')">请填写补充内容</div>
             </div>
         </tr>
         <tr>
-            <image-upload [max]="9" [url]="ArticleUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="''" [extensions]="['jpg','png','gif']"
-                (onFileUploadFinish)="imageUploaded($event)" (onRemove)="imageRemoved($event)"></image-upload>
+            <image-upload [max]="9" [url]="ArticleUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
+                (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
         </tr>
     </table>
-    <button (click)="commit()" #commitButton [disabled]="form.invalid" class="btn btn-primary btn-block">
+    <button (click)="commit()" #commitButton class="btn btn-primary btn-block">
       <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
       </md-progress-spinner>
       <span  *ngIf="!showSpinner" >

@@ -20,9 +20,9 @@ export class FileHolder {
 export class ImageUploadComponent implements OnInit {
 
   files: FileHolder[] = [];
-  fileCounter: number = 0;
-  fileOver: boolean = false;
-  showFileTooLargeMessage: boolean = false;
+  fileCounter = 0;
+  fileOver = false;
+  showFileTooLargeMessage = false;
 
   @Input() beforeUpload: (UploadMetadata) => UploadMetadata | Promise<UploadMetadata> = data => data;
   @Input() buttonCaption: string = 'Select Images';
@@ -64,7 +64,7 @@ export class ImageUploadComponent implements OnInit {
   }
 
   deleteFile(file: FileHolder): void {
-    let index = this.files.indexOf(file);
+    const index = this.files.indexOf(file);
     this.files.splice(index, 1);
     this.fileCounter--;
     this.inputElement.nativeElement.value = '';
@@ -72,10 +72,10 @@ export class ImageUploadComponent implements OnInit {
   }
 
   onFileChange(files: FileList) {
-    let remainingSlots = this.countRemainingSlots();
-    let filesToUploadNum = files.length > remainingSlots ? remainingSlots : files.length;
+    const remainingSlots = this.countRemainingSlots();
+    const filesToUploadNum = files.length > remainingSlots ? remainingSlots : files.length;
 
-    if (this.url && filesToUploadNum != 0) {
+    if (this.url && filesToUploadNum !== 0) {
       this.uploadStateChanged.emit(true);
     }
 
@@ -94,7 +94,7 @@ export class ImageUploadComponent implements OnInit {
 
     this.uploadFinished.emit(fileHolder);
 
-    if (--this.pendingFilesCounter == 0) {
+    if (--this.pendingFilesCounter === 0) {
       this.uploadStateChanged.emit(false);
     }
   }
