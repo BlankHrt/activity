@@ -17,9 +17,12 @@ unsubscribe(activity,travel) 参考hot
 图片上传
 ```html
 <image-upload [max]="9" [url]="ArticleUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
-                (__uploadFinished__)="imageUploaded($event)" (__removed__)="imageRemoved($event)"></image-upload>
+                (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
 
 ```
+注意这两个方法
+__uploadFinished__
+__removed__
 
 ###
 添加timepicker  
