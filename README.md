@@ -47,3 +47,5 @@ __removed__
 ###
 评论样式 参考 hot-detail.component
 ####style
+
+###更多评论 设置查看个人资料
