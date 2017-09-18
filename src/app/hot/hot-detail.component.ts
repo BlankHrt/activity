@@ -228,6 +228,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     e.stopPropagation();
     this.router.navigate(['/user/personDetail'], { queryParams: { id: comment.userId } });
   }
+
   gotoChildPersonDetail(e: any, childComment: any) {
     this.store.dispatch({
       type: 'SAVE_PREV_ROUTER',

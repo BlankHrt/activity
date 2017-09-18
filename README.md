@@ -26,3 +26,20 @@ __removed__
 
 ###
 添加timepicker  
+
+###
+所有子评论样式，自动聚焦，__autofocus__参考hot-detail,
+```html
+<div *ngFor="let child of c?.childrenCommentList | limit:2">
+            <a style="margin-left:25px;" (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
+          </div>
+
+```
+```css
+ .child-comment {
+    width: 95%;
+    margin: 0px auto;
+    padding: 10px;
+    background: #eee;
+  }
+```
