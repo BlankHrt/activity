@@ -9,5 +9,5 @@ using jquery
 lqh,kj
 
 # Bug
-
-头像 stopPropogation
+换掉form(activity,hot,travel)
+添加timepicker
