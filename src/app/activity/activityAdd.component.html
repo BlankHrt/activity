@@ -7,26 +7,27 @@
     <i class="fa fa-home" style="float:right" (click)="home()"></i>
   </md-toolbar>
 </md-toolbar>
-<form [formGroup]="form" style="padding:5px">
+<form novalidate style="padding:5px">
   <table style="width:100%">
     <tr>
-      <h4><i class="fa fa-tags" style="color:green;margin:10px;"></i>活动名称</h4>
+      <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>活动名称</h4>
       <md-input-container>
-        <input mdInput placeholder="请输入活动名称" maxlength="30" [formControl]="title" #title0>
-        <md-hint align="end">{{title0.value.length}} / 30</md-hint>
+        <input mdInput placeholder="请输入活动名称" required maxlength="30" name="title" [(ngModel)]="activity.title" #title="ngModel">
+        <md-hint align="end">{{title.model?.length}} / 30</md-hint>
       </md-input-container>
-      <div [hidden]="title.valid || title.untouched" style="color:#a94442">
-        <div [hidden]="!title.hasError('required')">请输入活动名称</div>
+      <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
+        <div *ngIf="title.hasError('required')">请输入活动名称</div>
       </div>
     </tr>
+
     <tr>
-      <h4><i class="fa fa-map-marker" style="color:green;margin:10px;"></i>详细地址</h4>
+      <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>详细地址</h4>
       <md-input-container>
-        <input mdInput placeholder="请输入详细地址" maxlength="50" [formControl]="address" #address0>
-        <md-hint align="end">{{address0.value.length}} / 50</md-hint>
+        <input mdInput placeholder="请输入详细地址" required maxlength="50" name="address" [(ngModel)]="activity.address" #address="ngModel">
+        <md-hint align="end">{{address.model?.length}} / 50</md-hint>
       </md-input-container>
-      <div [hidden]="address.valid || address.untouched" style="color:#a94442">
-        <div [hidden]="!address.hasError('required')">请输入详细地址</div>
+      <div *ngIf="address.invalid && (address.dirty || address.touched)" style="color:#a94442">
+        <div *ngIf="address.hasError('required')">请输入详细地址</div>
       </div>
     </tr>
 
@@ -41,18 +42,18 @@
     </tr>
 
     <tr>
-      <h4><i class="fa fa-map-marker" style="color:green;margin:10px;"></i>发布者联系方式</h4>
+      <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>发布者联系方式</h4>
       <md-input-container>
-        <input mdInput placeholder="请输入联系方式" [formControl]="publish_user_contact">
+        <input mdInput placeholder="请输入联系方式" required  name="publishUserContact" [(ngModel)]="activity.publishUserContact" #publishUserContact="ngModel">
       </md-input-container>
-      <div [hidden]="publish_user_contact.valid || publish_user_contact.untouched" style="color:#a94442">
-        <div [hidden]="!publish_user_contact.hasError('required')">请输入发布者联系方式</div>
+      <div *ngIf="publishUserContact.invalid && (publishUserContact.dirty || publishUserContact.touched)" style="color:#a94442">
+        <div *ngIf="publishUserContact.hasError('required')">请输入发布者联系方式</div>
       </div>
     </tr>
 
     <tr>
-      <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="''" [extensions]="['jpg','png','gif']"
-        (onFileUploadFinish)="imageUploaded($event)" (onRemove)="imageRemoved($event)"></image-upload>
+      <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
+        (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
     </tr>
 
     <tr>
@@ -63,7 +64,7 @@
     </tr>
   </table>
 
-  <button (click)="commit()" #commitButton [disabled]="form.invalid" class="btn btn-primary btn-block">
+  <button (click)="commit()" #commitButton  class="btn btn-primary btn-block">
     <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
     </md-progress-spinner>
     <span  *ngIf="!showSpinner" >

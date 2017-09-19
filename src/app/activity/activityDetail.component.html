@@ -73,7 +73,7 @@
   </div>
 
   <div *ngIf="commentList.length">
-    <md-card *ngFor="let c of commentList;let i=index" class="full-width">
+    <md-card *ngFor="let c of commentList;let i=index" class="full-width" (click)="c.showChildComment=true">
       <md-card-header>
         <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
           *ngIf="c.user.headUrl"></div>
@@ -81,34 +81,27 @@
           *ngIf="!c.user.headUrl"></div>
         <md-card-title>
           {{c?.user.name}}
+          <small>{{c?.time|date:'MM-dd HH:mm'}}</small>
         </md-card-title>
         <md-card-subtitle>
-          <small>{{c?.time|date:'yyyy-MM-dd HH:mm'}}</small>
+          {{c?.comment}}
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
-        <div>{{c?.comment}}</div>
-        <div class="child-comment">
+        <div class="child-comment" *ngIf="c?.childrenCommentList.length>0">
           <div *ngFor="let child of c?.childrenCommentList | limit:2">
-            <a style="margin:15px;" (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
+            <a (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
           </div>
         </div>
         <a (click)="loadMoreChildComment(c)" *ngIf="c?.childrenCommentList?.length>2">共{{c?.childrenCommentList?.length}}条评论>></a>
       </md-card-content>
       <md-card-actions>
-        <div>
-          <button md-icon-button (click)="c.showChildComment=true"><i class="fa fa-commenting" style="color:#999;">{{c.countCommentNumber}}</i></button>
-          <!--<button md-icon-button *ngIf="!c.activityUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{c.countSupportNumber}}</i>-->
-          <!--</button>-->
-          <!--<button md-icon-button *ngIf="c&&c.activityUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{c.countSupportNumber}}</i>-->
-          <!--</button>-->
-        </div>
         <div class="row" *ngIf="c.showChildComment">
-          <div class="col-xs-9 col-sm-9">
-            <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" />
+          <div class="col-xs-8 col-sm-8">
+            <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" autofocus />
           </div>
-          <div class="col-xs-2 col-sm-2">
-            <button class="btn btn-info" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
+          <div class="col-xs-4 col-sm-4">
+            <button class="btn btn-info col-xs-6 col-sm-6" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
               <md-progress-spinner *ngIf="showChildSpinner" mode="indeterminate" strokeWidth="15" color="accent">
               </md-progress-spinner>
               <span  *ngIf="!showChildSpinner" >发表
@@ -150,7 +143,7 @@
   .circle img {
     border-radius: 50%;
     /* relative value for
-				   adjustable image size */
+             adjustable image size */
   }
 
   .circle:hover {
@@ -160,8 +153,8 @@
   }
 
   .child-comment {
-    width: 95%;
-    margin: 0px auto;
+    margin: 0 0 0 40px;
+    padding: 10px;
     background: #eee;
   }
 
@@ -180,12 +173,16 @@
   }
 
   /deep/ .button {
-    --active-color: #eb7350;
-    border-radius: 30px;
-    font-size: 10px!important;
-  }
+           --active-color: #eb7350;
+           border-radius: 30px;
+           font-size: 10px!important;
+         }
 
   /deep/ .button span {
-    /* background-color: yellow!important; */
+           /* background-color: yellow!important; */
+         }
+
+  .mat-card-subtitle {
+    color: black
   }
 </style>
