@@ -9,8 +9,7 @@ using jquery
 lqh,kj
 
 # Bug
-###
-unsubscribe(activity,travel) 参考hot  
+
 ###
 换掉form(activity,travel)  参考hot 
 ###
