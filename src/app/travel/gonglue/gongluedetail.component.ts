@@ -2,13 +2,14 @@
  * Created by asus on 2017/8/15.
  */
 
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild} from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { MdDialog } from '@angular/material';
 import { TravelDialogComponent } from '../travel.dialog';
+import {Subscription} from 'rxjs/Subscription';
 declare var $;
 
 @Component({
@@ -16,7 +17,7 @@ declare var $;
   templateUrl: './gongluedetail.component.html',
 })
 
-export class TravelGonglueDetailComponent implements OnInit {
+export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   showSpinner = false;
   showChildSpinner = false;
@@ -39,18 +40,23 @@ export class TravelGonglueDetailComponent implements OnInit {
     countCommentNumber: null,
     publishTime: null
   };
+  galleryOptions = [
+    { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
+    { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
+  ];
+
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  routerSubscribe: Subscription;
+  storeSubscribe: Subscription;
 
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
   constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer,
     private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
 
-  galleryOptions = [
-    { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
-    { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
-  ];
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.travelService.read(params.id).subscribe();
         this.getArticleByIdWithUser(params.id);
@@ -65,7 +71,7 @@ export class TravelGonglueDetailComponent implements OnInit {
           }
           this.imageList = list;
         });
-        this.store.select('user').subscribe(data => {
+        this.storeSubscribe = this.store.select('user').subscribe(data => {
           this.user = data;
           if (this.user && this.user.user && this.user.user.id) {
             this.travelService.getArticleSupportByUserIdAndArticleID(this.user.user.id, params.id).subscribe(support => {
@@ -230,6 +236,10 @@ export class TravelGonglueDetailComponent implements OnInit {
       }
     });
     e.stopPropagation();
-    this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
+   this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
+  }
+  ngOnDestroy() {
+    this.routerSubscribe.unsubscribe();
+    this.storeSubscribe.unsubscribe();
   }
 }

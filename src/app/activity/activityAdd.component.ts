@@ -9,6 +9,7 @@ import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
+import {Subscription} from 'rxjs/Subscription';
 declare var $;
 
 @Component({
@@ -34,6 +35,11 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   showSpinner = false;
   label: String = '';
   labelList: Array<any> = [];
+
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  storeSubscribe: Subscription;
+  routerSubscribe: Subscription;
   @ViewChild('commitButton') commitButton: ElementRef;
 
   datepickerOpts = {
@@ -98,14 +104,14 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.activityType = params.id;
       } else {
         this.router.navigate(['/404']);
       }
     });
-    this.store.select('user').subscribe(data => {
+    this.storeSubscribe = this.store.select('user').subscribe(data => {
       this.user = data;
     });
     this.title = new FormControl('', [Validators.required, Validators.maxLength(30)]);
@@ -167,5 +173,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.storeSubscribe.unsubscribe();
+    this.routerSubscribe.unsubscribe();
   }
 }

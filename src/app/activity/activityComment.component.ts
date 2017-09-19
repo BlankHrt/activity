@@ -2,26 +2,30 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { ActivityService } from './activity.service';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'app-activity-comment',
     templateUrl: './activityComment.component.html',
 })
 
-export class ActivityCommentComponent implements OnInit {
+export class ActivityCommentComponent implements OnInit , OnDestroy {
     commentList;
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  routerSubscribe: Subscription;
     constructor(private store: Store<any>, private location: Location,
         private router: Router, private activityService: ActivityService,
         private route: ActivatedRoute) { }
 
 
     ngOnInit() {
-        this.route.queryParams.subscribe((data: any) => {
+      this.routerSubscribe = this.route.queryParams.subscribe((data: any) => {
             this.commentList = JSON.parse(data.comment);
         });
     }
@@ -32,5 +36,9 @@ export class ActivityCommentComponent implements OnInit {
 
     home() {
         this.router.navigate(['/activity']);
+    }
+
+    ngOnDestroy(): void {
+      this.routerSubscribe.unsubscribe();
     }
 }

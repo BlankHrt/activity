@@ -58,9 +58,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
         this.storeSubscribe = this.store.select('user').subscribe(data => {
             this.user = data;
             if (this.user && this.user.user.id) {
-                this.hotService.select(this.user.user.id).subscribe(school => {
-                    this.schoolId = school.schoolId;
-                });
+              this.schoolId = this.user.user.schoolId;
             }
         });
         this.title = new FormControl('', [Validators.required, Validators.maxLength(30)]);

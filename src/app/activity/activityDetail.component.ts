@@ -1,7 +1,7 @@
 /**
  * Created by asus on 2017/8/15.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
 import { MdDialog } from '@angular/material';
@@ -9,13 +9,14 @@ import { Store } from '@ngrx/store';
 import { ActivityDialogComponent } from './activity.dialog';
 import { Location } from '@angular/common';
 import { ActivityJoinDialogComponent } from './activityjoin.dialog';
+import {Subscription} from 'rxjs/Subscription';
 declare var $;
 
 @Component({
   selector: 'app-activity-detail',
   templateUrl: './activityDetail.component.html',
 })
-export class ActivityDetailComponent implements OnInit, AfterViewInit {
+export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showSpinner = false;
   showChildSpinner = false;
@@ -48,19 +49,27 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
       name: '',
     },
   };
-  @ViewChild('commitButton') commitButton: ElementRef;
-  @ViewChild('commitChildButton') commitChildButton: ElementRef;
-  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer,
-    private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) { }
+
   galleryOptions = [
     { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  routerSubscribe: Subscription;
+  storeSubscribe: Subscription;
+
+  @ViewChild('commitButton') commitButton: ElementRef;
+  @ViewChild('commitChildButton') commitChildButton: ElementRef;
+
+  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer,
+    private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) { }
+
   ngOnInit() {
-    this.store.select('user').subscribe((data: any) => {
+    this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
     });
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.activityService.read(params.id).subscribe();
         this.getActivityByIdWithUser(params.id);
@@ -288,5 +297,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     });
     e.stopPropagation();
     this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
+  }
+  ngOnDestroy() {
+    this.routerSubscribe.unsubscribe();
+    this.storeSubscribe.unsubscribe();
   }
 }

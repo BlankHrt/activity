@@ -2,18 +2,19 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-activity-list',
   templateUrl: './activityList.component.html',
 })
-export class ActivityListComponent implements OnInit {
+export class ActivityListComponent implements OnInit, OnDestroy {
 
   publishUserId;
   joinList = [];
@@ -25,6 +26,10 @@ export class ActivityListComponent implements OnInit {
       id: null
     }
   };
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  routerSubscribe: Subscription;
+  storeSubscribe: Subscription;
 
   constructor(private store: Store<any>, private location: Location, private formBuilder: FormBuilder,
     private activityService: ActivityService, private router: Router,
@@ -33,11 +38,11 @@ export class ActivityListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.store.select('user').subscribe((data: any) => {
+    this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
     });
 
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.getPublishUserId(params.id);
         this.getAllJoinByActivityId(params.id);
@@ -91,5 +96,9 @@ export class ActivityListComponent implements OnInit {
       wait.isSuccess = 0;
       this.dealJoinList(this.joinList);
     });
+  }
+  ngOnDestroy() {
+    this.routerSubscribe.unsubscribe();
+    this.storeSubscribe.unsubscribe();
   }
 }

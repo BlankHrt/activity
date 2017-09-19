@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TravelService } from './travel.service';
@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { Common } from '../shared/Common';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
+import {Subscription} from 'rxjs/Subscription';
+import 'rxjs/add/observable/interval';
 
 /**
  * Created by asus on 2017/8/15.
@@ -16,7 +18,7 @@ import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
   templateUrl: './travel.component.html',
 })
 
-export class TravelComponent implements OnInit {
+export class TravelComponent implements OnInit , OnDestroy {
   articleType = Common.ArticleType.gonglue;
   user = {
     isLogin: null,
@@ -26,12 +28,17 @@ export class TravelComponent implements OnInit {
   };
   index;
   notificationLength = 0;
+
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  storeSubscribe: Subscription;
+  intervalSubscribe;
   constructor(private cookieService: CookieService, private store: Store<any>,
     private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.store.select('user').subscribe((data: any) => {
+    this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
       if (this.user && this.user.user.id) {
         this.getNotification(this.user.user.id);
@@ -112,11 +119,11 @@ export class TravelComponent implements OnInit {
       this.travelService.getUnReadArticleSupportByUserIDAndArticleType(id, this.articleType),
       this.travelService.getUnReadArticleCommentByUserIDAndArticleType(id, this.articleType)
     );
-    setInterval(() => {
+    this.intervalSubscribe = Observable.interval(2000).subscribe(() => {
       notification.subscribe(data => {
         this.notificationLength = data[0] + data[1];
       });
-    }, 2000);
+    });
   }
 
   feedback() {
@@ -127,5 +134,11 @@ export class TravelComponent implements OnInit {
       }
     });
     this.router.navigate(['/user/feedback']);
+  }
+  ngOnDestroy(): void {
+    if (this.intervalSubscribe) {
+      this.intervalSubscribe.unsubscribe();
+    }
+    this.storeSubscribe.unsubscribe();
   }
 }
