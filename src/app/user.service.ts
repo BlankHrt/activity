@@ -5,16 +5,18 @@ import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { Common } from './shared/Common';
+import { CookieService } from './shared/lib/ngx-cookie/cookie.service';
 
 @Injectable()
 export class UserService {
   HttpUrl = Common.HttpUrl;
 
-  constructor(private http: Http) {
+  constructor(private cookieService: CookieService, private http: Http) {
   }
 
   private setOptions(): RequestOptions {
     const headers = new Headers();
+    headers.append('Authorization', this.cookieService.get('token'));
     return new RequestOptions({ headers: headers });
   }
 
@@ -23,16 +25,13 @@ export class UserService {
     urlSearchParams.append('content', content);
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/feedback/insert', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/feedback/insert', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  loginWC(user: any) {
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('name', user.name);
-    urlSearchParams.append('password', user.password);
-    return this.http.post(this.HttpUrl + '/user/loginWC', urlSearchParams)
+  loginWC() {
+    return this.http.post(this.HttpUrl + '/auth/loginWC', {}, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -40,7 +39,7 @@ export class UserService {
   getMessage(phone: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('phone', phone);
-    return this.http.post(this.HttpUrl + '/user/getMessage', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/getMessage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -48,27 +47,27 @@ export class UserService {
   getForgetMessage(phone: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('phone', phone);
-    return this.http.post(this.HttpUrl + '/user/getForgetMessage', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/getForgetMessage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   getAllProvince() {
     const urlSearchParams = new URLSearchParams();
-    return this.http.post(this.HttpUrl + '/province/getAllProvince', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/province/getAllProvince', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   getSchoolByProvince(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('provinceID', id);
-    return this.http.post(this.HttpUrl + '/school/getSchoolByProvince', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/school/getSchoolByProvince', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   validatePhoneIsExist(phone: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('phone', phone);
-    return this.http.post(this.HttpUrl + '/user/validatePhoneIsExist', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/validatePhoneIsExist', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -77,14 +76,14 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('articleType', articleType);
-    return this.http.post(this.HttpUrl + '/article/getArticleByUserAndArticleType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/getArticleByUserAndArticleType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   deleteArticlebyId(id: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/article/deleteArticlebyId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/deleteArticlebyId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -92,7 +91,7 @@ export class UserService {
   deleteActivitybyId(id: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/deleteActivitybyId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/deleteActivitybyId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -100,7 +99,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByUser', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityByUser', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -109,7 +108,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByUserJoin', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityByUserJoin', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -118,7 +117,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('articleID', articleID);
-    return this.http.post(this.HttpUrl + '/article/getArticleSupportByUserIdAndArticleType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/getArticleSupportByUserIdAndArticleType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -126,7 +125,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('articleID', articleID);
-    return this.http.post(this.HttpUrl + '/article/getArticleCommentByUserIdAndArticleType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/getArticleCommentByUserIdAndArticleType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -134,7 +133,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivitySupportByUserIdAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivitySupportByUserIdAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -143,7 +142,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityCommentByUserIdAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityCommentByUserIdAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -152,7 +151,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/joinActivity/getActivitySponsorByUserIdAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getActivitySponsorByUserIdAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -161,7 +160,7 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/joinActivity/getActivityParticipantByUserIdAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getActivityParticipantByUserIdAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -175,7 +174,7 @@ export class UserService {
     urlSearchParams.append('description', user.description);
     urlSearchParams.append('schoolId', user.schoolId);
 
-    return this.http.post(this.HttpUrl + '/user/update', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/update', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -184,7 +183,7 @@ export class UserService {
     urlSearchParams.append('phone', user.phone);
     urlSearchParams.append('password', user.password);
 
-    return this.http.post(this.HttpUrl + '/user/updatePassword', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/updatePassword', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -192,7 +191,7 @@ export class UserService {
   getBriefPersonInfo(userID: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/user/getBriefPersonInfo', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/getBriefPersonInfo', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -200,14 +199,14 @@ export class UserService {
   readArticleComment(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/article/readArticleComment', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/readArticleComment', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   readActivityComment(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/readActivityComment', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/readActivityComment', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -215,7 +214,7 @@ export class UserService {
   readActivityJoin(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/readActivityJoin', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/readActivityJoin', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -223,7 +222,7 @@ export class UserService {
   participantReadActivityJoin(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/participantReadActivityJoin', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/participantReadActivityJoin', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -231,7 +230,7 @@ export class UserService {
   readArticleSupport(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/article/readArticleSupport', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/readArticleSupport', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -239,7 +238,7 @@ export class UserService {
   readActivitySupport(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/readActivitySupport', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/readActivitySupport', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -248,16 +247,16 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('head', head);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/user/updateHead', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/updateHead', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   login(user: any) {
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('name', user.name);
+    urlSearchParams.append('username', user.name);
     urlSearchParams.append('password', user.password);
-    return this.http.post(this.HttpUrl + '/user/login', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/auth/login', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -265,7 +264,7 @@ export class UserService {
   logout(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/article/read', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/article/read', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -276,7 +275,7 @@ export class UserService {
     urlSearchParams.append('phone', user.mobile);
     urlSearchParams.append('password', user.password);
     urlSearchParams.append('schoolID', schoolID);
-    return this.http.post(this.HttpUrl + '/user/register', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/user/register', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }

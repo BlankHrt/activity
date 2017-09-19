@@ -8,16 +8,16 @@ import {
   ViewContainerRef,
   OnDestroy
 } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Observable';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
-import {HotService} from './hot.service';
-import {Common} from '../shared/Common';
-import {MdDialog} from '@angular/material';
-import {HotDialogComponent} from './hot.dialog';
-import {CookieService} from '../shared/lib/ngx-cookie/cookie.service';
-import {Subscription} from 'rxjs/Subscription';
+import { HotService } from './hot.service';
+import { Common } from '../shared/Common';
+import { MdDialog, MdSnackBar } from '@angular/material';
+import { HotDialogComponent } from './hot.dialog';
+import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
 
 @Component({
@@ -28,7 +28,7 @@ import 'rxjs/add/observable/interval';
 export class HotComponent implements OnInit, OnDestroy {
 
 
-  @ViewChildren('view', {read: ElementRef}) viewList: QueryList<any>;
+  @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
 
   articleType = Common.ArticleType.xiaoyuan;
   user = {
@@ -47,8 +47,8 @@ export class HotComponent implements OnInit, OnDestroy {
   hotList = [];
   notificationLength = 0;
   galleryOptions = [
-    {'thumbnails': false, 'preview': true, 'imageSwipe': true},
-    {'breakpoint': 500, 'width': '100%', 'height': '300px'}
+    { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
+    { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
 
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
@@ -56,8 +56,9 @@ export class HotComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
   intervalSubscribe;
 
-  constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService, private store: Store<any>,
-              private hotService: HotService, private router: Router, private route: ActivatedRoute) {
+  constructor(private renderer: Renderer, public snackBar: MdSnackBar,
+    public dialog: MdDialog, private cookieService: CookieService, private store: Store<any>,
+    private hotService: HotService, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -70,7 +71,7 @@ export class HotComponent implements OnInit, OnDestroy {
     });
     this.hotService.getHotByPageAndLimitNumber(this.articleType, 10).subscribe(data => {
       this.todayHotList = data;
-    });
+    }, error => this.errorHandle(error));
   }
 
   getHot() {
@@ -123,36 +124,36 @@ export class HotComponent implements OnInit, OnDestroy {
     this.hotService.getArticleByPageAndTitleAndType(this.searchWord, this.nowPage,
       this.articleType, this.user.isLogin, this.user.user.id).subscribe(searchHotList => {
 
-      if (this.nowPage > 1 && (searchHotList.length === 0)) {
-        this.bottomStatus = 1;
-      }
-      for (let i = 0; i < searchHotList.length; i++) {
-        this.hotService.getArticleImageByArticleId(searchHotList[i].id).subscribe(imageList => {
-          const list = [];
-          for (let j = 0; j < imageList.length; j++) {
-            list.push({
-              medium: '\'' + imageList[j].url + '\'',
-              // big: '\'' + imageList[j].url + '\'',
-            });
-          }
-          searchHotList[i].imageList = list;
-          this.viewList.forEach(view => {
-            this.renderer.listen(view.nativeElement, 'click', (event) => {
-              event.stopPropagation();
+        if (this.nowPage > 1 && (searchHotList.length === 0)) {
+          this.bottomStatus = 1;
+        }
+        for (let i = 0; i < searchHotList.length; i++) {
+          this.hotService.getArticleImageByArticleId(searchHotList[i].id).subscribe(imageList => {
+            const list = [];
+            for (let j = 0; j < imageList.length; j++) {
+              list.push({
+                medium: '\'' + imageList[j].url + '\'',
+                // big: '\'' + imageList[j].url + '\'',
+              });
+            }
+            searchHotList[i].imageList = list;
+            this.viewList.forEach(view => {
+              this.renderer.listen(view.nativeElement, 'click', (event) => {
+                event.stopPropagation();
+              });
             });
           });
-        });
-      }
-      if (this.nowPage === 1) {
-        this.hotList = searchHotList;
-      } else {
-        this.hotList = this.hotList.concat(searchHotList);
-      }
-    });
+        }
+        if (this.nowPage === 1) {
+          this.hotList = searchHotList;
+        } else {
+          this.hotList = this.hotList.concat(searchHotList);
+        }
+      });
   }
 
   gotoDetail(hot) {
-    this.router.navigate(['/hot/detail'], {queryParams: {id: hot.id}});
+    this.router.navigate(['/hot/detail'], { queryParams: { id: hot.id } });
   }
 
   unSupport(e, hot) {
@@ -160,7 +161,7 @@ export class HotComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       hot.countSupportNumber--;
       hot.articleUserSupport = false;
-      this.hotService.unSupport(hot.id, this.user.user.id).subscribe();
+      this.hotService.unSupport(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -176,7 +177,7 @@ export class HotComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       hot.countSupportNumber++;
       hot.articleUserSupport = true;
-      this.hotService.support(hot.id, this.user.user.id).subscribe();
+      this.hotService.support(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -189,7 +190,7 @@ export class HotComponent implements OnInit, OnDestroy {
 
   gotoPersonDetail(e, hot) {
     e.stopPropagation();
-    this.router.navigate(['/user/personDetail'], {queryParams: {id: hot.publishUserId}});
+    this.router.navigate(['/user/personDetail'], { queryParams: { id: hot.publishUserId } });
   }
 
   login() {
@@ -222,7 +223,7 @@ export class HotComponent implements OnInit, OnDestroy {
 
   gotoAddDetail() {
     if (this.user.isLogin) {
-      this.router.navigate(['/hot/add'], {queryParams: {id: this.articleType}});
+      this.router.navigate(['/hot/add'], { queryParams: { id: this.articleType } });
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -260,7 +261,7 @@ export class HotComponent implements OnInit, OnDestroy {
         url: '/hot'
       }
     });
-    this.router.navigate(['/user/personDongDong'], {queryParams: {title: '我的驿站'}});
+    this.router.navigate(['/user/personDongDong'], { queryParams: { title: '我的驿站' } });
   }
 
   personMessage() {
@@ -270,7 +271,7 @@ export class HotComponent implements OnInit, OnDestroy {
         url: '/hot'
       }
     });
-    this.router.navigate(['/user/personMessage'], {queryParams: {title: '我的驿站'}});
+    this.router.navigate(['/user/personMessage'], { queryParams: { title: '我的驿站' } });
   }
 
   loadMoreALL() {
@@ -326,5 +327,24 @@ export class HotComponent implements OnInit, OnDestroy {
       this.intervalSubscribe.unsubscribe();
     }
     this.storeSubscribe.unsubscribe();
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

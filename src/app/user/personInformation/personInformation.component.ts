@@ -57,10 +57,7 @@ export class PersonInformationComponent implements OnInit {
     this.show = !this.show;
     this.user.schoolId = this.selectedSchool;
     this.userService.update(this.user).subscribe(() => {
-      this.userService.loginWC({
-        name: this.cookieService.get('phone'),
-        password: this.cookieService.get('token')
-      }).subscribe(data => {
+      this.userService.loginWC().subscribe(data => {
         if (data.id) {
           this.store.dispatch({
             type: 'SAVE_USER',

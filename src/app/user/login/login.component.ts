@@ -34,16 +34,16 @@ export class LoginComponent implements OnInit {
       }, 1500);
     } else {
       this.userService.login({ name: this.name, password: this.password }).subscribe((data: any) => {
-        if (data.id) {
+        console.log(data);
+        if (data.token) {
           this.store.dispatch({
             type: 'SAVE_USER',
             payload: {
               isLogin: true,
-              user: data
+              user: data.user
             }
           });
-          this.cookieService.put('phone', data.phone);
-          this.cookieService.put('token', data.password);
+          this.cookieService.put('token', data.token);
           this.showError = false;
           this.store.select('router').subscribe((x: any) => {
             this.router.navigate([x.url]);

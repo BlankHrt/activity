@@ -14,21 +14,16 @@ export class AppComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
-    if (this.cookieService.get('phone') && this.cookieService.get('token')) {
-      this.userService.loginWC({
-        name: this.cookieService.get('phone'),
-        password: this.cookieService.get('token')
-      }).subscribe(data => {
-        if (data.id) {
-          this.store.dispatch({
-            type: 'SAVE_USER',
-            payload: {
-              isLogin: true,
-              user: data
-            }
-          });
-        }
-      });
-    }
+    this.userService.loginWC().subscribe(data => {
+      if (data.id) {
+        this.store.dispatch({
+          type: 'SAVE_USER',
+          payload: {
+            isLogin: true,
+            user: data
+          }
+        });
+      }
+    });
   }
 }
