@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
       }, 1500);
     } else {
       this.userService.login({ name: this.name, password: this.password }).subscribe((data: any) => {
-        console.log(data);
         if (data.token) {
           this.store.dispatch({
             type: 'SAVE_USER',
@@ -51,6 +50,8 @@ export class LoginComponent implements OnInit {
         } else {
           this.showError = true;
         }
+      }, error => {
+        this.showError = true;
       });
     }
   }

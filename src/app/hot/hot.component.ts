@@ -219,6 +219,7 @@ export class HotComponent implements OnInit, OnDestroy {
         url: '/hot'
       }
     });
+    this.hotService.logout().subscribe();
   }
 
   gotoAddDetail() {

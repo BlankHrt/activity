@@ -15,6 +15,8 @@
                 <input mdInput placeholder="话题" required maxlength="30" name="title" [(ngModel)]="article.title" #title="ngModel">
                 <md-hint align="end">{{title.model?.length}} / 30</md-hint>
             </md-input-container>
+            <md2-datepicker></md2-datepicker>
+
             <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
                 <div *ngIf="title.hasError('required')">请填写话题</div>
             </div>

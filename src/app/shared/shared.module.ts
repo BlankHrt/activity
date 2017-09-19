@@ -11,9 +11,9 @@ import { TimeAgoPipe } from './timeAgo.pipe';
 import { ArraySortPipe } from './sort.pipe';
 import { LimitSortPipe } from './limit.pipe';
 import { FilterLengthPipe, FilterHanziPipe } from './filter.pipe';
-// import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 import { NgxGalleryModule } from './lib/ngx-gallery/index';
 import { ImageUploadModule } from './lib/angular2-image-upload/image-upload.module';
+import { Md2Module } from 'md2';
 
 @NgModule({
   imports: [
@@ -35,10 +35,10 @@ import { ImageUploadModule } from './lib/angular2-image-upload/image-upload.modu
     MdRadioModule,
     MdSelectModule,
     MdChipsModule,
-    // NKDatetimeModule,
     ImageUploadModule.forRoot(),
     NgxGalleryModule,
-    MdProgressSpinnerModule
+    MdProgressSpinnerModule,
+    Md2Module
   ],
   declarations: [TimeAgoPipe, ArraySortPipe, LimitSortPipe, FilterLengthPipe, FilterHanziPipe],
   exports: [
@@ -65,10 +65,10 @@ import { ImageUploadModule } from './lib/angular2-image-upload/image-upload.modu
     LimitSortPipe,
     FilterLengthPipe,
     FilterHanziPipe,
-    // NKDatetimeModule,
     ImageUploadModule,
     NgxGalleryModule,
-    MdProgressSpinnerModule
+    MdProgressSpinnerModule,
+    Md2Module
   ],
 })
 export class SharedModule { }

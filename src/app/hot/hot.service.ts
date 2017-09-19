@@ -163,6 +163,12 @@ export class HotService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    logout() {
+        return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     extractData(res: Response) {
         if (res.text()) {
             return res.json() || [];

@@ -256,15 +256,13 @@ export class UserService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('username', user.name);
     urlSearchParams.append('password', user.password);
-    return this.http.post(this.HttpUrl + '/auth/login', urlSearchParams, this.setOptions())
+    return this.http.post(this.HttpUrl + '/auth/login', urlSearchParams)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  logout(id: any) {
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/article/read', urlSearchParams, this.setOptions())
+  logout() {
+    return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }

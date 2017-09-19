@@ -22,17 +22,13 @@
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/summernote/dist/summernote.css",
-        "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css",
-        "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css"
+        "../node_modules/summernote/dist/summernote.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
         "../node_modules/summernote/dist/summernote.min.js",
-        "../node_modules/summernote/lang/summernote-zh-CN.js",
-        "../node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js",
-        "../node_modules/bootstrap-timepicker/js/bootstrap-timepicker.js"
+        "../node_modules/summernote/lang/summernote-zh-CN.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
