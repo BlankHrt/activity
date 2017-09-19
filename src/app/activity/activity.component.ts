@@ -9,6 +9,8 @@ import { ActivityJoinDialogComponent } from './activityjoin.dialog';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
+import {Subscription} from 'rxjs/Subscription';
+import 'rxjs/add/observable/interval';
 
 @Component({
   selector: 'app-activity',
@@ -29,7 +31,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   searchPage = 1;
   bottomStatus = 0;
   notificationLength = 0;
-  notification: Observable<any>;
   galleryOptions = [
     { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
@@ -37,7 +38,10 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   status = 0;
   searchStatus = 0;
-
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  storeSubscribe: Subscription;
+  intervalSubscribe;
   constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
   }
@@ -59,7 +63,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.select('user').subscribe((data: any) => {
+    this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
       if (this.user.isLogin) {
         this.schoolId = data.user.schoolId;
@@ -459,17 +463,17 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   getNotification(id) {
-    this.notification = Observable.combineLatest(
+      const notification = Observable.combineLatest(
       this.activityService.getUnReadActivitySupportByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityCommentByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinSponsorByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinParticipantByUserIDAndActivityType(id, this.ActivityType),
     );
-    setInterval(() => {
-      this.notification.subscribe(data => {
+    this.intervalSubscribe = Observable.interval(2000).subscribe(() => {
+          notification.subscribe(data => {
         this.notificationLength = data[0] + data[1] + data[2] + data[3];
       });
-    }, 2000);
+    });
   }
 
   feedback() {
@@ -479,10 +483,12 @@ export class ActivityComponent implements OnInit, OnDestroy {
         url: '/activity'
       }
     });
-    this.router.navigate(['/user/feedback']);
+   this.router.navigate(['/user/feedback']);
   }
-  home() { }
   ngOnDestroy(): void {
-    // this.notification.unSubscribe();
+    if (this.intervalSubscribe){
+      this.intervalSubscribe.unsubscribe();
+    }
+    this.storeSubscribe.unsubscribe();
   }
 }

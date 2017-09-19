@@ -2,20 +2,21 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef, Inject, ViewChild } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Renderer, ElementRef, Inject, ViewChild, OnDestroy} from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
+import {Subscription} from "rxjs/Subscription";
 declare var $;
 @Component({
   selector: 'app-travel-gonglue-add',
   templateUrl: './gonglueAdd.component.html',
 })
 
-export class TravelGonglueAddComponent implements OnInit, AfterViewInit {
+export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestroy {
   user;
   schoolId;
   HttpUrl = Common.HttpUrl;
@@ -29,6 +30,12 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit {
   imageList = [];
   elementRef: ElementRef;
   showSpinner = false;
+
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  storeSubscribe: Subscription;
+  routerSubscribe: Subscription;
+
   @ViewChild('commitButton') commitButton: ElementRef;
 
   constructor( @Inject(ElementRef) elementRef: ElementRef,
@@ -79,19 +86,17 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.articleType = params.id;
       } else {
         this.router.navigate(['/404']);
       }
     });
-    this.store.select('user').subscribe(data => {
+    this.storeSubscribe = this.store.select('user').subscribe(data => {
       this.user = data;
-      if (this.user && this.user.user.id) {
-        this.travelService.select(this.user.user.id).subscribe(data => {
-          this.schoolId = data.schoolId;
-        });
+      if (this.user && this.user.isLogin) {
+        this.schoolId = this.user.user.schoolId;
       }
     });
     this.title = new FormControl('', [Validators.required, Validators.maxLength(30)]);
@@ -145,5 +150,10 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit {
 
   home() {
     this.router.navigate(['/travel']);
+  }
+
+  ngOnDestroy() {
+    this.storeSubscribe.unsubscribe();
+    this.routerSubscribe.unsubscribe();
   }
 }

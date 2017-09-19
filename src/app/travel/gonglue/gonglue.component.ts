@@ -10,6 +10,7 @@ import { MdDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { TravelDialogComponent } from '../travel.dialog';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-travel-gonglue',
@@ -29,11 +30,14 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
     { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
+  // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
+  // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
+  storeSubscribe: Subscription;
   constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
     private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.store.select('user').subscribe(data => {
+    this.storeSubscribe = this.store.select('user').subscribe(data => {
       this.user = data;
       this.getGonglue();
     });
@@ -216,7 +220,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.notification.unSubscribe();
+    this.storeSubscribe.unsubscribe();
   }
 
 }

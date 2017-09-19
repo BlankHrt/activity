@@ -243,6 +243,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       }
     });
     e.stopPropagation();
+    console.log(childComment)
     this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
   }
 
