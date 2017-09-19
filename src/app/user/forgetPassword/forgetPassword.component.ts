@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { UserService } from '../../user.service';
 import { Store } from '@ngrx/store';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-forget',
@@ -15,27 +14,23 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 
 export class ForgetPasswordComponent implements OnInit {
-  form;
-  code;
   serverCode;
   phone;
-  password;
   timer = 60;
   hasCode: Boolean = false;
+
+  // form
+  ForgetPas = {
+    phone: null,
+    code: null,
+    password: null
+  };
+
   constructor(
-    private formBuilder: FormBuilder, private store: Store<any>, public snackBar: MdSnackBar,
+    private store: Store<any>, public snackBar: MdSnackBar,
     private router: Router, private route: ActivatedRoute, private userService: UserService) { }
   ngOnInit() {
-    this.phone = new FormControl('', [Validators.required, Validators.maxLength(11),
-    Validators.pattern('^1[34578][0-9]{9}$')]);
-    this.code = new FormControl('', [Validators.required, Validators.maxLength(6)]);
-    this.password = new FormControl('', [Validators.required, Validators.maxLength(16), Validators.minLength(6)]);
 
-    this.form = this.formBuilder.group({
-      phone: this.phone,
-      code: this.code,
-      password: this.password,
-    });
   }
   home() {
     this.store.select('router').subscribe((x: any) => {
@@ -43,9 +38,9 @@ export class ForgetPasswordComponent implements OnInit {
     });
   }
   confirm() {
-    if (this.phone.value && this.password.value) {
-      if (this.code.value === this.serverCode) {
-        this.userService.updatePassword({ phone: this.phone.value, password: this.password.value }).subscribe(() => {
+    if (this.ForgetPas.phone && this.ForgetPas.password) {
+      if (this.ForgetPas.code === this.serverCode) {
+        this.userService.updatePassword({ phone: this.ForgetPas.phone, password: this.ForgetPas.password }).subscribe(() => {
           this.snackBar.open('修改成功,即将前往登陆页面');
           setTimeout(() => {
             this.snackBar.dismiss();
@@ -76,13 +71,14 @@ export class ForgetPasswordComponent implements OnInit {
         clearInterval(timer);
       }
     }, 1000);
-    this.userService.validatePhoneIsExist(this.phone.value).subscribe(user => {
+    this.userService.validatePhoneIsExist(this.ForgetPas.phone).subscribe(user => {
       if (user.id) {
         clearInterval(timer);
         let timer0;
-        if (this.phone) {
-          this.userService.getForgetMessage(this.phone.value).subscribe((data: string) => {
+        if (this.ForgetPas.phone) {
+          this.userService.getForgetMessage(this.ForgetPas.phone).subscribe((data: string) => {
             this.serverCode = data.toString();
+            console.log(this.serverCode);
           });
           this.hasCode = true;
           timer0 = setInterval(() => {

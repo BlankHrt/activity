@@ -13,13 +13,7 @@ import { UserService } from '../../user.service';
 })
 
 export class RegisterComponent implements OnInit {
-  form: FormGroup;
 
-  mobile: FormControl;
-  name: FormControl;
-  password: FormControl;
-  passwordAgain: FormControl;
-  code: FormControl;
   provinceList: Array<any>;
   schoolList: Array<any>;
   selectedProvince: any;
@@ -28,27 +22,24 @@ export class RegisterComponent implements OnInit {
   timer = 60;
   hasCode: Boolean = false;
   isPhoneExist: Boolean = false;
+
+  // form
+  UserRegister = {
+    name: null,
+    mobile: null,
+    code: null,
+    password: null,
+    passwordAgain: null,
+  };
+
   constructor(
-    private formBuilder: FormBuilder,
     public snackBar: MdSnackBar, private userService: UserService,
     private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.mobile = new FormControl('', [Validators.required, Validators.maxLength(11),
-    Validators.pattern('^1[34578][0-9]{9}$')]);
-    this.name = new FormControl('', [Validators.required, Validators.maxLength(10)]);
-    this.code = new FormControl('', [Validators.required, Validators.maxLength(6)]);
-    this.password = new FormControl('', [Validators.required, Validators.maxLength(16), Validators.minLength(6)]);
-    this.passwordAgain = new FormControl('', [Validators.required, Validators.maxLength(16)]);
 
     this.userService.getAllProvince().subscribe(data => {
       this.provinceList = data;
-    });
-    this.form = this.formBuilder.group({
-      mobile: this.mobile,
-      name: this.name,
-      code: this.code,
-      password: this.password,
     });
   }
   getSchoolByProvince(id: any) {
@@ -57,14 +48,15 @@ export class RegisterComponent implements OnInit {
     });
   }
   getMessage() {
-    this.userService.validatePhoneIsExist(this.mobile.value).subscribe(user => {
+    this.userService.validatePhoneIsExist(this.UserRegister.mobile).subscribe(user => {
       if (user.id) {
         this.isPhoneExist = true;
       } else {
         this.isPhoneExist = false;
-        if (this.mobile.value) {
-          this.userService.getMessage(this.mobile.value).subscribe((data: string) => {
+        if (this.UserRegister) {
+          this.userService.getMessage(this.UserRegister.mobile).subscribe((data: string) => {
             this.serverCode = data.toString();
+            console.log(data);
           });
           this.hasCode = true;
           const timer = setInterval(() => {
@@ -86,18 +78,19 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    if (this.password.value !== this.passwordAgain.value) {
+    if ( !this.UserRegister.password ) {this.snackBar.open('密码不能为空'); }
+    if (this.UserRegister.password !== this.UserRegister.passwordAgain) {
       this.snackBar.open('两次密码不一致');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
-    } else if (this.code.value !== this.serverCode) {
+    } else if (this.UserRegister.code !== this.serverCode) {
       this.snackBar.open('验证码不正确');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
     } else {
-      this.userService.register(this.form.value, this.selectedSchool).subscribe(data => {
+      this.userService.register(this.UserRegister, this.selectedSchool).subscribe(data => {
         this.snackBar.open('注册成功，即将前往登陆页面');
         setTimeout(() => {
           this.snackBar.dismiss();

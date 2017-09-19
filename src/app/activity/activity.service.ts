@@ -30,7 +30,7 @@ export class ActivityService {
     urlSearchParams.append('activityType', activityType);
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('schoolId', schoolId);
-    urlSearchParams.append('publish_user_contact', params.publish_user_contact);
+    urlSearchParams.append('publishUserContact', params.publishUserContact);
     urlSearchParams.append('imageList', imageList);
     return this.http.post(this.HttpUrl + '/activity/insert', urlSearchParams)
       .map(this.extractData)

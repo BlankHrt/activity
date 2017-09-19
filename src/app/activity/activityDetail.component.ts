@@ -51,7 +51,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   galleryOptions = [
-    { 'thumbnails': true, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store

@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 declare var $;
 @Component({
   selector: 'app-travel-gonglue-add',
@@ -23,14 +23,16 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   ArticleUpload = Common.ArticleUpload;
   ArticleUrl = Common.ArticleUpload;
   articleType;
-  form: FormGroup;
-  title: FormControl;
   content;
-  address: FormControl;
   imageList = [];
   elementRef: ElementRef;
   showSpinner = false;
 
+  // form
+  article = {
+    title: null,
+    address: null
+  };
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
@@ -39,7 +41,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   @ViewChild('commitButton') commitButton: ElementRef;
 
   constructor( @Inject(ElementRef) elementRef: ElementRef,
-    private store: Store<any>, private location: Location, private formBuilder: FormBuilder,
+    private store: Store<any>, private location: Location,
     private travelService: TravelService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {
     this.elementRef = elementRef;
@@ -99,13 +101,6 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
         this.schoolId = this.user.user.schoolId;
       }
     });
-    this.title = new FormControl('', [Validators.required, Validators.maxLength(30)]);
-    this.address = new FormControl('', [Validators.required, Validators.maxLength(50)]);
-
-    this.form = this.formBuilder.group({
-      title: this.title,
-      address: this.address,
-    });
   }
 
   imageRemoved(e) {
@@ -119,8 +114,6 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   imageUploaded(e) {
-    this.renderer.setElementProperty(this.elementRef.nativeElement.querySelector('.clear span'), 'innerHTML', '清除所有');
-    this.renderer.setElementStyle(this.elementRef.nativeElement.querySelector('.clear'), 'background-color', '#eb7350');
     this.imageList.push(
       e.serverResponse.text()
     );
@@ -128,19 +121,21 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   commit() {
-    this.showSpinner = true;
-    this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
-    if (this.user.user.id) {
-      for (let i = 0; i < this.imageList.length; i++) {
-        this.imageList[i] = '\"' + this.imageList[i] + '\"';
-      }
-      this.content = $('#summernote').summernote('code');
-      this.travelService.insert(this.form.value, this.content, this.user.user.id,
-        this.articleType, this.schoolId, [this.imageList]).subscribe(data => {
-          this.router.navigate(['../list'], { relativeTo: this.route });
-        });
-    } else {
-      alert('登陆超时，请重新登录');
+    if (this.article.title && this.article.address) {
+        this.showSpinner = true;
+        this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+        if (this.user.user.id) {
+          for (let i = 0; i < this.imageList.length; i++) {
+            this.imageList[i] = '\"' + this.imageList[i] + '\"';
+          }
+          this.content = $('#summernote').summernote('code');
+          this.travelService.insert(this.article, this.content, this.user.user.id,
+            this.articleType, this.schoolId, [this.imageList]).subscribe(data => {
+            this.router.navigate(['../list'], {relativeTo: this.route});
+          });
+        } else {
+          alert('登陆超时，请重新登录');
+        }
     }
   }
 

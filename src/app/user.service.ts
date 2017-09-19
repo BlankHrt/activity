@@ -20,9 +20,9 @@ export class UserService {
     return new RequestOptions({ headers: headers });
   }
 
-  insert(params: any, isLogin: any, userID: any): Observable<any> {
+  insert(content: any, isLogin: any, userID: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('content', params.content);
+    urlSearchParams.append('content', content);
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
     return this.http.post(this.HttpUrl + '/feedback/insert', urlSearchParams, this.setOptions())
