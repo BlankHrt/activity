@@ -5,7 +5,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { HotService } from './hot.service';
 import { HotDialogComponent } from './hot.dialog';
 import { Location } from '@angular/common';
@@ -55,7 +55,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
   constructor(public dialog: MdDialog, private store: Store<any>, private hotService: HotService, private renderer: Renderer,
-    private location: Location, private router: Router, private route: ActivatedRoute) { }
+    private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MdSnackBar) { }
 
   ngOnInit() {
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
@@ -72,7 +72,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
             });
           }
           this.imageList = list;
-        });
+        }, error => this.errorHandle(error));
         this.storeSubscribe = this.store.select('user').subscribe(data => {
           this.user = data;
           if (this.user && this.user.user && this.user.user.id) {
@@ -80,7 +80,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
               if (!Array.isArray(support)) {
                 this.isUserSupport = true;
               }
-            });
+            }, error => this.errorHandle(error));
           }
         });
       } else {
@@ -92,7 +92,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   getArticleByIdWithUser(id) {
     this.hotService.getArticleByIdWithUser(id).subscribe(data => {
       this.article = data;
-    });
+    }, error => { this.errorHandle(error); });
   }
 
   publish() {
@@ -104,7 +104,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.comment = '';
         this.article.countCommentNumber++;
         this.showSpinner = false;
-      });
+      }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -134,7 +134,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.childComment = [];
         this.article.countCommentNumber++;
         this.showChildSpinner = false;
-      });
+      }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -158,7 +158,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   getAllCommentByArticleId(id) {
     this.hotService.getAllCommentByArticleId(id).subscribe(data => {
       this.commentList = data;
-    });
+    }, error => this.errorHandle(error));
   }
 
   back() {
@@ -183,7 +183,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       hot.countSupportNumber++;
       this.isUserSupport = true;
-      this.hotService.support(hot.id, this.user.user.id).subscribe();
+      this.hotService.support(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -198,7 +198,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       hot.countSupportNumber--;
       this.isUserSupport = false;
-      this.hotService.unSupport(hot.id, this.user.user.id).subscribe();
+      this.hotService.unSupport(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -243,12 +243,31 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       }
     });
     e.stopPropagation();
-    console.log(childComment)
     this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
   }
 
   ngOnDestroy() {
     this.routerSubscribe.unsubscribe();
     this.storeSubscribe.unsubscribe();
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.store.dispatch({ type: 'DELETE_USER', payload: {} });
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

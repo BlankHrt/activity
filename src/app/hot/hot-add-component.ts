@@ -4,11 +4,11 @@
 
 import { Component, OnInit, ElementRef, Inject, Renderer, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Common } from '../shared/Common';
 import { HotService } from './hot.service';
 import { Subscription } from 'rxjs/Subscription';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
     selector: 'app-hot-add',
@@ -28,7 +28,6 @@ export class HotAddComponent implements OnInit, OnDestroy {
         content: null
     };
 
-    elementRef: ElementRef;
 
     imageList = [];
     showSpinner = false;
@@ -40,11 +39,10 @@ export class HotAddComponent implements OnInit, OnDestroy {
 
     @ViewChild('commitButton') commitButton: ElementRef;
 
-    constructor( @Inject(ElementRef) elementRef: ElementRef,
-        private renderer: Renderer, private store: Store<any>, private formBuilder: FormBuilder,
+    constructor(
+        private renderer: Renderer, private store: Store<any>,
         private router: Router, private hotService: HotService,
-        private route: ActivatedRoute) {
-        this.elementRef = elementRef;
+        private route: ActivatedRoute, public snackBar: MdSnackBar) {
     }
 
     ngOnInit() {
@@ -58,7 +56,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
         this.storeSubscribe = this.store.select('user').subscribe(data => {
             this.user = data;
             if (this.user && this.user.user.id) {
-              this.schoolId = this.user.user.schoolId;
+                this.schoolId = this.user.user.schoolId;
             }
         });
 
@@ -75,7 +73,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
                 this.hotService.insert(this.article, this.user.user.id, this.articleType,
                     this.schoolId, this.imageList).subscribe(data => {
                         this.router.navigate(['../list'], { relativeTo: this.route });
-                    });
+                    }, error => this.errorHandle(error));
             } else {
                 alert('登陆超时，请重新登录');
             }
@@ -108,5 +106,25 @@ export class HotAddComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.storeSubscribe.unsubscribe();
         this.routerSubscribe.unsubscribe();
+    }
+
+    errorHandle(error) {
+        if (error.status === 401) {
+            this.store.dispatch({ type: 'DELETE_USER', payload: {} });
+            this.snackBar.open('认证失败，请登陆先');
+            setTimeout(() => {
+                this.snackBar.dismiss();
+            }, 1500);
+        } else if (error.status === 403) {
+            this.snackBar.open('对不起，您暂无权限');
+            setTimeout(() => {
+                this.snackBar.dismiss();
+            }, 1500);
+        } else if (error.status === 500) {
+            this.snackBar.open('操作失败', '请重试');
+            setTimeout(() => {
+                this.snackBar.dismiss();
+            }, 1500);
+        }
     }
 }
