@@ -8,6 +8,7 @@ import { Common } from '../shared/Common';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
+import {MdSnackBar} from '@angular/material';
 
 /**
  * Created by asus on 2017/8/15.
@@ -33,7 +34,7 @@ export class TravelComponent implements OnInit , OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
-  constructor(private cookieService: CookieService, private store: Store<any>,
+  constructor(private cookieService: CookieService, private store: Store<any>, public snackBar: MdSnackBar,
     private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
   }
 
@@ -72,6 +73,7 @@ export class TravelComponent implements OnInit , OnDestroy {
         url: '/travel'
       }
     });
+    this.travelService.logout().subscribe();
   }
 
   register() {
@@ -140,5 +142,24 @@ export class TravelComponent implements OnInit , OnDestroy {
       this.intervalSubscribe.unsubscribe();
     }
     this.storeSubscribe.unsubscribe();
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

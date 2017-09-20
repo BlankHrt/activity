@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   getSchoolByProvince(id: any) {
     this.userService.getSchoolByProvince(id).subscribe(data => {
       this.schoolList = data;
-    });
+    }, error => this.errorHandle(error));
   }
   getMessage() {
     this.userService.validatePhoneIsExist(this.UserRegister.mobile).subscribe(user => {
@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit {
           this.userService.getMessage(this.UserRegister.mobile).subscribe((data: string) => {
             this.serverCode = data.toString();
             console.log(data);
-          });
+          }, error => this.errorHandle(error));
           this.hasCode = true;
           const timer = setInterval(() => {
             this.timer--;
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
           }, 1500);
         }
       }
-    });
+    }, error => this.errorHandle(error));
   }
 
   register() {
@@ -96,7 +96,25 @@ export class RegisterComponent implements OnInit {
           this.snackBar.dismiss();
           this.router.navigate(['/user/login']);
         }, 1500);
-      });
+      }, error => this.errorHandle(error));
+    }
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
     }
   }
 }

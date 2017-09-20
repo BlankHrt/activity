@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
-import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 
 @Component({

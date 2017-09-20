@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.showError = true;
         }
-      }, error => {
+      }, () => {
         this.showError = true;
       });
     }
@@ -59,6 +59,25 @@ export class LoginComponent implements OnInit {
     this.store.select('router').subscribe((x: any) => {
       this.router.navigate([x.url]);
     });
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }
 

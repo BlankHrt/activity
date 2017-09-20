@@ -9,6 +9,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {Subscription} from "rxjs/Subscription";
+import {MdSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-activity-list',
@@ -32,7 +33,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
 
   constructor(private store: Store<any>, private location: Location, private formBuilder: FormBuilder,
-    private activityService: ActivityService, private router: Router,
+    private activityService: ActivityService, private router: Router, public snackBar: MdSnackBar,
     private route: ActivatedRoute) {
   }
 
@@ -71,13 +72,13 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.activityService.getAllJoinByActivityId(id).subscribe((data: any) => {
       this.joinList = data;
       this.dealJoinList(this.joinList);
-    });
+    }, error => this.errorHandle(error));
   }
 
   getPublishUserId(id: any) {
     this.activityService.getPublishUserId(id).subscribe((data: any) => {
       this.publishUserId = data.publishUserId;
-    });
+    }, error => this.errorHandle(error));
   }
 
   back() {
@@ -88,17 +89,35 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.activityService.joinActivitySuccessUpdate(wait.id).subscribe((data: any) => {
       wait.isSuccess = 2;
       this.dealJoinList(this.joinList);
-    });
+    }, error => this.errorHandle(error));
   }
 
   joinActivityFail(wait: any) {
     this.activityService.joinActivityFailUpdate(wait.id).subscribe((data: any) => {
       wait.isSuccess = 0;
       this.dealJoinList(this.joinList);
-    });
+    }, error => this.errorHandle(error));
   }
   ngOnDestroy() {
     this.routerSubscribe.unsubscribe();
     this.storeSubscribe.unsubscribe();
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

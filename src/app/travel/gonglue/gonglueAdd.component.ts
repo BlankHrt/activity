@@ -10,6 +10,7 @@ import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {Subscription} from 'rxjs/Subscription';
+import {MdSnackBar} from "@angular/material";
 declare var $;
 @Component({
   selector: 'app-travel-gonglue-add',
@@ -40,7 +41,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
 
   @ViewChild('commitButton') commitButton: ElementRef;
 
-  constructor( @Inject(ElementRef) elementRef: ElementRef,
+  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
     private store: Store<any>, private location: Location,
     private travelService: TravelService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {
@@ -132,7 +133,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
           this.travelService.insert(this.article, this.content, this.user.user.id,
             this.articleType, this.schoolId, [this.imageList]).subscribe(data => {
             this.router.navigate(['../list'], {relativeTo: this.route});
-          });
+          }, error => this.errorHandle(error));
         } else {
           alert('登陆超时，请重新登录');
         }
@@ -150,5 +151,23 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy() {
     this.storeSubscribe.unsubscribe();
     this.routerSubscribe.unsubscribe();
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

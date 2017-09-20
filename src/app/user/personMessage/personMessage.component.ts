@@ -5,8 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
-import { Observable } from 'rxjs/Observable';
 import { Common } from '../../shared/Common';
+import {MdSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-person-message',
@@ -25,7 +25,7 @@ export class PersonMessageComponent implements OnInit {
   index = 0;
 
   constructor(
-    private store: Store<any>, private router: Router,
+    private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
     private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
@@ -69,19 +69,19 @@ export class PersonMessageComponent implements OnInit {
   }
   gotoCommentDetail(comment) {
     if (this.user.id && this.articleType === Common.ArticleType.xiaoyuan) {
-      this.userService.readArticleComment(comment.id).subscribe();
+      this.userService.readArticleComment(comment.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/hot/detail'], { queryParams: { id: comment.article.id } });
     } else if (this.user.id && this.articleType === Common.ArticleType.gonglue) {
-      this.userService.readArticleComment(comment.id).subscribe();
+      this.userService.readArticleComment(comment.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/travel/gonglueDetail'], { queryParams: { id: comment.article.id } });
     }
   }
   gotoSupportDetail(support) {
     if (this.user.id && this.articleType === Common.ArticleType.xiaoyuan) {
-      this.userService.readArticleSupport(support.id).subscribe();
+      this.userService.readArticleSupport(support.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/hot/detail'], { queryParams: { id: support.article.id } });
     } else if (this.user.id && this.articleType === Common.ArticleType.gonglue) {
-      this.userService.readArticleSupport(support.id).subscribe();
+      this.userService.readArticleSupport(support.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/travel/gonglueDetail'], { queryParams: { id: support.article.id } });
     }
   }
@@ -99,6 +99,24 @@ export class PersonMessageComponent implements OnInit {
         index: this.index
       }
     });
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }
 

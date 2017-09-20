@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { TravelService } from '../travel.service';
 import { Common } from '../../shared/Common';
-import { MdDialog } from '@angular/material';
+import {MdDialog, MdSnackBar} from '@angular/material';
 import { Store } from '@ngrx/store';
 import { TravelDialogComponent } from '../travel.dialog';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
@@ -27,13 +27,13 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   searchStatus = 0;
   bottomStatus = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
-  constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
+  constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService, public snackBar: MdSnackBar,
     private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -70,7 +70,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
       } else {
         this.travelGonglueList = this.travelGonglueList.concat(travelList);
       }
-    });
+    }, error => this.errorHandle(error));
   }
 
   getSearchGonglue() {
@@ -102,7 +102,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
         } else {
           this.travelGonglueList = this.travelGonglueList.concat(searchTravelList);
         }
-      });
+      }, error => this.errorHandle(error));
   }
 
   refresh() {
@@ -137,7 +137,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       travelGonglue.countSupportNumber++;
       travelGonglue.articleUserSupport = true;
-      this.travelService.support(travelGonglue.id, this.user.user.id).subscribe();
+      this.travelService.support(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(TravelDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -153,7 +153,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       travelGonglue.countSupportNumber--;
       travelGonglue.articleUserSupport = false;
-      this.travelService.unSupport(travelGonglue.id, this.user.user.id).subscribe();
+      this.travelService.unSupport(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(TravelDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -196,6 +196,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
         user: {}
       }
     });
+    this.travelService.logout().subscribe();
   }
 
   gotoPersonDetail(e, gongnue) {
@@ -218,9 +219,25 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
     this.nowPage += 1;
     this.getSearchGonglue();
   }
-
   ngOnDestroy(): void {
     this.storeSubscribe.unsubscribe();
   }
-
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
+  }
 }

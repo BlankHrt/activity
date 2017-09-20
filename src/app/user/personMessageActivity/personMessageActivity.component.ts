@@ -6,6 +6,7 @@ import { Common } from '../../shared/Common';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../user.service';
+import {MdSnackBar} from '@angular/material';
 @Component({
   selector: 'app-person-message-activity',
   templateUrl: './personMessageActivity.component.html',
@@ -20,7 +21,7 @@ export class PersonMessageActivityComponent implements OnInit {
   supportList = [];
   sponsorList = [];
   participantList = [];
-  constructor(private store: Store<any>, private router: Router,
+  constructor(private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
     private route: ActivatedRoute, private userService: UserService) { }
   ngOnInit() {
     this.activityType = Common.ActivityType.xiaoyuan;
@@ -53,7 +54,7 @@ export class PersonMessageActivityComponent implements OnInit {
 
   gotoCommentDetail(comment) {
     if (this.user.id) {
-      this.userService.readActivityComment(comment.id).subscribe();
+      this.userService.readActivityComment(comment.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/activity/activityDetail'], { queryParams: { id: comment.activity.id } });
     }
   }
@@ -61,7 +62,7 @@ export class PersonMessageActivityComponent implements OnInit {
   gotoSponsorActivityDetail(activityJoin) {
     if (this.user.id) {
       if (activityJoin.activity.publishUserId === this.user.id) {
-        this.userService.readActivityJoin(activityJoin.id).subscribe();
+        this.userService.readActivityJoin(activityJoin.id).subscribe(() => { }, error => this.errorHandle(error));
         this.router.navigate(['/activity/activityDetail'], { queryParams: { id: activityJoin.activity.id } });
       }
     }
@@ -69,14 +70,14 @@ export class PersonMessageActivityComponent implements OnInit {
   gotoParticipantActivityDetail(activityJoin) {
     if (this.user.id) {
       if (activityJoin.activity.publishUserId !== this.user.id) {
-        this.userService.participantReadActivityJoin(activityJoin.id).subscribe();
+        this.userService.participantReadActivityJoin(activityJoin.id).subscribe(() => { }, error => this.errorHandle(error));
         this.router.navigate(['/activity/activityDetail'], { queryParams: { id: activityJoin.activity.id } });
       }
     }
   }
   gotoSupportDetail(support) {
     if (this.user.id) {
-      this.userService.readActivitySupport(support.id).subscribe();
+      this.userService.readActivitySupport(support.id).subscribe(() => { }, error => this.errorHandle(error));
       this.router.navigate(['/activity/activityDetail'], { queryParams: { id: support.activity.id } });
     }
   }
@@ -92,5 +93,24 @@ export class PersonMessageActivityComponent implements OnInit {
         index: this.index
       }
     });
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

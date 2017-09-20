@@ -46,7 +46,7 @@ export class ForgetPasswordComponent implements OnInit {
             this.snackBar.dismiss();
             this.router.navigate(['/user/login']);
           }, 1500);
-        });
+        }, error => this.errorHandle(error));
       } else {
         this.snackBar.open('验证码错误');
         setTimeout(() => {
@@ -79,7 +79,7 @@ export class ForgetPasswordComponent implements OnInit {
           this.userService.getForgetMessage(this.ForgetPas.phone).subscribe((data: string) => {
             this.serverCode = data.toString();
             console.log(this.serverCode);
-          });
+          }, error => this.errorHandle(error));
           this.hasCode = true;
           timer0 = setInterval(() => {
             this.timer--;
@@ -105,6 +105,24 @@ export class ForgetPasswordComponent implements OnInit {
           this.snackBar.dismiss();
         }, 1500);
       }
-    });
+    }, error => this.errorHandle(error));
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

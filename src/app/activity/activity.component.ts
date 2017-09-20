@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
-import { MdDialog } from '@angular/material';
+import {MdDialog, MdSnackBar} from '@angular/material';
 import { ActivityDialogComponent } from './activity.dialog';
 import { ActivityJoinDialogComponent } from './activityjoin.dialog';
 import { Observable } from 'rxjs/Observable';
@@ -32,7 +32,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   bottomStatus = 0;
   notificationLength = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
 
@@ -42,7 +42,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
-  constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
+  constructor(public snackBar: MdSnackBar, private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
   }
 
@@ -153,7 +153,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
         } else {
           this.activityList = this.activityList.concat(activityList);
         }
-      });
+      }, error => this.errorHandle(error));
   }
 
   gotoActivityDetail(activity: any) {
@@ -165,7 +165,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       activity.countSupportNumber++;
       activity.activityUserSupport = true;
-      this.activityService.support(activity.id, this.user.user.id).subscribe();
+      this.activityService.support(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -181,7 +181,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       activity.countSupportNumber--;
       activity.activityUserSupport = false;
-      this.activityService.unSupport(activity.id, this.user.user.id).subscribe();
+      this.activityService.unSupport(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -235,7 +235,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
           } else {
             this.activityList = this.activityList.concat(activityList);
           }
-        });
+        }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -279,7 +279,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
           } else {
             this.activityList = this.activityList.concat(activityList);
           }
-        });
+        }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -323,7 +323,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
           this.activityList = this.activityList.concat(activityList);
           console.log('activityList.length/page!=1 =' + this.activityList.length);
         }
-      });
+      }, error => this.errorHandle(error));
   }
 
   join(e: any, activity: any) {
@@ -337,7 +337,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
               activity.activityJoin = {
                 isSuccess: 1
               };
-            });
+            }, error => this.errorHandle(error));
           }
         });
       }
@@ -440,6 +440,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
         url: '/activity'
       }
     });
+    this.activityService.logout().subscribe();
   }
 
   login() {
@@ -486,9 +487,28 @@ export class ActivityComponent implements OnInit, OnDestroy {
    this.router.navigate(['/user/feedback']);
   }
   ngOnDestroy(): void {
-    if (this.intervalSubscribe){
+    if (this.intervalSubscribe) {
       this.intervalSubscribe.unsubscribe();
     }
     this.storeSubscribe.unsubscribe();
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }
