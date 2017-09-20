@@ -107,7 +107,7 @@
               <span  *ngIf="!showChildSpinner" >发表
               </span>
             </button>
-            <button class="btn btn-danger col-xs-6 col-sm-6" (click)="c.showChildComment=false">取消</button>
+            <button class="btn btn-danger col-xs-6 col-sm-6" (click)="childCommentCancel($event,c)">取消</button>
           </div>
         </div>
       </md-card-actions>

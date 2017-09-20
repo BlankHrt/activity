@@ -4,7 +4,7 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
-import { MdDialog } from '@angular/material';
+import {MdDialog, MdSnackBar} from '@angular/material';
 import { Store } from '@ngrx/store';
 import { ActivityDialogComponent } from './activity.dialog';
 import { Location } from '@angular/common';
@@ -51,7 +51,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true, 'thumbnailsSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
@@ -62,7 +62,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer,
+  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
     private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -114,14 +114,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.activityJoinStatus = true;
 
       }
-    });
+    }, error => this.errorHandle(error));
   }
 
   getActivityByIdWithUser(id: any) {
     this.activityService.getActivityByIdWithUser(id).subscribe(data => {
       this.activity = data;
       $('#summernote').html(this.activity.content);
-    });
+    }, error => this.errorHandle(error));
   }
 
   publish() {
@@ -133,12 +133,15 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.comment = '';
         this.activity.countCommentNumber++;
         this.showSpinner = false;
-      });
+      }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
+        }else {
+          this.showSpinner = false;
+          this.comment = '';
         }
       });
     }
@@ -168,12 +171,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.childComment = [];
         this.activity.countCommentNumber++;
         this.showChildSpinner = false;
-      });
+        comment.showChildComment = false;
+      }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
+        }else {
+          this.showChildSpinner = false;
+          this.comment = '';
         }
       });
     }
@@ -182,7 +189,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getAllCommentByActivityId(id: any) {
     this.activityService.getAllCommentByActivityId(id).subscribe(data => {
       this.commentList = data;
-    });
+    }, error => this.errorHandle(error));
   }
 
   back() {
@@ -210,7 +217,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
           if (result) {
             this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
               this.activityJoinStatus = true;
-            });
+            }, error => this.errorHandle(error));
           }
         });
       }
@@ -233,7 +240,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.user.isLogin) {
       activity.countSupportNumber++;
       this.isUserSupport = true;
-      this.activityService.support(activity.id, this.user.user.id).subscribe();
+      this.activityService.support(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -248,7 +255,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.user.isLogin) {
       activity.countSupportNumber--;
       this.isUserSupport = false;
-      this.activityService.unSupport(activity.id, this.user.user.id).subscribe();
+      this.activityService.unSupport(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(ActivityDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
@@ -301,5 +308,27 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy() {
     this.routerSubscribe.unsubscribe();
     this.storeSubscribe.unsubscribe();
+  }
+  childCommentCancel(e, childComment) {
+    e.stopPropagation();
+    childComment.showChildComment = false;
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

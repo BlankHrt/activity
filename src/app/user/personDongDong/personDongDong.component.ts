@@ -81,13 +81,31 @@ export class PersonDongDongComponent implements OnInit {
         this.userService.deleteArticlebyId(travel.id).subscribe(() => {
           this.userService.getArticleByUserAndArticleType(this.user.id, this.articleType).subscribe(articleList => {
             this.articleList = articleList;
-          });
+          }, error => this.errorHandle(error));
           this.snackBar.open('删除成功');
           setTimeout(() => {
             this.snackBar.dismiss();
           }, 1500);
-        });
+        }, error => this.errorHandle(error));
       }
+    }
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
     }
   }
 }

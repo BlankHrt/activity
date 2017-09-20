@@ -4,24 +4,26 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { Common } from '../shared/Common';
+import {CookieService} from '../shared/lib/ngx-cookie/cookie.service';
 
 
 @Injectable()
 export class TravelService {
     HttpUrl = Common.HttpUrl;
 
-    constructor(private http: Http) {
+    constructor(private cookieService: CookieService, private http: Http) {
     }
 
     private setOptions(): RequestOptions {
-        const headers = new Headers();
-        return new RequestOptions({ headers: headers });
+      const headers = new Headers();
+      headers.append('Authorization', this.cookieService.get('token'));
+      return new RequestOptions({ headers: headers });
     }
 
     select(userId: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('userId', userId);
-        return this.http.post(this.HttpUrl + '/user/select', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/user/select', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -35,7 +37,7 @@ export class TravelService {
         urlSearchParams.append('articleType', articleType);
         urlSearchParams.append('schoolId', schoolId);
         urlSearchParams.append('imageList', imageList);
-        return this.http.post(this.HttpUrl + '/article/insert', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/insert', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -44,7 +46,7 @@ export class TravelService {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('id', id);
         urlSearchParams.append('userID', userID);
-        return this.http.post(this.HttpUrl + '/article/support', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/support', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -54,7 +56,7 @@ export class TravelService {
         urlSearchParams.append('id', id);
         urlSearchParams.append('userID', userID);
         urlSearchParams.append('comment', comment);
-        return this.http.post(this.HttpUrl + '/article/comment', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/comment', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -65,23 +67,29 @@ export class TravelService {
         urlSearchParams.append('articleID', articleID);
         urlSearchParams.append('userID', userID);
         urlSearchParams.append('comment', comment);
-        return this.http.post(this.HttpUrl + '/article/childComment', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/childComment', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    logout() {
+      return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     unSupport(id: any, userID: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('id', id);
         urlSearchParams.append('userID', userID);
-        return this.http.post(this.HttpUrl + '/article/unSupport', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/unSupport', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
     read(id: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('id', id);
-        return this.http.post(this.HttpUrl + '/article/read', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/read', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -89,7 +97,7 @@ export class TravelService {
     getArticleByIdWithUser(id: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('id', id);
-        return this.http.post(this.HttpUrl + '/article/getArticleByIdWithUser', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getArticleByIdWithUser', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -97,7 +105,7 @@ export class TravelService {
     getAllCommentByArticleId(id: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('id', id);
-        return this.http.post(this.HttpUrl + '/article/getAllCommentByArticleId', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getAllCommentByArticleId', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -108,7 +116,7 @@ export class TravelService {
         urlSearchParams.append('articleType', type);
         urlSearchParams.append('isLogin', isLogin);
         urlSearchParams.append('userID', userID);
-        return this.http.post(this.HttpUrl + '/article/getArticleByPage', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getArticleByPage', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -120,7 +128,7 @@ export class TravelService {
         urlSearchParams.append('articleType', type);
         urlSearchParams.append('isLogin', isLogin);
         urlSearchParams.append('userID', userID);
-        return this.http.post(this.HttpUrl + '/article/getArticleByPageAndTitleAndType', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getArticleByPageAndTitleAndType', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -128,7 +136,7 @@ export class TravelService {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('articleID', articleID);
         urlSearchParams.append('userID', userID);
-        return this.http.post(this.HttpUrl + '/article/getArticleSupportByUserIdAndArticleID', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getArticleSupportByUserIdAndArticleID', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -136,7 +144,7 @@ export class TravelService {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('userID', userID);
         urlSearchParams.append('articleType', articleType);
-        return this.http.post(this.HttpUrl + '/article/getUnReadArticleSupportByUserIDAndArticleType', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getUnReadArticleSupportByUserIDAndArticleType', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -144,7 +152,7 @@ export class TravelService {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('userID', userID);
         urlSearchParams.append('articleType', articleType);
-        return this.http.post(this.HttpUrl + '/article/getUnReadArticleCommentByUserIDAndArticleType', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getUnReadArticleCommentByUserIDAndArticleType', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -152,7 +160,7 @@ export class TravelService {
     getArticleImageByArticleId(articleID: any) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('articleID', articleID);
-        return this.http.post(this.HttpUrl + '/article/getArticleImageByArticleId', urlSearchParams)
+        return this.http.post(this.HttpUrl + '/article/getArticleImageByArticleId', urlSearchParams, this.setOptions())
             .map(this.extractData)
             .catch(this.handleError);
     }

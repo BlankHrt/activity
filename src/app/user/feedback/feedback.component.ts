@@ -5,6 +5,7 @@ import { Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
+import {MdSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-feedback',
@@ -18,7 +19,7 @@ export class FeedbackComponent implements OnInit {
   showSpinner = false;
   @ViewChild('commitButton') commitButton: ElementRef;
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute,
-    private userService: UserService, private renderer: Renderer) {
+    private userService: UserService, private renderer: Renderer , public snackBar: MdSnackBar) {
   }
 
   ngOnInit() {
@@ -36,13 +37,32 @@ export class FeedbackComponent implements OnInit {
             console.log(data);
             this.router.navigate([data.url]);
           });
-        });
+        }, error => this.errorHandle(error));
     }//if
   }
   back() {
     this.store.select('router').subscribe((x: any) => {
       this.router.navigate([x.url]);
     });
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 
 }

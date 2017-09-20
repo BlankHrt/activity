@@ -5,17 +5,19 @@ import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { Common } from '../shared/Common';
 import { DatePipe } from '@angular/common';
+import {CookieService} from "../shared/lib/ngx-cookie/cookie.service";
 
 
 @Injectable()
 export class ActivityService {
   HttpUrl = Common.HttpUrl;
 
-  constructor(private http: Http, private datePipe: DatePipe) {
+  constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
   }
 
   private setOptions(): RequestOptions {
     const headers = new Headers();
+    headers.append('Authorization', this.cookieService.get('token'));
     return new RequestOptions({ headers: headers });
   }
 
@@ -32,7 +34,7 @@ export class ActivityService {
     urlSearchParams.append('schoolId', schoolId);
     urlSearchParams.append('publishUserContact', params.publishUserContact);
     urlSearchParams.append('imageList', imageList);
-    return this.http.post(this.HttpUrl + '/activity/insert', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/insert', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -42,7 +44,13 @@ export class ActivityService {
     urlSearchParams.append('activityId', activityId);
     urlSearchParams.append('userId', userId);
     urlSearchParams.append('contact', contact);
-    return this.http.post(this.HttpUrl + '/joinActivity/joinInsert', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/joinInsert', urlSearchParams, this.setOptions())
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  logout() {
+    return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -51,7 +59,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/support', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/support', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -60,7 +68,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/unSupport', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/unSupport', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -68,7 +76,7 @@ export class ActivityService {
   read(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/read', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/read', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -76,7 +84,7 @@ export class ActivityService {
   getActivityByIdWithUser(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByIdWithUser', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityByIdWithUser', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -87,7 +95,7 @@ export class ActivityService {
     urlSearchParams.append('activityType', type);
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -99,7 +107,7 @@ export class ActivityService {
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('title', val);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByPageAndTitleAndType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityByPageAndTitleAndType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -111,7 +119,7 @@ export class ActivityService {
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('schoolId', schoolId);
-    return this.http.post(this.HttpUrl + '/activity/getSelfSchoolActivityByPage', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getSelfSchoolActivityByPage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -124,7 +132,7 @@ export class ActivityService {
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('schoolId', schoolId);
     urlSearchParams.append('title', val);
-    return this.http.post(this.HttpUrl + '/activity/getSearchSelfSchoolActivityByPage', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getSearchSelfSchoolActivityByPage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -132,7 +140,7 @@ export class ActivityService {
   getActivityImageByActivityId(activityID: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityID', activityID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityImageByActivityId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivityImageByActivityId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -142,7 +150,7 @@ export class ActivityService {
     urlSearchParams.append('id', id);
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('comment', comment);
-    return this.http.post(this.HttpUrl + '/activity/comment', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/comment', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -153,7 +161,7 @@ export class ActivityService {
     urlSearchParams.append('activityID', activityID);
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('comment', comment);
-    return this.http.post(this.HttpUrl + '/activity/childComment', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/childComment', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -163,7 +171,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityId', activityId);
     urlSearchParams.append('joinUserId', joinUserId);
-    return this.http.post(this.HttpUrl + '/joinActivity/getActivityJoinWithUser', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getActivityJoinWithUser', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -171,28 +179,28 @@ export class ActivityService {
   getAllCommentByActivityId(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/getAllCommentByActivityId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getAllCommentByActivityId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   getAllJoinByActivityId(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/joinActivity/getAllJoinByActivityId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getAllJoinByActivityId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   getPublishUserId(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/activity/getPublishUserId', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getPublishUserId', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
   joinActivitySuccessUpdate(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/joinActivity/UpdateIsSuccess', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/UpdateIsSuccess', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
 
@@ -200,7 +208,7 @@ export class ActivityService {
   joinActivityFailUpdate(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
-    return this.http.post(this.HttpUrl + '/joinActivity/UpdateIsSuccessFail', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/UpdateIsSuccessFail', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
 
@@ -210,7 +218,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('activityID', activityID);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivitySupportByUserIdAndActivityID', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getActivitySupportByUserIdAndActivityID', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -219,7 +227,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/activity/getUnReadActivitySupportByUserIDAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getUnReadActivitySupportByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -228,7 +236,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/activity/getUnReadActivityCommentByUserIDAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/activity/getUnReadActivityCommentByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -237,7 +245,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinSponsorByUserIDAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinSponsorByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -246,7 +254,7 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams)
+    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }

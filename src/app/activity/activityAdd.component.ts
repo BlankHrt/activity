@@ -10,6 +10,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {Subscription} from 'rxjs/Subscription';
+import {MdSnackBar} from "@angular/material";
 declare var $;
 
 @Component({
@@ -60,7 +61,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
     showMeridian: false
   };
   ActivityUpload = Common.ActivityUpload;
-  constructor( @Inject(ElementRef) elementRef: ElementRef,
+  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
     private store: Store<any>, private location: Location,
     private activityService: ActivityService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {
@@ -148,7 +149,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
           this.activityService.insert(this.activity, this.startTime, this.endTime,
             this.content, this.user.user.id, this.activityType, this.schoolId, [this.imageList]).subscribe(data => {
             this.router.navigate(['../list'], {relativeTo: this.route});
-          });
+          }, error => this.errorHandle(error));
         } else {
           alert('登陆超时，请重新登录');
         }
@@ -165,5 +166,24 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.storeSubscribe.unsubscribe();
     this.routerSubscribe.unsubscribe();
+  }
+
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 }

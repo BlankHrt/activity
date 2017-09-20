@@ -55,12 +55,12 @@ export class PersonActivityComponent implements OnInit {
       this.userService.deleteActivitybyId(publish.id).subscribe(() => {
         this.userService.getActivityByUser(this.activityType, this.user.id).subscribe(pulishActivityList => {
           this.pulishActivityList = pulishActivityList;
-        });
+        }, error => this.errorHandle(error));
         this.snackBar.open('删除成功');
         setTimeout(() => {
           this.snackBar.dismiss();
         }, 1500);
-      });
+      }, error => this.errorHandle(error));
     }
   }
 
@@ -78,4 +78,22 @@ export class PersonActivityComponent implements OnInit {
     });
   }
 
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
+  }
 }

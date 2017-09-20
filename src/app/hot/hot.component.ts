@@ -71,7 +71,7 @@ export class HotComponent implements OnInit, OnDestroy {
     });
     this.hotService.getHotByPageAndLimitNumber(this.articleType, 10).subscribe(data => {
       this.todayHotList = data;
-    }, error => this.errorHandle(error));
+    });
   }
 
   getHot() {
@@ -103,7 +103,7 @@ export class HotComponent implements OnInit, OnDestroy {
       } else {
         this.hotList = this.hotList.concat(hotList);
       }
-    });
+    }, error => this.errorHandle(error));
   }
 
   search() {
@@ -149,7 +149,7 @@ export class HotComponent implements OnInit, OnDestroy {
         } else {
           this.hotList = this.hotList.concat(searchHotList);
         }
-      });
+      }, error => this.errorHandle(error));
   }
 
   gotoDetail(hot) {
@@ -293,7 +293,7 @@ export class HotComponent implements OnInit, OnDestroy {
     this.getHot();
     this.hotService.getHotByPageAndLimitNumber(this.articleType, 10).subscribe(data => {
       this.todayHotList = data;
-    });
+    }, error => this.errorHandle(error));
   }
 
   getNotification(id) {

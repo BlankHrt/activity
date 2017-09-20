@@ -8,6 +8,7 @@ import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/Common';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
+import {MdSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-person-information',
@@ -26,7 +27,7 @@ export class PersonInformationComponent implements OnInit {
   @ViewChild('imageView') imageView;
 
   constructor( @Inject(ElementRef) elementRef: ElementRef, private renderer: Renderer,
-    private location: Location, private cookieService: CookieService,
+    private location: Location, private cookieService: CookieService, public snackBar: MdSnackBar,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
     this.elementRef = elementRef;
   }
@@ -50,7 +51,7 @@ export class PersonInformationComponent implements OnInit {
     this.renderer.setElementStyle(this.elementRef.nativeElement.querySelector('.clear'), 'background-color', '#eb7350');
 
     this.user.headUrl = e.serverResponse.text();
-    this.userService.updateHead(e.serverResponse.text(), this.user.id).subscribe();
+    this.userService.updateHead(e.serverResponse.text(), this.user.id).subscribe(() => { }, error => this.errorHandle(error));
   }
 
   save() {
@@ -67,20 +68,20 @@ export class PersonInformationComponent implements OnInit {
             }
           });
         }
-      });
-    });
+      }, error => this.errorHandle(error));
+    }, error => this.errorHandle(error));
   }
 
   edit() {
     this.userService.getAllProvince().subscribe(data => {
       this.provinceList = data;
-    });
+    }, error => this.errorHandle(error));
     this.show = !this.show;
   }
   getSchoolByProvince(id: any) {
     this.userService.getSchoolByProvince(id).subscribe(data => {
       this.schoolList = data;
-    });
+    }, error => this.errorHandle(error));
   }
   back() {
     this.store.select('router').subscribe((x: any) => {
@@ -92,6 +93,24 @@ export class PersonInformationComponent implements OnInit {
     this.store.select('router').subscribe((x: any) => {
       this.router.navigate([x.url]);
     });
+  }
+  errorHandle(error) {
+    if (error.status === 401) {
+      this.snackBar.open('认证失败，请登陆先');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 403) {
+      this.snackBar.open('对不起，您暂无权限');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (error.status === 500) {
+      this.snackBar.open('操作失败', '请重试');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    }
   }
 
 }
