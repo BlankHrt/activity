@@ -13,7 +13,7 @@ import { LimitSortPipe } from './limit.pipe';
 import { FilterLengthPipe, FilterHanziPipe } from './filter.pipe';
 import { NgxGalleryModule } from './lib/ngx-gallery/index';
 import { ImageUploadModule } from './lib/angular2-image-upload/image-upload.module';
-import { Md2Module } from 'md2';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 
 @NgModule({
   imports: [
@@ -38,7 +38,7 @@ import { Md2Module } from 'md2';
     ImageUploadModule.forRoot(),
     NgxGalleryModule,
     MdProgressSpinnerModule,
-    Md2Module
+    DateTimePickerModule
   ],
   declarations: [TimeAgoPipe, ArraySortPipe, LimitSortPipe, FilterLengthPipe, FilterHanziPipe],
   exports: [
@@ -68,7 +68,7 @@ import { Md2Module } from 'md2';
     ImageUploadModule,
     NgxGalleryModule,
     MdProgressSpinnerModule,
-    Md2Module
+    DateTimePickerModule
   ],
 })
 export class SharedModule { }
