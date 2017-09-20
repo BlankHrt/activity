@@ -27,4 +27,7 @@ private setOptions(): RequestOptions {
             .catch(this.handleError);
 ```
 ## 所有component加 错误处理函数 所有http请求调用错误处理
+## 所有logout 加   this.hotService.logout().subscribe(); 参考hot
+## 时间 参考hot-add.component,html
+
 
