@@ -110,6 +110,9 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
+        } else {
+          this.showSpinner = false;
+          this.comment = '';
         }
       });
     }
@@ -117,7 +120,6 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   childPublish(comment, index) {
     this.showChildSpinner = true;
     this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
-    comment.showChildComment = false;
     if (this.user.isLogin && this.childComment) {
       if (!comment.childrenCommentList) {
         comment.childrenCommentList = [];
@@ -134,12 +136,17 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.childComment = [];
         this.article.countCommentNumber++;
         this.showChildSpinner = false;
+        comment.showChildComment = false;
+
       }, error => this.errorHandle(error));
     } else {
       const dialogRef = this.dialog.open(HotDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
+        } else {
+          this.showChildSpinner = false;
+          this.comment = '';
         }
       });
     }

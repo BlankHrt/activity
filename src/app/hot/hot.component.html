@@ -96,8 +96,8 @@
     <div class="text-center" *ngIf="!hotList">
         正在加载
     </div>
-    <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载所有热点</button>
-    <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载所有搜索热点</button>
+    <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
+    <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
     <div *ngIf="!hotList.length" class="btn-block">暂无数据</div>
     <div *ngIf="bottomStatus === 1" class="btn-block">已经到底了</div>
 </md-sidenav-container>

@@ -47,7 +47,7 @@ export class HotComponent implements OnInit, OnDestroy {
   hotList = [];
   notificationLength = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': true, 'imageSwipe': true },
+    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
 
