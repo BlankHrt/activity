@@ -18,7 +18,13 @@
             <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
                 <div *ngIf="title.hasError('required')">请填写话题</div>
             </div>
-            <owl-date-time name="date" [(ngModel)]="date" [showHeader]="true" [inline]="true" [inputId]="'input10'"></owl-date-time>
+
+            开始时间{{date}}
+            <owl-date-time [locale]="en" name="date" [(ngModel)]="date" required>
+                <div class="calendar-btn">
+                    <i class="fa fa-calendar" ></i>
+                </div>
+            </owl-date-time>
         </tr>
 
         <tr>
