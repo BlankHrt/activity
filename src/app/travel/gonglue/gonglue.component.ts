@@ -10,7 +10,7 @@ import {MdDialog, MdSnackBar} from '@angular/material';
 import { Store } from '@ngrx/store';
 import { TravelDialogComponent } from '../travel.dialog';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-travel-gonglue',
@@ -224,7 +224,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

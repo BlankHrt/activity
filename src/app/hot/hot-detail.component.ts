@@ -261,7 +261,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   errorHandle(error) {
     if (error.status === 401) {
       this.store.dispatch({ type: 'DELETE_USER', payload: {} });
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

@@ -81,7 +81,7 @@
             <a (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
           </div>
         </div> -->
-        <a (click)="loadMoreChildComment($event,c)" *ngIf="c?.childrenCommentList?.length>2">共{{c?.childrenCommentList?.length}}条评论>></a>
+        <a (click)="loadMoreChildComment($event,c)" *ngIf="c?.childrenCommentList?.length">查看更多{{c?.childrenCommentList?.length}}条评论>></a>
       </md-card-content>
       <md-card-actions>
         <div class="row" *ngIf="c.showChildComment">

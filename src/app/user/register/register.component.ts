@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit {
       }, 1500);
     } else {
       this.userService.register(this.UserRegister, this.selectedSchool).subscribe(data => {
-        this.snackBar.open('注册成功，即将前往登陆页面');
+        this.snackBar.open('注册成功，即将前往登录页面');
         setTimeout(() => {
           this.snackBar.dismiss();
           this.router.navigate(['/user/login']);
@@ -100,7 +100,7 @@ export class RegisterComponent implements OnInit {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

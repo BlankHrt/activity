@@ -41,7 +41,7 @@ export class ForgetPasswordComponent implements OnInit {
     if (this.ForgetPas.phone && this.ForgetPas.password) {
       if (this.ForgetPas.code === this.serverCode) {
         this.userService.updatePassword({ phone: this.ForgetPas.phone, password: this.ForgetPas.password }).subscribe(() => {
-          this.snackBar.open('修改成功,即将前往登陆页面');
+          this.snackBar.open('修改成功,即将前往登录页面');
           setTimeout(() => {
             this.snackBar.dismiss();
             this.router.navigate(['/user/login']);
@@ -108,7 +108,7 @@ export class ForgetPasswordComponent implements OnInit {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
