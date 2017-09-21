@@ -8,13 +8,14 @@ import { HotAddComponent } from './hot-add-component';
 import { HotDetailComponent } from './hot-detail.component';
 import { HotMoreComponent } from './hot-more-component';
 import { HotCommentComponent } from './hot-comment.component';
+import { LoginAuthGuard } from '../auth/login.auth';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       { path: 'list', component: HotComponent },
-      { path: 'add', component: HotAddComponent },
+      { path: 'add', component: HotAddComponent, canActivate: [LoginAuthGuard] },
       { path: 'detail', component: HotDetailComponent },
       { path: 'more', component: HotMoreComponent },
       { path: 'comment', component: HotCommentComponent },
@@ -36,7 +37,7 @@ const routes: Routes = [
     HotMoreComponent,
     HotCommentComponent
   ],
-  providers: [HotService],
+  providers: [HotService, LoginAuthGuard],
   entryComponents: [HotDialogComponent]
 })
 export class HotModule {

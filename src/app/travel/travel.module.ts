@@ -8,6 +8,7 @@ import { TravelGonglueAddComponent } from './gonglue/gonglueAdd.component';
 import { TravelGonglueDetailComponent } from './gonglue/gongluedetail.component';
 import { TravelDialogComponent } from './travel.dialog';
 import { GonglueCommentComponent } from './gonglue/gonglueComment.component';
+import { LoginAuthGuard } from '../auth/login.auth';
 
 const routes: Routes = [
   {
@@ -15,7 +16,7 @@ const routes: Routes = [
     children: [
       { path: 'list', component: TravelComponent },
       { path: 'gonglueDetail', component: TravelGonglueDetailComponent },
-      { path: 'gonglueAdd', component: TravelGonglueAddComponent },
+      { path: 'gonglueAdd', component: TravelGonglueAddComponent, canActivate: [LoginAuthGuard] },
       { path: 'gonglueComment', component: GonglueCommentComponent },
       { path: '', redirectTo: '/travel/list', pathMatch: 'full' },
     ]
@@ -35,7 +36,7 @@ const routes: Routes = [
     TravelDialogComponent,
     GonglueCommentComponent
   ],
-  providers: [TravelService],
+  providers: [TravelService, LoginAuthGuard],
   entryComponents: [TravelDialogComponent]
 })
 export class TravelModule {
