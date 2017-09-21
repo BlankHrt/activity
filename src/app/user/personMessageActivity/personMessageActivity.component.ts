@@ -36,15 +36,12 @@ export class PersonMessageActivityComponent implements OnInit {
         });
         this.userService.getActivityCommentByUserIdAndActivityType(this.activityType, this.user.id).subscribe(commentList => {
           this.commentList = commentList;
-          console.log(this.commentList);
         });
         this.userService.getActivitySponsorByUserIdAndActivityType(this.activityType, this.user.id).subscribe(sponsorList => {
           this.sponsorList = sponsorList;
-          console.log(sponsorList);
         });
         this.userService.getActivityParticipantByUserIdAndActivityType(this.activityType, this.user.id).subscribe(participantList => {
           this.participantList = participantList;
-          console.log(participantList);
         });
       } else {
         this.router.navigate(['/user/login']);

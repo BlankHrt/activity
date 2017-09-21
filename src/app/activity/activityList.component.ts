@@ -2,14 +2,14 @@
  * Created by asus on 2017/8/15.
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {Subscription} from "rxjs/Subscription";
-import {MdSnackBar} from "@angular/material";
+import { Subscription } from 'rxjs/Subscription';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-activity-list',
@@ -48,7 +48,6 @@ export class ActivityListComponent implements OnInit, OnDestroy {
         this.getPublishUserId(params.id);
         this.getAllJoinByActivityId(params.id);
       } else {
-        console.log('您访问的页面不存在');
       }
     });
   }

@@ -148,9 +148,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   childPublish(comment, index) {
-    console.log(comment);
-    console.log(index);
-    console.log(this.childComment);
     this.showChildSpinner = true;
     this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
     comment.showChildComment = false;
@@ -165,7 +162,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
           headUrl: this.user.user.headUrl
         }
       });
-      console.log(comment);
       this.activityService.childComment(comment.id, this.activity.id, this.user.user.id, this.childComment[index]).subscribe(data => {
         //  this.getAllCommentByArticleId(this.article.id);
         this.childComment = [];

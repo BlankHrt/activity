@@ -118,9 +118,6 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
   }
 
   childPublish(comment, index) {
-    console.log(comment);
-    console.log(index);
-    console.log(this.childComment);
     this.showChildSpinner = true;
     this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
     comment.showChildComment = false;
@@ -135,7 +132,6 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
           headUrl: this.user.user.headUrl
         }
       });
-      console.log(comment);
       this.travelService.childComment(comment.id, this.article.id, this.user.user.id, this.childComment[index]).subscribe(data => {
         //  this.getAllCommentByArticleId(this.article.id);
         this.childComment = [];

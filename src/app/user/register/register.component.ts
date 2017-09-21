@@ -56,7 +56,6 @@ export class RegisterComponent implements OnInit {
         if (this.UserRegister) {
           this.userService.getMessage(this.UserRegister.mobile).subscribe((data: string) => {
             this.serverCode = data.toString();
-            console.log(data);
           }, error => this.errorHandle(error));
           this.hasCode = true;
           const timer = setInterval(() => {

@@ -47,7 +47,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   changeStatus() {
-    console.log(this.status);
     this.searchWord = '';
     this.searchStatus = 0;
     this.bottomStatus = 0;
@@ -207,7 +206,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   getSelfSchool() {
     if (this.user.isLogin) {
-      console.log('this.nowPageSelfSchool/getself=' + this.nowPageSelfSchool);
       this.activityService.getSelfSchoolActivityByPage(this.nowPageSelfSchool, this.ActivityType,
         this.user.isLogin, this.user.user.id, this.schoolId).subscribe(activityList => {
           if (this.nowPageSelfSchool > 1 && (activityList.length === 0)) {
@@ -250,10 +248,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   getSearchSelfSchool() {
     if (this.user.isLogin) {
-      console.log('this.searchPage/getSearchSelfSchool=' + this.searchPage);
       this.activityService.getSearchSelfSchoolActivityByPage(this.searchWord, this.searchPage,
         this.ActivityType, this.user.isLogin, this.user.user.id, this.schoolId).subscribe(activityList => {
-          console.log('activityList.length= ' + activityList.length);
           if (this.searchPage > 1 && (activityList.length === 0)) {
             this.bottomStatus = 1;
           }
@@ -291,7 +287,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   getAllSchool() {
-    console.log('this.nowPage/getAll=' + this.nowPage);
     this.activityService.getActivityByPage(this.nowPage, this.ActivityType,
       this.user.isLogin, this.user.user.id).subscribe(activityList => {
 
@@ -318,10 +313,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
         if (this.nowPage === 1) {
           this.activityList = activityList;
-          console.log('activityList.length/page=1 =' + this.activityList.length);
         } else {
           this.activityList = this.activityList.concat(activityList);
-          console.log('activityList.length/page!=1 =' + this.activityList.length);
         }
       }, error => this.errorHandle(error));
   }
@@ -358,29 +351,21 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   loadMoreALL() {
     this.nowPage += 1;
-    console.log('status= ' + this.status);
-    console.log('this.nowPage/LOADALL= ' + this.nowPage);
     this.getAllSchool();
   }
 
   loadMoreALLSearch() {
     this.searchPage += 1;
-    console.log('status= ' + this.status);
-    console.log('this.searchPage/loadMoreALLSearch= ' + this.searchPage);
     this.getSearch();
   }
 
   loadMoreSelf() {
     this.nowPageSelfSchool += 1;
-    console.log('status= ' + this.status);
-    console.log('this.nowPageSelfSchool/LAODSELF= ' + this.nowPageSelfSchool);
     this.getSelfSchool();
   }
 
   loadMoreSelfSearch() {
     this.searchPage += 1;
-    console.log('status= ' + this.status);
-    console.log('this.nowPageSelfSchool/LAODSELF= ' + this.nowPageSelfSchool);
     this.getSearchSelfSchool();
   }
 

@@ -4,13 +4,13 @@
 
 import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder,  } from '@angular/forms';
+import { FormBuilder, } from '@angular/forms';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {Subscription} from 'rxjs/Subscription';
-import {MdSnackBar} from "@angular/material";
+import { Subscription } from 'rxjs/Subscription';
+import { MdSnackBar } from "@angular/material";
 declare var $;
 
 @Component({
@@ -40,26 +40,20 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
     publishUserContact: null
   };
 
+  en = {
+    firstDayOfWeek: 0,
+    dayNames: ['日', '一', '二', '三', '四', '五', '六'],
+    dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
+    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月',
+      '九月', '十月', '十一月', '十二月'],
+    monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
+  };
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   routerSubscribe: Subscription;
   @ViewChild('commitButton') commitButton: ElementRef;
 
-  datepickerOpts = {
-    autoclose: true,
-    todayBtn: 'linked',
-    todayHighlight: true,
-    assumeNearbyYear: true,
-    format: 'yyyy-mm-dd',
-    icon: 'fa fa-calendar',
-    placeholder: '日期'
-  };
-  timepickerOpts = {
-    icon: 'fa fa-clock-o',
-    placeholder: '时间',
-    showMeridian: false
-  };
   ActivityUpload = Common.ActivityUpload;
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
     private store: Store<any>, private location: Location,
@@ -76,7 +70,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
         ['para', ['ul', 'ol', 'paragraph']],
         ['fontsize', ['fontsize']],
         ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['insert', ['picture']]
+        // ['insert', ['picture']]
       ],
       callbacks: {
         onImageUpload: (files) => {
@@ -133,27 +127,31 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
     }
-    console.log(this.imageList);
   }
 
   commit() {
-      if (this.activity.title && this.activity.address && this.activity.publishUserContact) {
-        this.showSpinner = true;
-        this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
-        if (this.user.user.id) {
-          this.schoolId = this.user.user.schoolId;
-          for (let i = 0; i < this.imageList.length; i++) {
-            this.imageList[i] = '\"' + this.imageList[i] + '\"';
-          }
-          this.content = $('#summernote').summernote('code');
-          this.activityService.insert(this.activity, this.startTime, this.endTime,
-            this.content, this.user.user.id, this.activityType, this.schoolId, [this.imageList]).subscribe(data => {
-            this.router.navigate(['../list'], {relativeTo: this.route});
-          }, error => this.errorHandle(error));
-        } else {
-          alert('登陆超时，请重新登录');
+    if (this.activity.title && this.activity.address && this.activity.publishUserContact &&
+      this.startTime && this.endTime) {
+      this.showSpinner = true;
+      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      if (this.user.user.id) {
+        this.schoolId = this.user.user.schoolId;
+        for (let i = 0; i < this.imageList.length; i++) {
+          this.imageList[i] = '\"' + this.imageList[i] + '\"';
         }
-      }//if
+        this.content = $('#summernote').summernote('code');
+        this.activityService.insert(this.activity, this.startTime, this.endTime,
+          this.content, this.user.user.id, this.activityType, this.schoolId, [this.imageList]).subscribe(data => {
+            this.router.navigate(['../list'], { relativeTo: this.route });
+          }, error => {
+            this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'false');
+            this.showSpinner = false;
+            this.errorHandle(error);
+          });
+      } else {
+        alert('登陆超时，请重新登录');
+      }
+    }
   }
 
   back() {

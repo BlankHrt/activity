@@ -62,12 +62,10 @@
 
   <md-card *ngFor="let activity of activityList" class="full-width" (click)="gotoActivityDetail(activity)">
     <md-card-header>
-      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar
-           [ngStyle]="{'background-image': 'url('+activity.user.headUrl+')','background-size': 'cover'}"
-           *ngIf="activity.user.headUrl"></div>
-      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar
-           [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
-           *ngIf="!activity.user.headUrl"></div>
+      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url('+activity.user.headUrl+')','background-size': 'cover'}"
+        *ngIf="activity.user.headUrl"></div>
+      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
+        *ngIf="!activity.user.headUrl"></div>
       <md-card-title>{{activity?.user?.name}}</md-card-title>
       <md-card-subtitle>
         {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list"></i>
@@ -76,13 +74,15 @@
 
     <md-card-content>
       <div>
-        {{activity.startTime|date:'MM月dd号HH:mm'}}到{{activity.endTime|date:'MM月dd号HH:mm'}}--{{activity?.school?.name}}
+        {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
+        <small *ngIf="activity?.school?.name">
+            {{activity?.school?.name}}
+           </small>
       </div>
       <div>
         {{activity.title}}
       </div>
-      <ngx-gallery *ngIf="activity?.imageList?.length" [options]="galleryOptions" [images]="activity?.imageList"
-                   #view></ngx-gallery>
+      <ngx-gallery *ngIf="activity?.imageList?.length" [options]="galleryOptions" [images]="activity?.imageList" #view></ngx-gallery>
     </md-card-content>
 
     <md-card-actions>
@@ -104,11 +104,9 @@
           </button>
         </div>
         <div class="col-xs-3">
-          <button md-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin"
-                  (click)="join($event,activity)"><i class="fa fa-heart" style="color:#999"></i>
+          <button md-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin" (click)="join($event,activity)"><i class="fa fa-heart" style="color:#999"></i>
           </button>
-          <button md-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)"
-                  (click)="gotoAttendanceList($event,activity)"><i class="fa fa-heart" style="color:#eb7350"></i>
+          <button md-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)" (click)="gotoAttendanceList($event,activity)"><i class="fa fa-heart" style="color:#eb7350"></i>
           </button>
         </div>
       </div>
@@ -118,20 +116,20 @@
   <div class="text-center" *ngIf="!activityList">
     正在加载
   </div>
-  <button *ngIf="activityList.length && status === 0 && searchStatus === 0 && bottomStatus === 0"
-          md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载所有活动
+  <button *ngIf="activityList.length && status === 0 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
+    (click)="loadMoreALL()">继续加载
   </button>
-  <button *ngIf="activityList.length && status === 0 && searchStatus === 1 && bottomStatus === 0"
-          md-raised-button class="btn-block" (click)="loadMoreALLSearch()">继续加载所有搜索活动
+  <button *ngIf="activityList.length && status === 0 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
+    (click)="loadMoreALLSearch()">继续加载
   </button>
-  <button *ngIf="activityList.length && status === 1 && searchStatus === 0 && bottomStatus === 0"
-          md-raised-button class="btn-block"  (click)="loadMoreSelf()">继续加载自己学校活动
+  <button *ngIf="activityList.length && status === 1 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
+    (click)="loadMoreSelf()">继续加载
   </button>
-  <button *ngIf="activityList.length && status === 1 && searchStatus === 1 && bottomStatus === 0"
-          md-raised-button class="btn-block"  (click)="loadMoreSelfSearch()">继续加载自己学校搜索活动
+  <button *ngIf="activityList.length && status === 1 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
+    (click)="loadMoreSelfSearch()">继续加载
   </button>
-  <div *ngIf="!activityList.length"  class="btn-block" >暂无数据</div>
-  <div *ngIf="bottomStatus === 1"  class="btn-block" >已经到底了</div>
+  <div *ngIf="!activityList.length" class="btn btn-block">暂无数据</div>
+  <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
 
 </md-sidenav-container>
 

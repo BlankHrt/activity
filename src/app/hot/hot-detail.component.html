@@ -76,11 +76,11 @@
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
-        <div class="child-comment" *ngIf="c?.childrenCommentList.length>0">
+        <!-- <div class="child-comment" *ngIf="c?.childrenCommentList.length>0">
           <div *ngFor="let child of c?.childrenCommentList | limit:2">
             <a (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
           </div>
-        </div>
+        </div> -->
         <a (click)="loadMoreChildComment($event,c)" *ngIf="c?.childrenCommentList?.length>2">共{{c?.childrenCommentList?.length}}条评论>></a>
       </md-card-content>
       <md-card-actions>

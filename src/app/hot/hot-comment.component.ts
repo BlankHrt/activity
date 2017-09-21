@@ -44,4 +44,8 @@ export class HotCommentComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.routerSubscribe.unsubscribe();
     }
+    gotoPersonDetail(e, hot) {
+        e.stopPropagation();
+        this.router.navigate(['/user/personDetail'], { queryParams: { id: hot.userId } });
+    }
 }

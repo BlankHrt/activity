@@ -29,7 +29,6 @@ export class PageNotFoundComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.select('router').subscribe((data: any) => {
-            console.log(data);
             this.router.navigate([data.url]);
         });
     }

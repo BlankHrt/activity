@@ -78,7 +78,6 @@ export class ForgetPasswordComponent implements OnInit {
         if (this.ForgetPas.phone) {
           this.userService.getForgetMessage(this.ForgetPas.phone).subscribe((data: string) => {
             this.serverCode = data.toString();
-            console.log(this.serverCode);
           }, error => this.errorHandle(error));
           this.hasCode = true;
           timer0 = setInterval(() => {

@@ -10,7 +10,7 @@ import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {Subscription} from 'rxjs/Subscription';
-import {MdSnackBar} from "@angular/material";
+import {MdSnackBar} from '@angular/material';
 declare var $;
 @Component({
   selector: 'app-travel-gonglue-add',
@@ -111,14 +111,12 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
         break;
       }
     }
-    console.log(this.imageList);
   }
 
   imageUploaded(e) {
     this.imageList.push(
       e.serverResponse.text()
     );
-    console.log(this.imageList);
   }
 
   commit() {

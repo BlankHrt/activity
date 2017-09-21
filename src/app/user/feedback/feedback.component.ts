@@ -5,7 +5,7 @@ import { Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
-import {MdSnackBar} from "@angular/material";
+import {MdSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-feedback',
@@ -34,11 +34,10 @@ export class FeedbackComponent implements OnInit {
         this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
         this.userService.insert(this.content, this.user.isLogin, this.user.user.id).subscribe(() => {
           this.store.select('router').subscribe((data: any) => {
-            console.log(data);
             this.router.navigate([data.url]);
           });
         }, error => this.errorHandle(error));
-    }//if
+    }
   }
   back() {
     this.store.select('router').subscribe((x: any) => {
