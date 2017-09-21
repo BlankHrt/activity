@@ -3,13 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
-import {MdDialog, MdSnackBar} from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { ActivityDialogComponent } from './activity.dialog';
 import { ActivityJoinDialogComponent } from './activityjoin.dialog';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
 
 @Component({
@@ -289,7 +289,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   getAllSchool() {
     this.activityService.getActivityByPage(this.nowPage, this.ActivityType,
       this.user.isLogin, this.user.user.id).subscribe(activityList => {
-
         if (this.nowPage > 1 && (activityList.length === 0)) {
           this.bottomStatus = 1;
         }
@@ -449,14 +448,14 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   getNotification(id) {
-      const notification = Observable.combineLatest(
+    const notification = Observable.combineLatest(
       this.activityService.getUnReadActivitySupportByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityCommentByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinSponsorByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinParticipantByUserIDAndActivityType(id, this.ActivityType),
     );
     this.intervalSubscribe = Observable.interval(2000).subscribe(() => {
-          notification.subscribe(data => {
+      notification.subscribe(data => {
         this.notificationLength = data[0] + data[1] + data[2] + data[3];
       });
     });
@@ -469,8 +468,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
         url: '/activity'
       }
     });
-   this.router.navigate(['/user/feedback']);
+    this.router.navigate(['/user/feedback']);
   }
+
   ngOnDestroy(): void {
     if (this.intervalSubscribe) {
       this.intervalSubscribe.unsubscribe();
