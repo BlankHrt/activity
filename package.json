@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng build --prod && ng build --prod --app universal --output-hashing=none",
+    "build": "ng build --prod --build-optimizer&& ng build --prod --build-optimizer --app universal --output-hashing=none",
     "start": "ng serve --port 80 soucemap=false"
   },
   "private": true,
