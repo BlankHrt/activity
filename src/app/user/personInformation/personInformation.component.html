@@ -35,7 +35,7 @@
     <div class="col-xs-12" style="margin:10px">
       <div>
         <div>
-          <img src="../../assets/img/default.jpeg" class="circle" *ngIf="!user.headUrl" (click)="showUpload=false" />
+          <img src="../../assets/img/default.jpeg" class="circle" *ngIf="!user.headUrl" (click)="showUpload()" />
           <img src="{{user.headUrl}}" class="circle" *ngIf="user.headUrl" (click)="showUpload()" />
         </div>
         <div [hidden]="true">
