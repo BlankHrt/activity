@@ -12,6 +12,7 @@ import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
 
+declare var wx;
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -33,7 +34,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   notificationLength = 0;
   galleryOptions = [
     { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
-    { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
+    { 'breakpoint': 500, 'width': '100%', 'height': '250px' }
   ];
 
   status = 0;

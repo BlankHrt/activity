@@ -78,7 +78,8 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
       dialogsInBody: true,
-      dialogsFade: true
+      dialogsFade: true,
+      placeholder:'活动简介'
     });
   }
 
@@ -130,7 +131,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   commit() {
-    if (this.activity.title && this.activity.address && this.activity.publishUserContact &&
+    if (this.activity.title && this.activity.publishUserContact &&
       this.startTime && this.endTime) {
       this.showSpinner = true;
       this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');

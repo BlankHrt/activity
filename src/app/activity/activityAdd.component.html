@@ -10,63 +10,67 @@
 <form novalidate style="padding:5px">
   <table style="width:100%">
     <tr>
-      <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>活动名称</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入活动名称" required maxlength="30" name="title" [(ngModel)]="activity.title" #title="ngModel">
-        <md-hint align="end">{{title.model?.length}} / 30</md-hint>
-      </md-input-container>
-      <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
-        <div *ngIf="title.hasError('required')">请输入活动名称</div>
-      </div>
+      <td class="col-xs-5">
+        <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>活动名称</h4>
+      </td>
+      <td>
+        <md-input-container>
+          <input mdInput placeholder="请输入活动名称" required maxlength="30" name="title" [(ngModel)]="activity.title" #title="ngModel">
+          <md-hint align="end">{{title.model?.length}} / 30</md-hint>
+        </md-input-container>
+      </td>
+
     </tr>
     <tr>
-      <h4><i class="fa fa-address-card" style="margin:10px;color:#eb7350"></i>联系方式</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入联系方式" required name="publishUserContact" [(ngModel)]="activity.publishUserContact" #publishUserContact="ngModel">
-      </md-input-container>
-      <div *ngIf="publishUserContact.invalid && (publishUserContact.dirty || publishUserContact.touched)" style="color:#a94442">
-        <div *ngIf="publishUserContact.hasError('required')">请输入发布者联系方式</div>
-      </div>
+      <td class="col-xs-5">
+        <h4><i class="fa fa-address-card" style="margin:10px;color:#eb7350"></i>联系方式</h4>
+      </td>
+      <td>
+        <md-input-container>
+          <input mdInput placeholder="请输入联系方式" required name="publishUserContact" [(ngModel)]="activity.publishUserContact" #publishUserContact="ngModel">
+        </md-input-container>
+      </td>
     </tr>
     <tr>
-      <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>详细地址</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入详细地址" maxlength="50" name="address" [(ngModel)]="activity.address" #address="ngModel">
-        <md-hint align="end">{{address.model?.length}} / 50</md-hint>
-      </md-input-container>
-      <div *ngIf="address.invalid && (address.dirty || address.touched)" style="color:#a94442">
-        <div *ngIf="address.hasError('required')">请输入详细地址</div>
-      </div>
-    </tr>
-
-
-
-
-    <tr>
-      <h4>
-        <i class="fa fa-calendar" style="margin:10px;color:#eb7350"></i> 开始时间
-      </h4>
-      <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间" [(ngModel)]="startTime" required>
-      </owl-date-time>
+      <td class="col-xs-5">
+        <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>详细地址</h4>
+      </td>
+      <td>
+        <md-input-container>
+          <input mdInput placeholder="请输入详细地址" maxlength="50" name="address" [(ngModel)]="activity.address" #address="ngModel">
+          <md-hint align="end">{{address.model?.length}} / 50</md-hint>
+        </md-input-container>
+      </td>
     </tr>
 
     <tr>
-      <h4><i class="fa fa-calendar" style="margin:10px;color:#eb7350"></i>结束时间</h4>
-      <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间" [min]="startTime" [(ngModel)]="endTime" required>
-      </owl-date-time>
-    </tr>
-    <tr>
-      <div>
-        <h4><i class="fa fa-info" style="margin:10px;color:#eb7350"></i>简单介绍</h4>
-        <div id="summernote"></div>
-      </div>
-    </tr>
-    <tr>
-      <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
-        (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
+      <td class="col-xs-5">
+        <h4>
+          <i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i> 开始时间
+        </h4>
+      </td>
+      <td>
+        <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required>
+        </owl-date-time>
+      </td>
     </tr>
 
+    <tr>
+      <td class="col-xs-5">
+        <h4><i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i>结束时间</h4>
+      </td>
+      <td>
+        <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime" [(ngModel)]="endTime" required>
+        </owl-date-time>
+      </td>
+    </tr>
   </table>
+  <div>
+    <div id="summernote"></div>
+    <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
+      (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
+  </div>
+
 
   <button (click)="commit()" #commitButton class="btn btn-primary btn-block">
     <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
