@@ -65,7 +65,7 @@
       <md-card-header>
         <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
           *ngIf="c.user.headUrl"></div>
-        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}"
+        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../assets/img/default.jpeg)','background-size': 'cover'}"
           *ngIf="!c.user.headUrl"></div>
         <md-card-title>
           {{c?.user.name}}

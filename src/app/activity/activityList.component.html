@@ -13,7 +13,7 @@
       <md-card *ngFor="let wait of waitList;let i=index">
         <md-card-header>
           <div md-card-avatar [ngStyle]="{'background-image': 'url('+wait.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="wait.joinUser.headUrl"></div>
-          <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}" *ngIf="!wait.joinUser.headUrl"></div>
+          <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!wait.joinUser.headUrl"></div>
           <md-card-title>{{wait.joinUser.name}}</md-card-title>
           <md-card-subtitle>
             报名时间:{{wait.time|date:'yyyy-MM-dd HH:mm:ss'}}
@@ -34,7 +34,7 @@
       <md-card *ngFor="let success of successList;let i=index">
         <md-card-header>
           <div md-card-avatar [ngStyle]="{'background-image': 'url('+success.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="success.joinUser.headUrl"></div>
-          <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}" *ngIf="!success.joinUser.headUrl"></div>
+          <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!success.joinUser.headUrl"></div>
           <md-card-title>{{success.joinUser.name}}</md-card-title>
           <md-card-subtitle>
             报名时间:{{success.time|date:'yyyy-MM-dd HH:mm:ss'}}
@@ -53,7 +53,7 @@
         <md-card *ngFor="let fail of failList;let i=index">
           <md-card-header>
             <div md-card-avatar [ngStyle]="{'background-image': 'url('+fail.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="fail.joinUser.headUrl"></div>
-            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}" *ngIf="!fail.joinUser.headUrl"></div>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!fail.joinUser.headUrl"></div>
             <md-card-title>{{fail.joinUser.name}}</md-card-title>
             <md-card-subtitle>
               报名时间:{{fail.time|date:'yyyy-MM-dd HH:mm:ss'}}

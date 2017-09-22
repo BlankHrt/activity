@@ -63,7 +63,7 @@
       </td>
       <td>
         <md-input-container>
-          <input mdInput type="password" placeholder="密码" required maxlength="16" name="password" [(ngModel)]="UserRegister.password"
+          <input mdInput type="password" placeholder="密码" required maxlength="20" minlength="6" name="password" [(ngModel)]="UserRegister.password"
             #password="ngModel">
         </md-input-container>
       </td>
@@ -75,7 +75,7 @@
       </td>
       <td>
         <md-input-container>
-          <input mdInput type="password" placeholder="确认密码" required maxlength="16" name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
+          <input mdInput type="password" placeholder="确认密码" required name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
             #passwordAgain="ngModel">
         </md-input-container>
       </td>

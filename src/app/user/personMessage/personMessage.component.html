@@ -16,7 +16,7 @@
     <md-card *ngFor="let a of commentList | sort:'time'" (click)="gotoCommentDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(/../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
         <div class="circle" *ngIf="!a.read"></div>
         <md-card-title>
           <div>
@@ -38,7 +38,7 @@
     <md-card *ngFor="let a of supportList| sort:'time'" (click)="gotoSupportDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
         <div class="circle" *ngIf="!a.read"></div>
         <md-card-title>
           {{a?.user.name}}给你👍{{a.time|date:'yy/MM/dd HH:mm:ss'}}

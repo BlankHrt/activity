@@ -8,43 +8,75 @@
   </md-toolbar>
 </md-toolbar>
 
-<div style="margin:10px;padding:10px;">
-  <div style="text-align:center;">
+<div style="margin:0 20px;">
+  <div>
     <h3>
-      {{activity.title}}
-    </h3>
-
-    <div>
       <img [src]="activity?.user?.headUrl" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="activity?.user?.headUrl">
-      <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="!activity?.user?.headUrl">      {{activity?.user?.name}} {{activity.publishTime|date:'yy/MM/dd HH:mm:ss'}}
-    </div>
-  </div>
+      <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="!activity?.user?.headUrl">      {{activity.title}}
+    </h3>
+    <div class="row">
+      <div class="row">
+        <div class="col-xs-8">
+          <div style="margin:0 15px;">
+            <div>
+              <strong>发&nbsp;&nbsp;布&nbsp;&nbsp;者:&nbsp;&nbsp;</strong> {{activity?.user?.name}} {{activity?.school?.name}}
+            </div>
+            <div>
+              <strong>发&nbsp;&nbsp;布&nbsp;&nbsp;于: &nbsp;&nbsp; </strong> {{activity.publishTime|date:'yy.MM.dd HH:mm:ss'}}
+            </div>
+            <div>
+              <strong>联系方式: &nbsp;&nbsp; </strong> {{activity?.publishUserContact}}
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <button md-raised-button color="primary" *ngIf="(user.user.id!==activity.publishUserId)&&(!activityJoinStatus)" (click)="join($event,activity)">
+            报名
+            </button>
+          <button md-raised-button color="primary" *ngIf="!((user.user.id!==activity.publishUserId)&&(!activityJoinStatus))" (click)="gotoAttendanceList($event,activity)">
+            列表  
+          </button>
+        </div>
+      </div>
 
-  <div class="text-center">联系方式:{{activity?.publishUserContact}}</div>
-  <div class="text-center">
-    {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
-    <small>{{activity?.school?.name}}</small>
-  </div>
+      <div class="row" style="border-top:1px solid #FCFCFC;">
+        <div class="row">
+          <div style="margin:0 20px;">
+            <div class="col-xs-4">
+              <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity?.readNumber}}</i>
+          </button>
+            </div>
+            <div class="col-xs-4">
+              <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity?.countCommentNumber}}</i></button>
+            </div>
+            <div class="col-xs-4">
+              <button md-icon-button *ngIf="!isUserSupport" (click)="support(activity)"><i class="fa fa-thumbs-o-up"  style="color:#999">{{activity?.countSupportNumber}}</i>
+          </button>
+              <button md-icon-button *ngIf="isUserSupport" (click)="unSupport(activity)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{activity?.countSupportNumber}}</i>
+          </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
 
-  <div class="row" style="border-top:1px solid #FCFCFC;">
-    <div class="col-xs-3">
-      <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity?.readNumber}}</i>
-    </button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity?.countCommentNumber}}</i></button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button *ngIf="!isUserSupport" (click)="support(activity)"><i class="fa fa-thumbs-o-up"  style="color:#999">{{activity?.countSupportNumber}}</i>
-    </button>
-      <button md-icon-button *ngIf="isUserSupport" (click)="unSupport(activity)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{activity?.countSupportNumber}}</i>
-    </button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button *ngIf="(user.user.id!==activity.publishUserId)&&(!activityJoinStatus)" (click)="join($event,activity)"><i  class="fa fa-heart" style="color:#999"></i>
-      </button>
-      <button md-icon-button *ngIf="!((user.user.id!==activity.publishUserId)&&(!activityJoinStatus))" (click)="gotoAttendanceList($event,activity)"><i  class="fa fa-heart" style="color:#eb7350"></i>
-      </button>
+        <div style="height:35px;margin:0 15px;">
+          <div class="col-xs-2">
+            <i class="fa fa-clock-o fa-2x" style="color:#eb7350" aria-hidden="true"></i>
+          </div>
+          <div class="col-xs-10">
+            <strong>时间:</strong> {{activity.startTime|date:'MM月dd HH:mm'}}-{{activity.endTime|date:'MM月ddHH:mm'}}
+          </div>
+        </div>
+        <div style="height:35px;margin:0 17px;">
+          <div class="col-xs-2">
+            <i class="fa fa-map-marker fa-2x" style="color:#eb7350" aria-hidden="true"></i>
+          </div>
+          <div class="col-xs-10">
+            <strong>地址:</strong>{{activity?.address}}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -74,7 +106,7 @@
       <md-card-header>
         <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
           *ngIf="c.user.headUrl"></div>
-        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
+        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
           *ngIf="!c.user.headUrl"></div>
         <md-card-title>
           {{c?.user.name}}
@@ -181,5 +213,11 @@
 
   .mat-card-subtitle {
     color: black
+  }
+
+  .mat-fab.mat-primary,
+  .mat-mini-fab.mat-primary,
+  .mat-raised-button.mat-primary {
+    background-color: #eb7350;
   }
 </style>

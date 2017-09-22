@@ -61,6 +61,11 @@ export class ForgetPasswordComponent implements OnInit {
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
+    } else if (this.ForgetPas.password.length < 6) {
+      this.snackBar.open('密码过短');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
     } else {
       if (this.ForgetPas.code === this.serverCode) {
         this.userService.updatePassword({ phone: this.ForgetPas.phone, password: this.ForgetPas.password }).subscribe(() => {

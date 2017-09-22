@@ -102,6 +102,11 @@ export class RegisterComponent implements OnInit {
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
+    } if (this.UserRegister.password.length < 6) {
+      this.snackBar.open('密码过短');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
     } else if (this.UserRegister.password !== this.UserRegister.passwordAgain) {
       this.snackBar.open('两次密码不一致');
       setTimeout(() => {

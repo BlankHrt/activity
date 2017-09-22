@@ -16,7 +16,7 @@
     <md-card *ngFor="let a of commentList | sort:'time'" (click)="gotoCommentDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
         <div class="circle" *ngIf="!a.read"></div>
         <md-card-title>
           <div>
@@ -39,7 +39,7 @@
     <md-card *ngFor="let a of supportList| sort:'time'" (click)="gotoSupportDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
         <div class="circle" *ngIf="!a.read"></div>
         <md-card-title>
           {{a?.user.name}}给你👍{{a.time|date:'yy/MM/dd HH:mm:ss'}}
@@ -59,7 +59,7 @@
     <md-card *ngFor="let a of sponsorList| sort:'time'" (click)="gotoSponsorActivityDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="a.joinUser.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.joinUser.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.joinUser.headUrl"></div>
         <div class="circle" *ngIf="!a?.sponsorRead"></div>
         <md-card-title>
           {{a?.joinUser?.name}}报名参与你发起的活动
@@ -83,7 +83,7 @@
     <md-card *ngFor="let a of participantList| sort:'time'" (click)="gotoParticipantActivityDetail(a)">
       <md-card-header>
         <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.publishUser.headUrl+')','background-size': 'cover'}" *ngIf="a.publishUser.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.publishUser.headUrl"></div>
+        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.publishUser.headUrl"></div>
         <div class="circle" *ngIf="!a?.participantRead"></div>
         <md-card-title>
           {{a?.publishUser?.name}}发起的活动你参与的

@@ -1,15 +1,15 @@
 /**
  * Created by asus on 2017/8/15.
  */
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
-import {MdDialog, MdSnackBar} from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { ActivityDialogComponent } from './activity.dialog';
 import { Location } from '@angular/common';
 import { ActivityJoinDialogComponent } from './activityjoin.dialog';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 declare var $;
 
 @Component({
@@ -39,6 +39,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     publishUserId: null,
     activityJoin: null,
     readNumber: null,
+    address: null,
     countCommentNumber: null,
     user: {
       id: null,
@@ -139,7 +140,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
-        }else {
+        } else {
           this.showSpinner = false;
           this.comment = '';
         }
@@ -174,7 +175,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.login();
-        }else {
+        } else {
           this.showChildSpinner = false;
           this.comment = '';
         }
