@@ -14,9 +14,10 @@
       {{article?.title}}
     </h3>
     <div>
-      <img [src]="article.user.headUrl" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle" *ngIf="article.user.headUrl">
-      <img src="../../../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle"
-        *ngIf="!article.user.headUrl">
+      <img [src]="article.user.headUrl" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle" *ngIf="article.user.headUrl;else elseHeadImageUrl">
+      <ng-template #elseHeadImageUrl>
+        <img src="../../../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle">
+      </ng-template>
       <small>
             {{article?.user?.name}} {{article?.publishTime|date:'yyyy-MM-dd HH:mm'}}
         </small>

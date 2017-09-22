@@ -11,8 +11,11 @@
 <div style="margin:0 20px;">
   <div>
     <h3>
-      <img [src]="activity?.user?.headUrl" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="activity?.user?.headUrl">
-      <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="!activity?.user?.headUrl">      {{activity.title}}
+      <img [src]="activity?.user?.headUrl" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="activity?.user?.headUrl;else elseHeadImageUrl">
+      <ng-template #elseHeadImageUrl>
+        <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle">
+      </ng-template>
+      {{activity.title}}
     </h3>
     <div class="row">
       <div class="row">
