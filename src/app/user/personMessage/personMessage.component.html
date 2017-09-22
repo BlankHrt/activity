@@ -10,7 +10,7 @@
 <md-tab-group [(selectedIndex)]="index" (selectChange)="selectChange()">
   <md-tab>
     <ng-template md-tab-label>
-      我收到的评论
+      评论
       <span class="badge" style="background:red" *ngIf="commentList|filterLength:'read':true">{{commentList|filterLength:'read':true}}</span>
     </ng-template>
     <md-card *ngFor="let a of commentList | sort:'time'" (click)="gotoCommentDetail(a)">
@@ -32,7 +32,7 @@
   </md-tab>
   <md-tab>
     <ng-template md-tab-label>
-      我收到的👍
+      👍
       <span class="badge" style="background:red" *ngIf="supportList|filterLength:'read':true">{{supportList|filterLength:'read':true}}</span>
     </ng-template>
     <md-card *ngFor="let a of supportList| sort:'time'" (click)="gotoSupportDetail(a)">
@@ -52,7 +52,7 @@
 </md-tab-group>
 <style>
   /deep/ .mat-tab-label {
-    min-width: 50% !important;
+    width: 49.9% !important;
   }
 
   .circle {

@@ -70,7 +70,7 @@
             </md-card-subtitle>
         </md-card-header>
         <md-card-content>
-            <div>
+            <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
                 {{h.title}}
             </div>
             <ngx-gallery *ngIf="h?.imageList?.length" [options]="galleryOptions" [images]="h?.imageList" #view></ngx-gallery>
@@ -106,7 +106,7 @@
         padding: 20px;
         width: 200px;
         background-color: #ccc;
-        opacity: 0.9;
+        /* opacity: 0.9; */
     }
 
     .margin-left {

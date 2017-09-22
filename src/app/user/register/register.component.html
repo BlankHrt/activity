@@ -1,5 +1,8 @@
 <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
   <md-toolbar style="background-color:#87cefa">
+    <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
     <div style="text-align:center;width:100%">注册</div>
   </md-toolbar>
 </md-sidenav-container>
@@ -37,7 +40,8 @@
       <td>
         手&nbsp;&nbsp;机&nbsp;&nbsp;号:
         <md-input-container>
-          <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$"  required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile" #mobile="ngModel">
+          <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$" required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile"
+            #mobile="ngModel">
           <md-hint align="end">{{mobile.model?.length}} / 11</md-hint>
         </md-input-container>
         <div *ngIf="isPhoneExist" style="color:#a94442">
@@ -71,7 +75,8 @@
       <td>
         密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
         <md-input-container>
-          <input mdInput type="password" placeholder="密码" required  maxlength="16" name="password" [(ngModel)]="UserRegister.password" #password="ngModel">
+          <input mdInput type="password" placeholder="密码" required maxlength="16" name="password" [(ngModel)]="UserRegister.password"
+            #password="ngModel">
         </md-input-container>
       </td>
       <td>
@@ -86,7 +91,8 @@
       <td>
         确认密码:
         <md-input-container>
-          <input mdInput type="password" placeholder="确认密码" required  maxlength="16" name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain" #passwordAgain="ngModel">
+          <input mdInput type="password" placeholder="确认密码" required maxlength="16" name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
+            #passwordAgain="ngModel">
         </md-input-container>
       </td>
       <td>
@@ -96,6 +102,6 @@
       </td>
     </tr>
   </table>
-  <button (click)="register()"  class="btn btn-info btn-block">注册</button>
+  <button (click)="register()" class="btn btn-info btn-block">注册</button>
 </form>
 <a routerLink="/user/login" class="btn btn-link" style="float:right;margin:20px;">已有账号，请登录</a>

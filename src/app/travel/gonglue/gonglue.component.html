@@ -17,7 +17,7 @@
     </md-card-subtitle>
   </md-card-header>
   <md-card-content>
-    <div>{{travelGonglue.title}}</div>
+    <div style="font-size:15px;font-weight:400;margin-bottom:10px;">{{travelGonglue.title}}</div>
     <ngx-gallery *ngIf="travelGonglue?.imageList?.length" [options]="galleryOptions" [images]="travelGonglue?.imageList" #view></ngx-gallery>
   </md-card-content>
   <md-card-actions>

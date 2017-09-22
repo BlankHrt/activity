@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -32,7 +34,7 @@ export class RegisterComponent implements OnInit {
     passwordAgain: null,
   };
 
-  constructor(
+  constructor(private location: Location,
     public snackBar: MdSnackBar, private userService: UserService,
     private router: Router, private route: ActivatedRoute) { }
 
@@ -77,7 +79,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    if ( !this.UserRegister.password ) {this.snackBar.open('密码不能为空'); }
+    if (!this.UserRegister.password) { this.snackBar.open('密码不能为空'); }
     if (this.UserRegister.password !== this.UserRegister.passwordAgain) {
       this.snackBar.open('两次密码不一致');
       setTimeout(() => {
@@ -98,6 +100,11 @@ export class RegisterComponent implements OnInit {
       }, error => this.errorHandle(error));
     }
   }
+
+  back() {
+    this.location.back();
+  }
+
   errorHandle(error) {
     if (error.status === 401) {
       this.snackBar.open('认证失败，请登录先');

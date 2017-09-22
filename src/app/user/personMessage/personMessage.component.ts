@@ -50,6 +50,8 @@ export class PersonMessageComponent implements OnInit {
       this.user = data.user;
       if (this.user.id && this.articleType === Common.ArticleType.xiaoyuan) {
         this.userService.getArticleSupportByUserIdAndArticleType(this.user.id, this.articleType).subscribe(supportList => {
+          console.log('supportList');
+          console.log(supportList);
           this.supportList = supportList;
         });
         this.userService.getArticleCommentByUserIdAndArticleType(this.user.id, this.articleType).subscribe(commentList => {
@@ -57,6 +59,8 @@ export class PersonMessageComponent implements OnInit {
         });
       } else if (this.user.id && this.articleType === Common.ArticleType.gonglue) {
         this.userService.getArticleSupportByUserIdAndArticleType(this.user.id, this.articleType).subscribe(supportList => {
+          console.log('supportList');
+          console.log(supportList);
           this.supportList = supportList;
         });
         this.userService.getArticleCommentByUserIdAndArticleType(this.user.id, this.articleType).subscribe(commentList => {

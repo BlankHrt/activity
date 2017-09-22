@@ -50,7 +50,7 @@
         </h4>
       </td>
       <td>
-        <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required>
+        <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required #starttimeTemplate>
         </owl-date-time>
       </td>
     </tr>
@@ -60,17 +60,17 @@
         <h4><i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i>结束时间</h4>
       </td>
       <td>
-        <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime" [(ngModel)]="endTime" required>
+        <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime>now?startTime:now" [(ngModel)]="endTime"
+          required #endtimeTemplate>
         </owl-date-time>
       </td>
     </tr>
   </table>
   <div>
     <div id="summernote"></div>
-    <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
+    <image-upload [max]="6" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传6张照片'" [extensions]="['jpg','png','gif']"
       (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
   </div>
-
 
   <button (click)="commit()" #commitButton class="btn btn-primary btn-block">
     <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
@@ -96,13 +96,10 @@
     width: 100%!important;
   }
 
-  /deep/ .button {
+  ::deep .button {
     --active-color: #eb7350;
     border-radius: 30px;
     font-size: 10px!important;
   }
 
-  /deep/ .button span {
-    /* background-color: yellow!important; */
-  }
 </style>

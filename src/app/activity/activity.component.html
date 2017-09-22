@@ -65,7 +65,9 @@
         *ngIf="activity.user.headUrl"></div>
       <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
         *ngIf="!activity.user.headUrl"></div>
-      <md-card-title>{{activity?.user?.name}}</md-card-title>
+      <md-card-title>
+        {{activity?.user?.name}}
+      </md-card-title>
       <md-card-subtitle>
         {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list">参与列表</i>
       </md-card-subtitle>
@@ -78,8 +80,8 @@
             {{activity?.school?.name}}
            </small>
       </div>
-      <div>
-        {{activity.title}}
+      <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
+          {{activity.title}}
       </div>
       <ngx-gallery *ngIf="activity?.imageList?.length" [options]="galleryOptions" [images]="activity?.imageList" #view></ngx-gallery>
     </md-card-content>
@@ -157,7 +159,6 @@
     padding: 20px;
     width: 200px;
     background-color: #ccc;
-    opacity: 0.9;
     min-height: 420px;
   }
 
@@ -209,5 +210,4 @@
   /deep/ .mat-tab-label {
     width: 49.9%!important;
   }
-
 </style>

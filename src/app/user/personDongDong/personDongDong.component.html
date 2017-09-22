@@ -14,9 +14,9 @@
     </md-card-title>
   </md-card-header>
   <md-card-content>
+    <i class="fa fa-eye" style="color:#eb7350"></i>{{a.readNumber}}
     <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{a.countSupportNumber}}
     <i class="fa fa-commenting" style="color:#eb7350"></i>{{a.countCommentNumber}}
-    <i class="fa fa-eye" style="color:#eb7350"></i>{{a.readNumber}}
     <small>{{a.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
     <div style="color:#ccc;text-align:right">
       <i class="fa fa-trash" (click)="delete($event,a)"></i>

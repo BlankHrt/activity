@@ -8,7 +8,7 @@ import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/Common';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
-import {MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-person-information',
@@ -35,6 +35,9 @@ export class PersonInformationComponent implements OnInit {
   ngOnInit() {
     this.store.select('user').subscribe((data: any) => {
       this.user = data.user;
+      this.userService.getBriefPersonInfo(this.user.id).subscribe(data0 => {
+        this.user = data0;
+      });
     });
   }
 
@@ -47,9 +50,6 @@ export class PersonInformationComponent implements OnInit {
   }
 
   imageUploaded(e) {
-    this.renderer.setElementProperty(this.elementRef.nativeElement.querySelector('.clear span'), 'innerHTML', '清除所有');
-    this.renderer.setElementStyle(this.elementRef.nativeElement.querySelector('.clear'), 'background-color', '#eb7350');
-
     this.user.headUrl = e.serverResponse.text();
     this.userService.updateHead(e.serverResponse.text(), this.user.id).subscribe(() => { }, error => this.errorHandle(error));
   }

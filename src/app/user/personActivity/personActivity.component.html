@@ -1,5 +1,5 @@
 <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar color="primary">
+  <md-toolbar style="background-color:#87cefa">
     <button md-icon-button (click)="back()">
         <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
@@ -16,9 +16,9 @@
         </md-card-title>
       </md-card-header>
       <md-card-content>
+        <i class="fa fa-eye" style="color:#eb7350"></i>{{publish.readNumber}}
         <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{publish.countSupportNumber}}
         <i class="fa fa-commenting" style="color:#eb7350"></i>{{publish.countCommentNumber}}
-        <i class="fa fa-eye" style="color:#eb7350"></i>{{publish.readNumber}}
         <small>{{publish.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
         <div style="color:#ccc;text-align:right">
           <i class="fa fa-trash" (click)="deletePulish($event,publish)"></i>
@@ -33,13 +33,13 @@
       <md-card-header (click)="gotoActivityDetail(join.id)">
         <md-card-title>
           {{join.title}}
+        <small>{{join.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
         </md-card-title>
       </md-card-header>
       <md-card-content>
+        <i class="fa fa-eye" style="color:#eb7350"></i>{{join.readNumber}}
         <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{join.countSupportNumber}}
         <i class="fa fa-commenting" style="color:#eb7350"></i>{{join.countCommentNumber}}
-        <i class="fa fa-eye" style="color:#eb7350"></i>{{join.readNumber}}
-        <small>{{join.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
       </md-card-content>
     </md-card>
   </md-tab>

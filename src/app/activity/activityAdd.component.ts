@@ -10,7 +10,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from "@angular/material";
+import { MdSnackBar } from '@angular/material';
 declare var $;
 
 @Component({
@@ -32,6 +32,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   showSpinner = false;
   label: String = '';
   labelList: Array<any> = [];
+  now = new Date();
 
   // form
   activity = {
@@ -53,6 +54,8 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   storeSubscribe: Subscription;
   routerSubscribe: Subscription;
   @ViewChild('commitButton') commitButton: ElementRef;
+  @ViewChild('starttimeTemplate') starttimeTemplate: ElementRef;
+  @ViewChild('endtimeTemplate') endtimeTemplate: ElementRef;
 
   ActivityUpload = Common.ActivityUpload;
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
@@ -79,8 +82,12 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       dialogsInBody: true,
       dialogsFade: true,
-      placeholder:'活动简介'
+      placeholder: '活动简介'
     });
+    for (let i = 0; i < this.elementRef.nativeElement.querySelectorAll('.owl-timer-text').length; i++) {
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'height', 'auto');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'width', '120%');
+    }
   }
 
   sendFile(file: any) {
