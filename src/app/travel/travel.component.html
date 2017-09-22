@@ -10,8 +10,10 @@
   <md-sidenav #sidenav class="sidenav">
     <div *ngIf="user?.isLogin">
       <div (click)="personInformation()" class="primary">
-        <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user.user&&user.user.headUrl">
-        <img src="../../../assets/img/default.jpeg" class="img-rounded circle" *ngIf="!user.user">
+        <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
+        <ng-template #elseHeadImageUrl>
+          <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
+        </ng-template>
         <div style="font-size:20px;">
           <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
         </div>
@@ -20,7 +22,7 @@
         <i class="fa fa-envelope"></i> <span class="margin-left">我的旅游</span>
       </div>
       <div (click)="personMessage()" class="primary">
-        <i class="fa fa-bell-o"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
+        <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
       </div>
       <div (click)="logout()" class="primary">
         <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>

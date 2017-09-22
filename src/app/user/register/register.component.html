@@ -6,99 +6,78 @@
     <div style="text-align:center;width:100%">注册</div>
   </md-toolbar>
 </md-sidenav-container>
-<form style="padding:5px">
-  <table style="width:100%;text-align:left;margin:5px;">
+<form>
+  <table style="margin:6px auto;">
     <tr>
       <td>
         用&nbsp;&nbsp;户&nbsp;&nbsp;名:
+      </td>
+      <td>
         <md-input-container>
           <input mdInput placeholder="用户名" required maxlength="10" name="name" [(ngModel)]="UserRegister.name" #name="ngModel">
           <md-hint align="end">{{name.model?.length}} / 10</md-hint>
         </md-input-container>
       </td>
-      <td>
-        <div *ngIf="name.invalid && (name.dirty || name.touched)" style="color:#a94442">
-          <div *ngIf="name.hasError('required')">请填写用户名</div>
-        </div>
-      </td>
     </tr>
     <tr>
       <td>
-        所属学校:
+        学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;校:
+      </td>
+      <td>
         <md-select placeholder="选择省份" required (change)="getSchoolByProvince(selectedProvince)" [(ngModel)]="selectedProvince" [ngModelOptions]="{standalone: true}"
           name="province">
           <md-option *ngFor="let province of provinceList" [value]="province.id">{{ province.name }}</md-option>
         </md-select>
-      </td>
-      <td>
         <md-select placeholder="选择学校" required [(ngModel)]="selectedSchool" name="school" [ngModelOptions]="{standalone: true}">
           <md-option *ngFor="let school of schoolList" [value]="school.id">{{ school.name }}</md-option>
         </md-select>
       </td>
     </tr>
+
     <tr>
       <td>
-        手&nbsp;&nbsp;机&nbsp;&nbsp;号:
-        <md-input-container>
-          <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$" required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile"
-            #mobile="ngModel">
-          <md-hint align="end">{{mobile.model?.length}} / 11</md-hint>
-        </md-input-container>
-        <div *ngIf="isPhoneExist" style="color:#a94442">
-          手机号已存在
-        </div>
-        <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" style="color:#a94442">
-          <div *ngIf="mobile.hasError('required')">请填写手机号</div>
-          <div *ngIf="mobile.hasError('pattern')">请填写正确手机号</div>
-        </div>
+        手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
       </td>
       <td>
-        <button class="btn btn-danger" (click)="getMessage()" *ngIf="!hasCode" [disabled]="!mobile.valid">获取验证码</button>
-        <button class="btn btn-danger" *ngIf="hasCode">{{timer}}秒</button>
+        <md-input-container>
+          <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$" required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile"
+            #mobile="ngModel" (ngModelChange)="mobileChange($event)">
+          <md-hint align="end">{{mobile.model?.length}} / 11</md-hint>
+        </md-input-container>
       </td>
     </tr>
     <tr>
       <td>
         验&nbsp;&nbsp;证&nbsp;&nbsp;码:
+      </td>
+      <td>
         <md-input-container>
           <input mdInput placeholder="验证码" required maxlength="4" name="code" [(ngModel)]="UserRegister.code" #code="ngModel">
           <md-hint align="end">{{code.model?.length}} / 4</md-hint>
         </md-input-container>
       </td>
-      <td>
-        <div *ngIf="code.invalid && (code.dirty || code.touched)" style="color:#a94442">
-          <div *ngIf="code.hasError('required')">请填写验证码</div>
-        </div>
-      </td>
     </tr>
     <tr>
       <td>
-        密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
+        密&nbsp;&nbsp;&nbsp;&nbsp;码:
+      </td>
+      <td>
         <md-input-container>
           <input mdInput type="password" placeholder="密码" required maxlength="16" name="password" [(ngModel)]="UserRegister.password"
             #password="ngModel">
         </md-input-container>
-      </td>
-      <td>
-        <div *ngIf="password.invalid && (password.dirty || password.touched)" style="color:#a94442">
-          <div *ngIf="password.hasError('required')">请填写密码</div>
-          <div *ngIf="password.hasError('minlength')">密码至少6位</div>
-        </div>
       </td>
     </tr>
 
     <tr>
       <td>
         确认密码:
+      </td>
+      <td>
         <md-input-container>
           <input mdInput type="password" placeholder="确认密码" required maxlength="16" name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
             #passwordAgain="ngModel">
         </md-input-container>
-      </td>
-      <td>
-        <div *ngIf="passwordAgain.invalid && (passwordAgain.dirty || passwordAgain.touched)" style="color:#a94442">
-          <div *ngIf="passwordAgain.hasError('required')">请填写密码</div>
-        </div>
       </td>
     </tr>
   </table>

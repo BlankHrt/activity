@@ -44,8 +44,8 @@
 </div>
 <button *ngIf="travelGonglueList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载所有攻略</button>
 <button *ngIf="travelGonglueList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载所有搜索攻略</button>
-<div *ngIf="!travelGonglueList.length" class="btn-block">暂无数据</div>
-<div *ngIf="bottomStatus === 1" class="btn-block">已经到底了</div>
+<div *ngIf="!travelGonglueList.length" class="btn btn-block">暂无数据</div>
+<div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
 <style>
   .container-width {
     width: 60%;

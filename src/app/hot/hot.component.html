@@ -9,8 +9,10 @@
     <md-sidenav #sidenav class="sidenav">
         <div *ngIf="user?.isLogin">
             <div (click)="personInformation()" class="primary">
-                <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user.user&&user.user.headUrl">
-                <img src="../../../assets/img/default.jpeg" class="img-rounded circle" *ngIf="!user.user">
+                <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
+                <ng-template #elseHeadImageUrl>
+                    <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
+                </ng-template>
                 <div style="font-size:20px;">
                     <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
                 </div>
@@ -19,7 +21,7 @@
                 <i class="fa fa-envelope"></i> <span class="margin-left">我的驿站</span>
             </div>
             <div (click)="personMessage()" class="primary">
-                <i class="fa fa-bell-o"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
+                <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
             </div>
             <div (click)="logout()" class="primary">
                 <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
@@ -98,8 +100,8 @@
     </div>
     <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
     <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
-    <div *ngIf="!hotList.length" class="btn-block">暂无数据</div>
-    <div *ngIf="bottomStatus === 1" class="btn-block">已经到底了</div>
+    <div *ngIf="!hotList.length" class="btn btn-block">暂无数据</div>
+    <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
 </md-sidenav-container>
 <style>
     .sidenav {

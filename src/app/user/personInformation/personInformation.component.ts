@@ -35,9 +35,11 @@ export class PersonInformationComponent implements OnInit {
   ngOnInit() {
     this.store.select('user').subscribe((data: any) => {
       this.user = data.user;
-      this.userService.getBriefPersonInfo(this.user.id).subscribe(data0 => {
-        this.user = data0;
-      });
+      if (this.user.id) {
+        this.userService.getBriefPersonInfo(this.user.id).subscribe(data0 => {
+          this.user = data0;
+        });
+      }
     });
   }
 
