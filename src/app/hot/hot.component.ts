@@ -14,8 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { HotService } from './hot.service';
 import { Common } from '../shared/Common';
-import { MdDialog, MdSnackBar } from '@angular/material';
-import { HotDialogComponent } from './hot.dialog';
+import { MdSnackBar } from '@angular/material';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
@@ -57,7 +56,7 @@ export class HotComponent implements OnInit, OnDestroy {
   intervalSubscribe;
 
   constructor(private renderer: Renderer, public snackBar: MdSnackBar,
-    public dialog: MdDialog, private cookieService: CookieService, private store: Store<any>,
+    private cookieService: CookieService, private store: Store<any>,
     private hotService: HotService, private router: Router, private route: ActivatedRoute) {
   }
 
@@ -87,7 +86,6 @@ export class HotComponent implements OnInit, OnDestroy {
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
-              // big: '\'' + imageList[j].url + '\'',
             });
           }
           hotList[i].imageList = list;
@@ -133,7 +131,6 @@ export class HotComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             searchHotList[i].imageList = list;
@@ -163,12 +160,9 @@ export class HotComponent implements OnInit, OnDestroy {
       hot.articleUserSupport = false;
       this.hotService.unSupport(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -179,12 +173,15 @@ export class HotComponent implements OnInit, OnDestroy {
       hot.articleUserSupport = true;
       this.hotService.support(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      /*  const dialogRef = this.dialog.open(HotDialogComponent);
+       dialogRef.afterClosed().subscribe(result => {
+         if (result) {
+           this.login();
+         }
+       }); */
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -226,12 +223,9 @@ export class HotComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       this.router.navigate(['/hot/add'], { queryParams: { id: this.articleType } });
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 

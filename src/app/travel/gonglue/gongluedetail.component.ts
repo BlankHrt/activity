@@ -2,14 +2,13 @@
  * Created by asus on 2017/8/15.
  */
 
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {MdDialog, MdSnackBar} from '@angular/material';
-import { TravelDialogComponent } from '../travel.dialog';
-import {Subscription} from 'rxjs/Subscription';
+import { MdSnackBar } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 declare var $;
 
 @Component({
@@ -52,7 +51,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
-  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
+  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
     private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -66,7 +65,6 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
-              small: '\'' + imageList[j].url + '\'',
             });
           }
           this.imageList = list;
@@ -105,15 +103,12 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
         this.showSpinner = false;
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }else {
-          this.showSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showSpinner = false;
+        this.comment = '';
+      }
     }
   }
 
@@ -140,15 +135,12 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
         comment.showChildComment = false;
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }else {
-          this.showChildSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showSpinner = false;
+        this.comment = '';
+      }
     }
   }
 
@@ -179,12 +171,9 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
       this.isUserSupport = true;
       this.travelService.support(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -194,12 +183,9 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
       this.isUserSupport = false;
       this.travelService.unSupport(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -239,7 +225,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
       }
     });
     e.stopPropagation();
-   this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
+    this.router.navigate(['/user/personDetail'], { queryParams: { id: childComment.userId } });
   }
   ngOnDestroy() {
     this.routerSubscribe.unsubscribe();

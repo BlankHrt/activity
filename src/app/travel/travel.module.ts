@@ -6,7 +6,6 @@ import { TravelGonglueComponent } from './gonglue/gonglue.component';
 import { TravelService } from './travel.service';
 import { TravelGonglueAddComponent } from './gonglue/gonglueAdd.component';
 import { TravelGonglueDetailComponent } from './gonglue/gongluedetail.component';
-import { TravelDialogComponent } from './travel.dialog';
 import { GonglueCommentComponent } from './gonglue/gonglueComment.component';
 import { LoginAuthGuard } from '../auth/login.auth';
 
@@ -33,11 +32,9 @@ const routes: Routes = [
     TravelGonglueComponent,
     TravelGonglueAddComponent,
     TravelGonglueDetailComponent,
-    TravelDialogComponent,
     GonglueCommentComponent
   ],
   providers: [TravelService, LoginAuthGuard],
-  entryComponents: [TravelDialogComponent]
 })
 export class TravelModule {
 

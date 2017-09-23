@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { HotService } from './hot.service';
 import { HotComponent } from './hot.component';
-import { HotDialogComponent } from './hot.dialog';
 import { HotAddComponent } from './hot-add-component';
 import { HotDetailComponent } from './hot-detail.component';
 import { HotMoreComponent } from './hot-more-component';
@@ -31,14 +30,12 @@ const routes: Routes = [
   ],
   declarations: [
     HotComponent,
-    HotDialogComponent,
     HotAddComponent,
     HotDetailComponent,
     HotMoreComponent,
     HotCommentComponent
   ],
-  providers: [HotService, LoginAuthGuard],
-  entryComponents: [HotDialogComponent]
+  providers: [HotService, LoginAuthGuard]
 })
 export class HotModule {
 

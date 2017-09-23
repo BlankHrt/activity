@@ -3,9 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
-import { MdDialog, MdSnackBar } from '@angular/material';
-import { ActivityDialogComponent } from './activity.dialog';
-import { ActivityJoinDialogComponent } from './activityjoin.dialog';
+import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
@@ -43,7 +41,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
-  constructor(public snackBar: MdSnackBar, private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
+  constructor(public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
   }
 
@@ -136,7 +134,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             activityList[i].imageList = list;
@@ -167,12 +164,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
       activity.activityUserSupport = true;
       this.activityService.support(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -183,12 +177,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
       activity.activityUserSupport = false;
       this.activityService.unSupport(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -196,12 +187,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       this.router.navigate(['../activityAdd'], { relativeTo: this.route, queryParams: { id: this.ActivityType } });
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -218,7 +206,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
                   medium: '\'' + imageList[j].url + '\'',
-                  // big: '\'' + imageList[j].url + '\'',
                 });
               }
               activityList[i].imageList = list;
@@ -236,14 +223,11 @@ export class ActivityComponent implements OnInit, OnDestroy {
           }
         }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.status = 0;
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.status = 0;
+      }
     }
   }
 
@@ -260,7 +244,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
                   medium: '\'' + imageList[j].url + '\'',
-                  // big: '\'' + imageList[j].url + '\'',
                 });
               }
               activityList[i].imageList = list;
@@ -278,12 +261,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
           }
         }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -299,7 +279,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             activityList[i].imageList = list;
@@ -323,24 +302,19 @@ export class ActivityComponent implements OnInit, OnDestroy {
     e.stopPropagation();
     if (this.user.isLogin) {
       if (!activity.activityJoin) {
-        const dialogJoinRef = this.dialog.open(ActivityJoinDialogComponent);
-        dialogJoinRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
-              activity.activityJoin = {
-                isSuccess: 1
-              };
-            }, error => this.errorHandle(error));
-          }
-        });
+        const result = prompt('请填写您的联系方式(必填)', '');
+        if (result) {
+          this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
+            activity.activityJoin = {
+              isSuccess: 1
+            };
+          }, error => this.errorHandle(error));
+        }
       }
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 

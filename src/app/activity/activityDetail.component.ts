@@ -4,11 +4,9 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { ActivityDialogComponent } from './activity.dialog';
 import { Location } from '@angular/common';
-import { ActivityJoinDialogComponent } from './activityjoin.dialog';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
 
@@ -63,7 +61,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(public dialog: MdDialog, private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
+  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
     private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -80,7 +78,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
-              small: '\'' + imageList[j].url + '\'',
             });
           }
           this.imageList = list;
@@ -136,15 +133,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.showSpinner = false;
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.showSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showSpinner = false;
+        this.comment = '';
+      }
     }
   }
 
@@ -171,15 +165,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         comment.showChildComment = false;
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.showChildSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showSpinner = false;
+        this.comment = '';
+      }
     }
   }
 
@@ -190,7 +181,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   back() {
-    // this.router.navigate(['../list'], { relativeTo: this.route });
     this.location.back();
   }
 
@@ -208,23 +198,17 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     e.stopPropagation();
     if (this.user.isLogin) {
       if (!this.aJoin) {
-
-        const dialogJoinRef = this.dialog.open(ActivityJoinDialogComponent);
-        dialogJoinRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
-              this.activityJoinStatus = true;
-            }, error => this.errorHandle(error));
-          }
-        });
+        const result = prompt('请填写您的联系方式(必填)', '');
+        if (result) {
+          this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
+            this.activityJoinStatus = true;
+          }, error => this.errorHandle(error));
+        }
       }
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -239,12 +223,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       this.isUserSupport = true;
       this.activityService.support(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -254,12 +235,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       this.isUserSupport = false;
       this.activityService.unSupport(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
