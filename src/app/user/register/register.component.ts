@@ -50,7 +50,6 @@ export class RegisterComponent implements OnInit {
 
   getMessage() {
     this.userService.validatePhoneIsExist(this.UserRegister.mobile).subscribe(user => {
-      console.log(user);
       if (user.id) {
         this.snackBar.open('手机号已存在');
         setTimeout(() => {

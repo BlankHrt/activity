@@ -1,86 +1,100 @@
-<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
           <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
-    <div style="text-align:center;width:100%">注册</div>
-  </md-toolbar>
-</md-sidenav-container>
-<form>
-  <table style="margin:6px auto;">
-    <tr>
-      <td>
-        用&nbsp;&nbsp;户&nbsp;&nbsp;名:
-      </td>
-      <td>
-        <md-input-container>
-          <input mdInput placeholder="用户名" required maxlength="10" name="name" [(ngModel)]="UserRegister.name" #name="ngModel">
-          <md-hint align="end">{{name.model?.length}} / 10</md-hint>
-        </md-input-container>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;校:
-      </td>
-      <td>
-        <md-select placeholder="选择省份" required (change)="getSchoolByProvince(selectedProvince)" [(ngModel)]="selectedProvince" [ngModelOptions]="{standalone: true}"
-          name="province">
-          <md-option *ngFor="let province of provinceList" [value]="province.id">{{ province.name }}</md-option>
-        </md-select>
-        <md-select placeholder="选择学校" required [(ngModel)]="selectedSchool" name="school" [ngModelOptions]="{standalone: true}">
-          <md-option *ngFor="let school of schoolList" [value]="school.id">{{ school.name }}</md-option>
-        </md-select>
-      </td>
-    </tr>
+      <div style="text-align:center;width:100%">注册</div>
+    </md-toolbar>
+  </md-sidenav-container>
+  <div class="inner-sidenav-content">
+    <form>
+      <table style="margin:6px auto;">
+        <tr>
+          <td>
+            用&nbsp;&nbsp;户&nbsp;&nbsp;名:
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="用户名" required maxlength="10" name="name" [(ngModel)]="UserRegister.name" #name="ngModel">
+              <md-hint align="end">{{name.model?.length}} / 10</md-hint>
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;校:
+          </td>
+          <td>
+            <md-select placeholder="选择省份" required (change)="getSchoolByProvince(selectedProvince)" [(ngModel)]="selectedProvince" [ngModelOptions]="{standalone: true}"
+              name="province">
+              <md-option *ngFor="let province of provinceList" [value]="province.id">{{ province.name }}</md-option>
+            </md-select>
+            <md-select placeholder="选择学校" required [(ngModel)]="selectedSchool" name="school" [ngModelOptions]="{standalone: true}">
+              <md-option *ngFor="let school of schoolList" [value]="school.id">{{ school.name }}</md-option>
+            </md-select>
+          </td>
+        </tr>
 
-    <tr>
-      <td>
-        手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
-      </td>
-      <td>
-        <md-input-container>
-          <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$" required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile"
-            #mobile="ngModel" (ngModelChange)="mobileChange($event)">
-          <md-hint align="end">{{mobile.model?.length}} / 11</md-hint>
-        </md-input-container>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        验&nbsp;&nbsp;证&nbsp;&nbsp;码:
-      </td>
-      <td>
-        <md-input-container>
-          <input mdInput placeholder="验证码" required maxlength="4" name="code" [(ngModel)]="UserRegister.code" #code="ngModel">
-          <md-hint align="end">{{code.model?.length}} / 4</md-hint>
-        </md-input-container>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        密&nbsp;&nbsp;&nbsp;&nbsp;码:
-      </td>
-      <td>
-        <md-input-container>
-          <input mdInput type="password" placeholder="密码" required maxlength="20" minlength="6" name="password" [(ngModel)]="UserRegister.password"
-            #password="ngModel">
-        </md-input-container>
-      </td>
-    </tr>
+        <tr>
+          <td>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="手机号" pattern="^1[34578][0-9]{9}$" required maxlength="11" name="mobile" [(ngModel)]="UserRegister.mobile"
+                #mobile="ngModel" (ngModelChange)="mobileChange($event)">
+              <md-hint align="end">{{mobile.model?.length}} / 11</md-hint>
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            验&nbsp;&nbsp;证&nbsp;&nbsp;码:
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="验证码" required maxlength="4" name="code" [(ngModel)]="UserRegister.code" #code="ngModel">
+              <md-hint align="end">{{code.model?.length}} / 4</md-hint>
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            密&nbsp;&nbsp;&nbsp;&nbsp;码:
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput type="password" placeholder="密码" required maxlength="20" minlength="6" name="password" [(ngModel)]="UserRegister.password"
+                #password="ngModel">
+            </md-input-container>
+          </td>
+        </tr>
 
-    <tr>
-      <td>
-        确认密码:
-      </td>
-      <td>
-        <md-input-container>
-          <input mdInput type="password" placeholder="确认密码" required name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
-            #passwordAgain="ngModel">
-        </md-input-container>
-      </td>
-    </tr>
-  </table>
-  <button (click)="register()" class="btn btn-info btn-block">注册</button>
-</form>
-<a routerLink="/user/login" class="btn btn-link" style="float:right;margin:20px;">已有账号，请登录</a>
+        <tr>
+          <td>
+            确认密码:
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput type="password" placeholder="确认密码" required name="passwordAgain" [(ngModel)]="UserRegister.passwordAgain"
+                #passwordAgain="ngModel">
+            </md-input-container>
+          </td>
+        </tr>
+      </table>
+      <button (click)="register()" class="btn btn-info btn-block">注册</button>
+    </form>
+    <a routerLink="/user/login" class="btn btn-link" style="float:right;margin:20px;">已有账号，请登录</a>
+  </div>
+</div>
+<style>
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 64px;
+  }
+</style>

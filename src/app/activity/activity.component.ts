@@ -41,6 +41,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
+
   constructor(public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
   }
@@ -71,9 +72,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.getNotification(this.user.user.id);
       }
     });
-    /*this.hotService.getHotByPageAndLimitNumber(this.articleType, 10).subscribe(data => {
-     this.todayHotList = data;
-     });*/
   }
 
   search() {
@@ -108,7 +106,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-
     this.searchWord = '';
     this.searchStatus = 0;
     this.bottomStatus = 0;
@@ -365,12 +362,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   personActivity() {
-    /*this.store.dispatch({
-     type: 'SAVE_PREV_ROUTER',
-     payload: {
-     url: '/activity'
-     }
-     });*/
     this.router.navigate(['/user/personActivity'], { queryParams: { title: '我的活动' } });
   }
 
@@ -385,6 +376,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    if (this.intervalSubscribe) {
+      this.intervalSubscribe.unsubscribe();
+    }
     this.cookieService.removeAll();
     this.store.dispatch({
       type: 'DELETE_USER',

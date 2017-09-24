@@ -1,49 +1,57 @@
-<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
                 <i class="fa fa-long-arrow-left" style="float:left"></i>
               </button>
-    <div style="text-align:center;width:100%">活动列表</div>
-  </md-toolbar>
-</md-sidenav-container>
+      <div style="text-align:center;width:100%">活动列表</div>
+    </md-toolbar>
+  </md-sidenav-container>
+  <div class="inner-sidenav-content">
 
-<md-tab-group [(selectedIndex)]="index" (selectChange)="selectChange()">
-  <md-tab label="发起">
-    <md-card *ngFor="let publish of pulishActivityList">
-      <md-card-header (click)="gotoActivityDetail(publish.id)">
-        <md-card-title>
-          {{publish.title}}
-        </md-card-title>
-      </md-card-header>
-      <md-card-content>
-          <i class="fa fa-eye" style="color:#eb7350"></i>{{publish.readNumber}}
-        <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{publish.countSupportNumber}}
-        <i class="fa fa-commenting" style="color:#eb7350"></i>{{publish.countCommentNumber}}
-        <small>{{publish.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
-      </md-card-content>
-    </md-card>
-  </md-tab>
+    <md-tab-group [(selectedIndex)]="index" (selectChange)="selectChange()" md-stretch-tabs>
+      <md-tab label="发起">
+        <md-card *ngFor="let publish of pulishActivityList">
+          <md-card-header (click)="gotoActivityDetail(publish.id)">
+            <md-card-title>
+              {{publish.title}}
+            </md-card-title>
+          </md-card-header>
+          <md-card-content>
+            <i class="fa fa-eye" style="color:#eb7350"></i>{{publish.readNumber}}
+            <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{publish.countSupportNumber}}
+            <i class="fa fa-commenting" style="color:#eb7350"></i>{{publish.countCommentNumber}}
+            <small>{{publish.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
+          </md-card-content>
+        </md-card>
+      </md-tab>
 
-  <md-tab label="参与">
-    <md-card *ngFor="let join of joinActivityList">
-      <md-card-header (click)="gotoActivityDetail(join.id)">
-        <md-card-title>
-          {{join.title}}
-        </md-card-title>
-      </md-card-header>
-      <md-card-content>
-        <i class="fa fa-eye" style="color:#eb7350"></i>{{join.readNumber}}
-        <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{join.countSupportNumber}}
-        <i class="fa fa-commenting" style="color:#eb7350"></i>{{join.countCommentNumber}}
-        <small>{{join.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
-      </md-card-content>
-    </md-card>
-  </md-tab>
-
-</md-tab-group>
+      <md-tab label="参与">
+        <md-card *ngFor="let join of joinActivityList">
+          <md-card-header (click)="gotoActivityDetail(join.id)">
+            <md-card-title>
+              {{join.title}}
+            </md-card-title>
+          </md-card-header>
+          <md-card-content>
+            <i class="fa fa-eye" style="color:#eb7350"></i>{{join.readNumber}}
+            <i class="fa fa-thumbs-up" style="color:#eb7350"></i>{{join.countSupportNumber}}
+            <i class="fa fa-commenting" style="color:#eb7350"></i>{{join.countCommentNumber}}
+            <small>{{join.publishTime|date:'yy/MM/dd HH:mm:ss'}}</small>
+          </md-card-content>
+        </md-card>
+      </md-tab>
+    </md-tab-group>
+  </div>
+</div>
 
 <style>
-  /deep/ .mat-tab-label {
-    min-width: 50% !important;
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 64px;
   }
 </style>

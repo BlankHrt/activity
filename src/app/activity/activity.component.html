@@ -1,141 +1,143 @@
-<md-sidenav-container style="margin: 0;padding: 0;width: 100%" fullscreen>
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="sidenav.open()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-sidenav-container style="margin: 0;padding: 0;width: 100%;height:100%" fullscreen>
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="sidenav.open()">
       <i class="fa fa-bars" style="float:left"></i>
       <span class="bg-red" *ngIf="notificationLength"></span>
     </button>
-    <div style="text-align:center;width:100%">动动七号</div>
-  </md-toolbar>
+      <div style="text-align:center;width:100%">动动七号</div>
+    </md-toolbar>
 
-  <md-sidenav #sidenav class="sidenav">
-    <div *ngIf="user?.isLogin">
-      <div (click)="personInformation()" class="primary">
-        <img [src]="user?.user?.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
-        <ng-template #elseHeadImageUrl>
-          <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
-        </ng-template>
-        <div style="font-size:20px;">
-          <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+    <md-sidenav #sidenav class="sidenav">
+      <div *ngIf="user?.isLogin">
+        <div (click)="personInformation()" class="primary">
+          <img [src]="user?.user?.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
+          <ng-template #elseHeadImageUrl>
+            <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
+          </ng-template>
+          <div style="font-size:20px;">
+            <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+          </div>
+        </div>
+        <div (click)="personActivity()" class="primary">
+          <i class="fa fa-envelope"></i> <span class="margin-left">我的活动</span>
+        </div>
+        <div (click)="personMessageActivity()" class="primary">
+          <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength"
+                                                                         style="background-color:red">{{notificationLength}}</span></span>
+        </div>
+        <div (click)="logout()" class="primary">
+          <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
+        </div>
+        <div (click)="feedback()" class="primary">
+          <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
         </div>
       </div>
-      <div (click)="personActivity()" class="primary">
-        <i class="fa fa-envelope"></i> <span class="margin-left">我的活动</span>
+      <div *ngIf="!user?.isLogin">
+        <div (click)="login()" class="primary">
+          <i class="fa fa-sign-in"></i> <span class="margin-left">登录</span>
+        </div>
+        <div (click)="register()" class="primary">
+          <i class="fa fa-user"></i> <span class="margin-left">注册</span>
+        </div>
+        <div (click)="feedback()" class="primary">
+          <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+        </div>
       </div>
-      <div (click)="personMessageActivity()" class="primary">
-        <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength"
-                                                                         style="background-color:red">{{notificationLength}}</span></span>
-      </div>
-      <div (click)="logout()" class="primary">
-        <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
-      </div>
-      <div (click)="feedback()" class="primary">
-        <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
-      </div>
-    </div>
-    <div *ngIf="!user?.isLogin">
-      <div (click)="login()" class="primary">
-        <i class="fa fa-sign-in"></i> <span class="margin-left">登录</span>
-      </div>
-      <div (click)="register()" class="primary">
-        <i class="fa fa-user"></i> <span class="margin-left">注册</span>
-      </div>
-      <div (click)="feedback()" class="primary">
-        <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
-      </div>
-    </div>
-  </md-sidenav>
+    </md-sidenav>
+    <div class="inner-sidenav-content">
 
-  <md-tab-group [(selectedIndex)]="status" (selectChange)="changeStatus()">
-    <md-tab label="所有活动">
+      <md-tab-group [(selectedIndex)]="status" (selectChange)="changeStatus()" md-stretch-tabs>
+        <md-tab label="所有活动">
 
-    </md-tab>
-    <md-tab label="本校活动">
+        </md-tab>
+        <md-tab label="本校活动">
 
-    </md-tab>
-  </md-tab-group>
-  <md-input-container class="container-width">
-    <input mdInput placeholder="寻找你想要的校园活动" [(ngModel)]="searchWord">
-  </md-input-container>
+        </md-tab>
+      </md-tab-group>
+      <md-input-container class="container-width">
+        <input mdInput placeholder="寻找你想要的校园活动" [(ngModel)]="searchWord">
+      </md-input-container>
 
-  <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-  <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-  <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+      <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
+      <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
+      <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
 
-  <md-card *ngFor="let activity of activityList" class="full-width" (click)="gotoActivityDetail(activity)">
-    <md-card-header>
-      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url('+activity.user.headUrl+')','background-size': 'cover'}"
-        *ngIf="activity.user.headUrl"></div>
-      <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
-        *ngIf="!activity.user.headUrl"></div>
-      <md-card-title>
-        {{activity?.user?.name}}
-      </md-card-title>
-      <md-card-subtitle>
-        {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list">参与列表</i>
-      </md-card-subtitle>
-    </md-card-header>
+      <md-card *ngFor="let activity of activityList" class="full-width" (click)="gotoActivityDetail(activity)">
+        <md-card-header>
+          <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url('+activity.user.headUrl+')','background-size': 'cover'}"
+            *ngIf="activity.user.headUrl"></div>
+          <div (click)="gotoPersonDetail($event,activity)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
+            *ngIf="!activity.user.headUrl"></div>
+          <md-card-title>
+            {{activity?.user?.name}}
+          </md-card-title>
+          <md-card-subtitle>
+            {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list">参与列表</i>
+          </md-card-subtitle>
+        </md-card-header>
 
-    <md-card-content>
-      <div>
-        {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
-        <small *ngIf="activity?.school?.name">
+        <md-card-content>
+          <div>
+            {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
+            <small *ngIf="activity?.school?.name">
             {{activity?.school?.name}}
            </small>
-      </div>
-      <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
-        {{activity.title}}
-      </div>
-      <ngx-gallery *ngIf="activity?.imageList?.length" [options]="galleryOptions" [images]="activity?.imageList" #view></ngx-gallery>
-    </md-card-content>
+          </div>
+          <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
+            {{activity.title}}
+          </div>
+          <ngx-gallery *ngIf="activity?.imageList?.length" [options]="galleryOptions" [images]="activity?.imageList" #view></ngx-gallery>
+        </md-card-content>
 
-    <md-card-actions>
-      <div class="row" style="border-top:1px solid #FCFCFC;">
-        <div class="col-xs-3">
-          <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity.readNumber}}</i>
+        <md-card-actions>
+          <div class="row" style="border-top:1px solid #FCFCFC;">
+            <div class="col-xs-3">
+              <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity.readNumber}}</i>
           </button>
-        </div>
-        <div class="col-xs-3">
-          <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity.countCommentNumber}}</i>
+            </div>
+            <div class="col-xs-3">
+              <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity.countCommentNumber}}</i>
           </button>
-        </div>
-        <div class="col-xs-3">
-          <button md-icon-button *ngIf="!activity.activityUserSupport" (click)="support($event,activity)"><i
+            </div>
+            <div class="col-xs-3">
+              <button md-icon-button *ngIf="!activity.activityUserSupport" (click)="support($event,activity)"><i
             class="fa fa-thumbs-o-up" style="color:#999">{{activity.countSupportNumber}}</i>
           </button>
-          <button md-icon-button *ngIf="activity.activityUserSupport" (click)="unSupport($event,activity)"><i
+              <button md-icon-button *ngIf="activity.activityUserSupport" (click)="unSupport($event,activity)"><i
             class="fa fa-thumbs-up" style="color:#eb7350">{{activity.countSupportNumber}}</i>
           </button>
-        </div>
-        <div class="col-xs-3">
-          <button md-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin" (click)="join($event,activity)"><i class="fa fa-heart" style="color:#999"></i>
+            </div>
+            <div class="col-xs-3">
+              <button md-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin" (click)="join($event,activity)"><i class="fa fa-heart" style="color:#999"></i>
           </button>
-          <button md-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)" (click)="gotoAttendanceList($event,activity)"><i class="fa fa-heart" style="color:#eb7350"></i>
+              <button md-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)" (click)="gotoAttendanceList($event,activity)"><i class="fa fa-heart" style="color:#eb7350"></i>
           </button>
-        </div>
+            </div>
+          </div>
+        </md-card-actions>
+      </md-card>
+      <div class="text-center" *ngIf="!activityList">
+        正在加载
       </div>
-    </md-card-actions>
-  </md-card>
+      <button *ngIf="activityList.length && status === 0 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
+        (click)="loadMoreALL()">继续加载
+  </button>
+      <button *ngIf="activityList.length && status === 0 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
+        (click)="loadMoreALLSearch()">继续加载
+  </button>
+      <button *ngIf="activityList.length && status === 1 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
+        (click)="loadMoreSelf()">继续加载
+  </button>
+      <button *ngIf="activityList.length && status === 1 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
+        (click)="loadMoreSelfSearch()">继续加载
+  </button>
+      <div *ngIf="!activityList.length" class="btn btn-block">暂无数据</div>
+      <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
+    </div>
 
-  <div class="text-center" *ngIf="!activityList">
-    正在加载
-  </div>
-  <button *ngIf="activityList.length && status === 0 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
-    (click)="loadMoreALL()">继续加载
-  </button>
-  <button *ngIf="activityList.length && status === 0 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
-    (click)="loadMoreALLSearch()">继续加载
-  </button>
-  <button *ngIf="activityList.length && status === 1 && searchStatus === 0 && bottomStatus === 0" md-raised-button class="btn-block"
-    (click)="loadMoreSelf()">继续加载
-  </button>
-  <button *ngIf="activityList.length && status === 1 && searchStatus === 1 && bottomStatus === 0" md-raised-button class="btn-block"
-    (click)="loadMoreSelfSearch()">继续加载
-  </button>
-  <div *ngIf="!activityList.length" class="btn btn-block">暂无数据</div>
-  <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
-
-</md-sidenav-container>
-
+  </md-sidenav-container>
+</div>
 <style>
   .container-width {
     width: 60%;
@@ -209,7 +211,12 @@
     -webkit-transition: ease-out 0.2s;
   }
 
-  /deep/ .mat-tab-label {
-    width: 49.9%!important;
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 64px;
   }
 </style>

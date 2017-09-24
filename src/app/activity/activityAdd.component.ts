@@ -33,7 +33,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   label: String = '';
   labelList: Array<any> = [];
   now = new Date();
-
+  disableCommit = false;
   // form
   activity = {
     title: null,
@@ -53,7 +53,6 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   routerSubscribe: Subscription;
-  @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('starttimeTemplate') starttimeTemplate: ElementRef;
   @ViewChild('endtimeTemplate') endtimeTemplate: ElementRef;
 
@@ -141,7 +140,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.activity.title && this.activity.publishUserContact &&
       this.startTime && this.endTime) {
       this.showSpinner = true;
-      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      this.disableCommit = true;
       if (this.user.user.id) {
         this.schoolId = this.user.user.schoolId;
         for (let i = 0; i < this.imageList.length; i++) {
@@ -152,8 +151,9 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
           this.content, this.user.user.id, this.activityType, this.schoolId, [this.imageList]).subscribe(data => {
             this.router.navigate(['../list'], { relativeTo: this.route });
           }, error => {
-            this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'false');
             this.showSpinner = false;
+            this.disableCommit = false;
+
             this.errorHandle(error);
           });
       } else {
