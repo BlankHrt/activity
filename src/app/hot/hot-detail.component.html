@@ -47,8 +47,8 @@
       </div>
 
       <div>
-        <h5>{{article?.content}}</h5>
         <ngx-gallery *ngIf="imageList?.length" [options]="galleryOptions" [images]="imageList" #view></ngx-gallery>
+        <div id="summernote"></div>
       </div>
 
       <div>

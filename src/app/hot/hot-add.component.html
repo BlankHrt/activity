@@ -14,7 +14,7 @@
         <form style="padding:5px">
             <table style="width:100%">
                 <tr>
-                    <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>话题</h4>
+                    <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>标题</h4>
                     <md-input-container>
                         <input mdInput placeholder="话题" required maxlength="30" name="title" [(ngModel)]="article.title" #title="ngModel">
                         <md-hint align="end">{{title.model?.length}} / 30</md-hint>
@@ -25,13 +25,8 @@
                 </tr>
 
                 <tr>
-                    <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>补充内容</h4>
-                    <md-input-container>
-                        <input mdInput placeholder="补充内容" name="content" maxlength="30" [(ngModel)]="article.content" #content="ngModel">
-                    </md-input-container>
-                    <div [hidden]="content.valid || content.untouched" style="color:#a94442">
-                        <div [hidden]="!content.hasError('required')">请填写补充内容</div>
-                    </div>
+                    <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>内容</h4>
+                    <div id="summernote"></div>
                 </tr>
                 <tr>
                     <image-upload [max]="6" [url]="ArticleUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传6张照片'" [extensions]="['jpg','png','gif']"

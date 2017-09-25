@@ -169,6 +169,7 @@ export class HotService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
     extractData(res: Response) {
         if (res.text()) {
             return res.json() || [];
