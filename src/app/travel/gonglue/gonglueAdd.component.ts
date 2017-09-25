@@ -133,7 +133,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
             this.router.navigate(['../list'], {relativeTo: this.route});
           }, error => this.errorHandle(error));
         } else {
-          alert('登陆超时，请重新登录');
+          alert('登录超时，请重新登录');
         }
     }
   }
@@ -152,7 +152,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

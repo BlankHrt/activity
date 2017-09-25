@@ -10,7 +10,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from "@angular/material";
+import { MdSnackBar } from '@angular/material';
 declare var $;
 
 @Component({
@@ -32,7 +32,8 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   showSpinner = false;
   label: String = '';
   labelList: Array<any> = [];
-
+  now = new Date();
+  disableCommit = false;
   // form
   activity = {
     title: null,
@@ -52,7 +53,8 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   routerSubscribe: Subscription;
-  @ViewChild('commitButton') commitButton: ElementRef;
+  @ViewChild('starttimeTemplate') starttimeTemplate: ElementRef;
+  @ViewChild('endtimeTemplate') endtimeTemplate: ElementRef;
 
   ActivityUpload = Common.ActivityUpload;
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
@@ -78,8 +80,13 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
       dialogsInBody: true,
-      dialogsFade: true
+      dialogsFade: true,
+      placeholder: '活动简介'
     });
+    for (let i = 0; i < this.elementRef.nativeElement.querySelectorAll('.owl-timer-text').length; i++) {
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'height', 'auto');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'width', '120%');
+    }
   }
 
   sendFile(file: any) {
@@ -130,10 +137,10 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   commit() {
-    if (this.activity.title && this.activity.address && this.activity.publishUserContact &&
+    if (this.activity.title && this.activity.publishUserContact &&
       this.startTime && this.endTime) {
       this.showSpinner = true;
-      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      this.disableCommit = true;
       if (this.user.user.id) {
         this.schoolId = this.user.user.schoolId;
         for (let i = 0; i < this.imageList.length; i++) {
@@ -144,8 +151,9 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
           this.content, this.user.user.id, this.activityType, this.schoolId, [this.imageList]).subscribe(data => {
             this.router.navigate(['../list'], { relativeTo: this.route });
           }, error => {
-            this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'false');
             this.showSpinner = false;
+            this.disableCommit = false;
+
             this.errorHandle(error);
           });
       } else {

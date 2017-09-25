@@ -1,82 +1,91 @@
-<md-toolbar style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+
+  <md-toolbar style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
         <i class="fa fa-long-arrow-left" style="float:left"></i>
     </button>
-    <div style="text-align:center;width:100%">添加</div>
-    <i class="fa fa-home" style="float:right" (click)="home()"></i>
+      <div style="text-align:center;width:100%">添加</div>
+      <i class="fa fa-home" style="float:right" (click)="home()"></i>
+    </md-toolbar>
   </md-toolbar>
-</md-toolbar>
-<form novalidate style="padding:5px">
-  <table style="width:100%">
-    <tr>
-      <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>活动名称</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入活动名称" required maxlength="30" name="title" [(ngModel)]="activity.title" #title="ngModel">
-        <md-hint align="end">{{title.model?.length}} / 30</md-hint>
-      </md-input-container>
-      <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
-        <div *ngIf="title.hasError('required')">请输入活动名称</div>
-      </div>
-    </tr>
-    <tr>
-      <h4><i class="fa fa-address-card" style="margin:10px;color:#eb7350"></i>联系方式</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入联系方式" required name="publishUserContact" [(ngModel)]="activity.publishUserContact" #publishUserContact="ngModel">
-      </md-input-container>
-      <div *ngIf="publishUserContact.invalid && (publishUserContact.dirty || publishUserContact.touched)" style="color:#a94442">
-        <div *ngIf="publishUserContact.hasError('required')">请输入发布者联系方式</div>
-      </div>
-    </tr>
-    <tr>
-      <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>详细地址</h4>
-      <md-input-container>
-        <input mdInput placeholder="请输入详细地址" maxlength="50" name="address" [(ngModel)]="activity.address" #address="ngModel">
-        <md-hint align="end">{{address.model?.length}} / 50</md-hint>
-      </md-input-container>
-      <div *ngIf="address.invalid && (address.dirty || address.touched)" style="color:#a94442">
-        <div *ngIf="address.hasError('required')">请输入详细地址</div>
-      </div>
-    </tr>
+  <div class="inner-sidenav-content">
 
+    <form novalidate style="padding:5px">
+      <table style="width:100%">
+        <tr>
+          <td class="col-xs-5">
+            <h4><i class="fa fa-tags" style="margin:10px;color:#eb7350"></i>活动名称</h4>
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="请输入活动名称" required maxlength="30" name="title" [(ngModel)]="activity.title" #title="ngModel">
+              <md-hint align="end">{{title.model?.length}} / 30</md-hint>
+            </md-input-container>
+          </td>
 
+        </tr>
+        <tr>
+          <td class="col-xs-5">
+            <h4><i class="fa fa-address-card" style="margin:10px;color:#eb7350"></i>联系方式</h4>
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="请输入联系方式" required name="publishUserContact" [(ngModel)]="activity.publishUserContact" #publishUserContact="ngModel">
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-xs-5">
+            <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>详细地址</h4>
+          </td>
+          <td>
+            <md-input-container>
+              <input mdInput placeholder="请输入详细地址" maxlength="50" name="address" [(ngModel)]="activity.address" #address="ngModel">
+              <md-hint align="end">{{address.model?.length}} / 50</md-hint>
+            </md-input-container>
+          </td>
+        </tr>
 
+        <tr>
+          <td class="col-xs-5">
+            <h4>
+              <i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i> 开始时间
+            </h4>
+          </td>
+          <td>
+            <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required #starttimeTemplate>
+            </owl-date-time>
+          </td>
+        </tr>
 
-    <tr>
-      <h4>
-        <i class="fa fa-calendar" style="margin:10px;color:#eb7350"></i> 开始时间
-      </h4>
-      <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间" [(ngModel)]="startTime" required>
-      </owl-date-time>
-    </tr>
-
-    <tr>
-      <h4><i class="fa fa-calendar" style="margin:10px;color:#eb7350"></i>结束时间</h4>
-      <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间" [min]="startTime" [(ngModel)]="endTime" required>
-      </owl-date-time>
-    </tr>
-    <tr>
+        <tr>
+          <td class="col-xs-5">
+            <h4><i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i>结束时间</h4>
+          </td>
+          <td>
+            <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime>now?startTime:now" [(ngModel)]="endTime"
+              required #endtimeTemplate>
+            </owl-date-time>
+          </td>
+        </tr>
+      </table>
       <div>
-        <h4><i class="fa fa-info" style="margin:10px;color:#eb7350"></i>简单介绍</h4>
         <div id="summernote"></div>
+        <image-upload [max]="6" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传6张照片'" [extensions]="['jpg','png','gif']"
+          (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
       </div>
-    </tr>
-    <tr>
-      <image-upload [max]="9" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传9张照片'" [extensions]="['jpg','png','gif']"
-        (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
-    </tr>
 
-  </table>
-
-  <button (click)="commit()" #commitButton class="btn btn-primary btn-block">
+      <button (click)="commit()" #commitButton [disabled]="disableCommit" class="btn btn-primary btn-block">
     <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
     </md-progress-spinner>
     <span  *ngIf="!showSpinner" >
                 发布
         </span>
   </button>
-</form>
-
+    </form>
+  </div>
+</div>
 <style>
   .mat-progress-spinner {
     width: 20px;
@@ -92,13 +101,18 @@
     width: 100%!important;
   }
 
-  /deep/ .button {
+   ::deep .button {
     --active-color: #eb7350;
     border-radius: 30px;
     font-size: 10px!important;
   }
 
-  /deep/ .button span {
-    /* background-color: yellow!important; */
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 54px;
   }
 </style>

@@ -47,7 +47,7 @@ export class FeedbackComponent implements OnInit {
 
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

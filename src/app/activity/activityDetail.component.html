@@ -1,122 +1,164 @@
-<md-toolbar style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+
+  <md-toolbar style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
         <i class="fa fa-long-arrow-left" style="float:left"></i>
     </button>
-    <div style="text-align:center;width:100%">详情</div>
-    <i class="fa fa-home" style="float:right" (click)="home()"></i>
+      <div style="text-align:center;width:100%">详情</div>
+      <i class="fa fa-home" style="float:right" (click)="home()"></i>
+    </md-toolbar>
   </md-toolbar>
-</md-toolbar>
+  <div class="inner-sidenav-content">
 
-<div style="margin:10px;padding:10px;">
-  <div style="text-align:center;">
-    <h3>
-      {{activity.title}}
-    </h3>
+    <div style="margin:0 20px;">
+      <div>
+        <h3>
+          <img [src]="activity?.user?.headUrl" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="activity?.user?.headUrl;else elseHeadImageUrl">
+          <ng-template #elseHeadImageUrl>
+            <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle">
+          </ng-template>
+          <small>    
+              <a routerLink="/follow" class="btn btn-link">关注我们</a>
+              </small>
+          <div>
+            {{activity.title}}
+          </div>
+        </h3>
+        <div class="row">
+          <div class="row">
+            <div class="col-xs-8">
+              <div style="margin:0 15px;">
+                <div>
+                  <strong>发&nbsp;&nbsp;布&nbsp;&nbsp;者:&nbsp;&nbsp;</strong> {{activity?.user?.name}} {{activity?.school?.name}}
+                </div>
+                <div>
+                  <strong>发&nbsp;&nbsp;布&nbsp;&nbsp;于: &nbsp;&nbsp; </strong> {{activity.publishTime|date:'yy.MM.dd HH:mm:ss'}}
+                </div>
+                <div>
+                  <strong>联系方式: &nbsp;&nbsp; </strong> {{activity?.publishUserContact}}
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <button md-raised-button color="primary" *ngIf="(user.user.id!==activity.publishUserId)&&(!activityJoinStatus)" (click)="join($event,activity)">
+            报名
+            </button>
+              <button md-raised-button color="primary" *ngIf="!((user.user.id!==activity.publishUserId)&&(!activityJoinStatus))" (click)="gotoAttendanceList($event,activity)">
+            列表  
+          </button>
+            </div>
+          </div>
 
-    <div>
-      <img [src]="activity?.user?.headUrl" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="activity?.user?.headUrl">
-      <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle" *ngIf="!activity?.user?.headUrl">
-      <small>
-        {{activity?.user?.name}} {{activity.publishTime|date:'yy/MM/dd HH:mm:ss'}}
-      </small>
-    </div>
-  </div>
+          <div class="row" style="border-top:1px solid #FCFCFC;">
+            <div class="row">
+              <div style="margin:0 20px;">
+                <div class="col-xs-4">
+                  <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity?.readNumber}}</i>
+          </button>
+                </div>
+                <div class="col-xs-4">
+                  <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity?.countCommentNumber}}</i></button>
+                </div>
+                <div class="col-xs-4">
+                  <button md-icon-button *ngIf="!isUserSupport" (click)="support(activity)"><i class="fa fa-thumbs-o-up"  style="color:#999">{{activity?.countSupportNumber}}</i>
+          </button>
+                  <button md-icon-button *ngIf="isUserSupport" (click)="unSupport(activity)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{activity?.countSupportNumber}}</i>
+          </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
 
-  <div class="text-center">联系方式:{{activity?.publishUserContact}}</div>
-  <div class="text-center">
-    {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
-  </div>
+            <div style="height:35px;margin:0 15px;">
+              <div class="col-xs-2">
+                <i class="fa fa-clock-o fa-2x" style="color:#eb7350" aria-hidden="true"></i>
+              </div>
+              <div class="col-xs-10">
+                <strong>时间:</strong> {{activity.startTime|date:'MM月dd HH:mm'}}-{{activity.endTime|date:'MM月ddHH:mm'}}
+              </div>
+            </div>
+            <div style="height:35px;margin:0 17px;">
+              <div class="col-xs-2">
+                <i class="fa fa-map-marker fa-2x" style="color:#eb7350" aria-hidden="true"></i>
+              </div>
+              <div class="col-xs-10">
+                <strong>地址:</strong>{{activity?.address}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div class="row" style="border-top:1px solid #FCFCFC;">
-    <div class="col-xs-3">
-      <button md-icon-button><i class="fa fa-eye" style="color:#999">{{activity?.readNumber}}</i>
-    </button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{activity?.countCommentNumber}}</i></button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button *ngIf="!isUserSupport" (click)="support(activity)"><i class="fa fa-thumbs-o-up"  style="color:#999">{{activity?.countSupportNumber}}</i>
-    </button>
-      <button md-icon-button *ngIf="isUserSupport" (click)="unSupport(activity)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{activity?.countSupportNumber}}</i>
-    </button>
-    </div>
-    <div class="col-xs-3">
-      <button md-icon-button *ngIf="(user.user.id!==activity.publishUserId)&&(!activityJoinStatus)" (click)="join($event,activity)"><i  class="fa fa-heart" style="color:#999"></i>
-      </button>
-      <button md-icon-button *ngIf="!((user.user.id!==activity.publishUserId)&&(!activityJoinStatus))" (click)="gotoAttendanceList($event,activity)"><i  class="fa fa-heart" style="color:#eb7350"></i>
-      </button>
-    </div>
-  </div>
-
-  <div id="summernote"></div>
-  <div>
-    <ngx-gallery *ngIf="imageList?.length" [options]="galleryOptions" [images]="imageList" #view></ngx-gallery>
-  </div>
-  <div>
-  </div>
-  <div class="row">
-    <div class="col-xs-9 col-sm-9">
-      <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="comment" />
-    </div>
-    <div class="col-xs-2 col-sm-2">
-      <button class="btn btn-info" (click)="publish()" #commitButton [disabled]="!this.comment">
+      <div id="summernote"></div>
+      <div>
+        <ngx-gallery *ngIf="imageList?.length" [options]="galleryOptions" [images]="imageList" #view></ngx-gallery>
+      </div>
+      <div>
+      </div>
+      <div class="row">
+        <div class="col-xs-9 col-sm-9">
+          <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="comment" />
+        </div>
+        <div class="col-xs-2 col-sm-2">
+          <button class="btn btn-info" (click)="publish()" #commitButton [disabled]="!this.comment">
         <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
         </md-progress-spinner>
         <span  *ngIf="!showSpinner" >
                 发表
         </span>
       </button>
-    </div>
-  </div>
+        </div>
+      </div>
 
-  <div *ngIf="commentList.length">
-    <md-card *ngFor="let c of commentList;let i=index" class="full-width" (click)="c.showChildComment=true">
-      <md-card-header>
-        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
-          *ngIf="c.user.headUrl"></div>
-        <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)'}"
-          *ngIf="!c.user.headUrl"></div>
-        <md-card-title>
-          {{c?.user.name}}
-          <small>{{c?.time|date:'MM-dd HH:mm'}}</small>
-        </md-card-title>
-        <md-card-subtitle>
-          {{c?.comment}}
-        </md-card-subtitle>
-      </md-card-header>
-      <md-card-content>
-        <!-- <div class="child-comment" *ngIf="c?.childrenCommentList.length>0">
+      <div *ngIf="commentList.length">
+        <md-card *ngFor="let c of commentList;let i=index" class="full-width" (click)="c.showChildComment=true">
+          <md-card-header>
+            <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url('+c.user.headUrl+')','background-size': 'cover'}"
+              *ngIf="c.user.headUrl"></div>
+            <div (click)="gotoFirstPersonDetail($event,c)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
+              *ngIf="!c.user.headUrl"></div>
+            <md-card-title>
+              {{c?.user.name}}
+              <small>{{c?.time|date:'MM-dd HH:mm'}}</small>
+            </md-card-title>
+            <md-card-subtitle>
+              {{c?.comment}}
+            </md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <!-- <div class="child-comment" *ngIf="c?.childrenCommentList.length>0">
           <div *ngFor="let child of c?.childrenCommentList | limit:2">
             <a (click)="gotoChildPersonDetail($event,child)">{{child?.user?.name}}:</a>{{child?.comment}}
           </div>
         </div> -->
-        <a (click)="loadMoreChildComment(c)" *ngIf="c?.childrenCommentList?.length>2">共{{c?.childrenCommentList?.length}}条评论>></a>
-      </md-card-content>
-      <md-card-actions>
-        <div class="row" *ngIf="c.showChildComment">
-          <div class="col-xs-8 col-sm-8">
-            <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" autofocus />
-          </div>
-          <div class="col-xs-4 col-sm-4">
-            <button class="btn btn-info col-xs-6 col-sm-6" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
+            <a (click)="loadMoreChildComment(c)" *ngIf="c?.childrenCommentList?.length">查看更多{{c?.childrenCommentList?.length}}条评论>></a>
+          </md-card-content>
+          <md-card-actions>
+            <div class="row" *ngIf="c.showChildComment">
+              <div class="col-xs-8 col-sm-8">
+                <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" autofocus />
+              </div>
+              <div class="col-xs-4 col-sm-4">
+                <button class="btn btn-info col-xs-6 col-sm-6" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
               <md-progress-spinner *ngIf="showChildSpinner" mode="indeterminate" strokeWidth="15" color="accent">
               </md-progress-spinner>
               <span  *ngIf="!showChildSpinner" >发表
               </span>
             </button>
-            <button class="btn btn-danger col-xs-6 col-sm-6" (click)="childCommentCancel($event,c)">取消</button>
-          </div>
-        </div>
-      </md-card-actions>
-    </md-card>
-  </div>
-  <div *ngIf="!commentList.length" style="text-align:center; margin-top:8px; ">
-    暂无评论
+                <button class="btn btn-danger col-xs-6 col-sm-6" (click)="childCommentCancel($event,c)">取消</button>
+              </div>
+            </div>
+          </md-card-actions>
+        </md-card>
+      </div>
+      <div *ngIf="!commentList.length" style="text-align:center; margin-top:8px; ">
+        暂无评论
+      </div>
+    </div>
   </div>
 </div>
-
 <style>
   .full-width {
     width: 100%;
@@ -183,5 +225,20 @@
 
   .mat-card-subtitle {
     color: black
+  }
+
+  .mat-fab.mat-primary,
+  .mat-mini-fab.mat-primary,
+  .mat-raised-button.mat-primary {
+    background-color: #eb7350;
+  }
+
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 54px;
   }
 </style>

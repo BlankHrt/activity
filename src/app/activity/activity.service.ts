@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/publishReplay';
 import { Observable } from 'rxjs/Observable';
 import { Common } from '../shared/Common';
 import { DatePipe } from '@angular/common';
-import {CookieService} from "../shared/lib/ngx-cookie/cookie.service";
+import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 
 
 @Injectable()
 export class ActivityService {
   HttpUrl = Common.HttpUrl;
-
+  getActivityByPageCache: Observable<any>;
   constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
   }
 
@@ -95,7 +96,15 @@ export class ActivityService {
     urlSearchParams.append('activityType', type);
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
-    return this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
+    /* if (!this.getActivityByPageCache) {
+      this.getActivityByPageCache = this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
+        .map(this.extractData)
+        .publishReplay(1)
+        .refCount()
+        .catch(this.handleError);
+    }
+    return this.getActivityByPageCache; */
+    return this.getActivityByPageCache = this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -257,6 +266,10 @@ export class ActivityService {
     return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  clearCache() {
+    this.getActivityByPageCache = null;
   }
 
   extractData(res: Response) {

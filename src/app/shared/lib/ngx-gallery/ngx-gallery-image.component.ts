@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener,  ElementRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, ElementRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { SafeResourceUrl, DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
@@ -24,7 +24,7 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     @Output() onActiveChange = new EventEmitter();
 
     constructor(private sanitization: DomSanitizer,
-        private elementRef: ElementRef, private helperService: NgxGalleryHelperService) {}
+        private elementRef: ElementRef, private helperService: NgxGalleryHelperService) { }
 
     ngOnInit(): void {
         if (this.arrows && this.arrowsAutoHide) {
@@ -68,6 +68,8 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
         if (this.canShowNext()) {
             this.selectedIndex++;
             this.onActiveChange.emit(this.selectedIndex);
+        } else {
+            alert('已经是最后一张');
         }
     }
 
@@ -75,6 +77,8 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
         if (this.canShowPrev()) {
             this.selectedIndex--;
             this.onActiveChange.emit(this.selectedIndex);
+        } else {
+            // alert('已经是第一张');
         }
     }
 

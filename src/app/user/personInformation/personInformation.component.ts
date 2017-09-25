@@ -8,7 +8,7 @@ import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/Common';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
-import {MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-person-information',
@@ -35,21 +35,22 @@ export class PersonInformationComponent implements OnInit {
   ngOnInit() {
     this.store.select('user').subscribe((data: any) => {
       this.user = data.user;
+      if (this.user.id) {
+        this.userService.getBriefPersonInfo(this.user.id).subscribe(data0 => {
+          this.user = data0;
+        });
+      }
     });
   }
 
   showUpload() {
     // const x = this.elementRef.nativeElement.querySelector('#imageView');
-
     const event = new MouseEvent('click', { bubbles: true });
     this.renderer.invokeElementMethod(
       this.imageView.inputElement.nativeElement, 'dispatchEvent', [event]);
   }
 
   imageUploaded(e) {
-    this.renderer.setElementProperty(this.elementRef.nativeElement.querySelector('.clear span'), 'innerHTML', '清除所有');
-    this.renderer.setElementStyle(this.elementRef.nativeElement.querySelector('.clear'), 'background-color', '#eb7350');
-
     this.user.headUrl = e.serverResponse.text();
     this.userService.updateHead(e.serverResponse.text(), this.user.id).subscribe(() => { }, error => this.errorHandle(error));
   }
@@ -96,7 +97,7 @@ export class PersonInformationComponent implements OnInit {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

@@ -1,15 +1,30 @@
-<md-toolbar style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-toolbar style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
           <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
-    <div style="text-align:center;width:100%">七号话题榜</div>
+      <div style="text-align:center;width:100%">七号话题榜</div>
+    </md-toolbar>
   </md-toolbar>
-</md-toolbar>
-<md-list>
-  <md-list-item *ngFor="let a of articleList;let i=index;">
-    <div style="text-align:center;margin:15px;">
-      <a (click)="gotoHotDetail(a)">{{i+1}} {{ a.title }}</a>
-    </div>
-  </md-list-item>
-</md-list>
+  <div class="inner-sidenav-content">
+
+    <md-list>
+      <md-list-item *ngFor="let a of articleList;let i=index;">
+        <div style="text-align:center;margin:15px;">
+          <a (click)="gotoHotDetail(a)">{{i+1}} {{ a.title }}</a>
+        </div>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>
+<style>
+    .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 54px;
+  }
+</style>

@@ -5,9 +5,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { HotService } from './hot.service';
-import { HotDialogComponent } from './hot.dialog';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -54,7 +53,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(public dialog: MdDialog, private store: Store<any>, private hotService: HotService, private renderer: Renderer,
+  constructor(private store: Store<any>, private hotService: HotService, private renderer: Renderer,
     private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MdSnackBar) { }
 
   ngOnInit() {
@@ -68,7 +67,6 @@ export class HotDetailComponent implements OnInit, OnDestroy {
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
-              small: '\'' + imageList[j].url + '\'',
             });
           }
           this.imageList = list;
@@ -106,15 +104,12 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.showSpinner = false;
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.showSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showSpinner = false;
+        this.comment = '';
+      }
     }
   }
   childPublish(comment, index) {
@@ -140,15 +135,11 @@ export class HotDetailComponent implements OnInit, OnDestroy {
 
       }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.showChildSpinner = false;
-          this.comment = '';
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.showChildSpinner = false;
+      }
     }
   }
 
@@ -192,12 +183,9 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       this.isUserSupport = true;
       this.hotService.support(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -207,12 +195,9 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       this.isUserSupport = false;
       this.hotService.unSupport(hot.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(HotDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -261,7 +246,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   errorHandle(error) {
     if (error.status === 401) {
       this.store.dispatch({ type: 'DELETE_USER', payload: {} });
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

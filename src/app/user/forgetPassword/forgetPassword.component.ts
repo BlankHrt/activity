@@ -2,7 +2,7 @@
  * Created by asus on 2017/8/17.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { UserService } from '../../user.service';
@@ -15,11 +15,10 @@ import { Store } from '@ngrx/store';
 
 export class ForgetPasswordComponent implements OnInit {
   serverCode;
-  phone;
-  timer = 60;
-  hasCode: Boolean = false;
-
   // form
+
+  @ViewChild('mobile') mobileTmp;
+
   ForgetPas = {
     phone: null,
     code: null,
@@ -37,11 +36,40 @@ export class ForgetPasswordComponent implements OnInit {
       this.router.navigate([x.url]);
     });
   }
+
+  mobileChange(e) {
+    setTimeout(() => {
+      if (this.mobileTmp.valid) {
+        this.getMessage(this.ForgetPas.phone);
+      }
+    }, 0);
+  }
+
   confirm() {
-    if (this.ForgetPas.phone && this.ForgetPas.password) {
+    if (!this.ForgetPas.phone) {
+      this.snackBar.open('请输入手机号');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (!this.ForgetPas.code) {
+      this.snackBar.open('请输入验证码');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (!this.ForgetPas.password) {
+      this.snackBar.open('请输入密码');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (this.ForgetPas.password.length < 6) {
+      this.snackBar.open('密码过短');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else {
       if (this.ForgetPas.code === this.serverCode) {
         this.userService.updatePassword({ phone: this.ForgetPas.phone, password: this.ForgetPas.password }).subscribe(() => {
-          this.snackBar.open('修改成功,即将前往登陆页面');
+          this.snackBar.open('修改成功,即将前往登录页面');
           setTimeout(() => {
             this.snackBar.dismiss();
             this.router.navigate(['/user/login']);
@@ -53,62 +81,31 @@ export class ForgetPasswordComponent implements OnInit {
           this.snackBar.dismiss();
         }, 1500);
       }
-    } else {
-      this.snackBar.open('请按要求填写，ok？');
-      setTimeout(() => {
-        this.snackBar.dismiss();
-      }, 1500);
     }
   }
 
-  getMessage() {
-    this.hasCode = true;
-    const timer = setInterval(() => {
-      this.timer--;
-      if (this.timer === 0) {
-        this.hasCode = false;
-        this.timer = 60;
-        clearInterval(timer);
-      }
-    }, 1000);
-    this.userService.validatePhoneIsExist(this.ForgetPas.phone).subscribe(user => {
+  getMessage(phone) {
+    this.userService.validatePhoneIsExist(phone).subscribe(user => {
       if (user.id) {
-        clearInterval(timer);
-        let timer0;
-        if (this.ForgetPas.phone) {
-          this.userService.getForgetMessage(this.ForgetPas.phone).subscribe((data: string) => {
-            this.serverCode = data.toString();
-          }, error => this.errorHandle(error));
-          this.hasCode = true;
-          timer0 = setInterval(() => {
-            this.timer--;
-            if (this.timer === 0) {
-              this.hasCode = false;
-              this.timer = 60;
-              clearInterval(timer0);
-            }
-          }, 1000);
-        } else {
-          clearInterval(timer0);
-          this.snackBar.open('请输入手机号');
+        this.userService.getForgetMessage(phone).subscribe((data: string) => {
+          this.serverCode = data.toString();
+          this.snackBar.open('验证码已发送');
           setTimeout(() => {
             this.snackBar.dismiss();
           }, 1500);
-        }
+        }, error => this.errorHandle(error));
       } else {
         this.snackBar.open('手机号不存在');
-        this.hasCode = false;
-        this.timer = 60;
-        clearInterval(timer);
         setTimeout(() => {
           this.snackBar.dismiss();
         }, 1500);
       }
     }, error => this.errorHandle(error));
   }
+
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

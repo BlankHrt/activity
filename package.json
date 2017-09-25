@@ -1,25 +1,26 @@
 {
-  "name": "activity-front",
+  "name": "activity",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng build --prod && ng build --prod --app universal --output-hashing=none",
-    "start": "ng serve --host 192.168.1.105 --port 80 soucemap=false"
+    "build": "ng build --prod --build-optimizer&& ng build --prod --build-optimizer --app universal --output-hashing=none",
+    "start": "ng serve --port 80 soucemap=false"
+
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^4.4.1",
+    "@angular/animations": "^4.4.3",
     "@angular/cdk": "^2.0.0-beta.10",
-    "@angular/common": "^4.4.1",
-    "@angular/compiler": "^4.4.1",
-    "@angular/core": "^4.4.1",
-    "@angular/forms": "^4.4.1",
-    "@angular/http": "^4.4.1",
+    "@angular/common": "^4.4.3",
+    "@angular/compiler": "^4.4.3",
+    "@angular/core": "^4.4.3",
+    "@angular/forms": "^4.4.3",
+    "@angular/http": "^4.4.3",
     "@angular/material": "^2.0.0-beta.10",
-    "@angular/platform-browser": "^4.4.1",
-    "@angular/platform-browser-dynamic": "^4.4.1",
-    "@angular/platform-server": "^4.4.1",
-    "@angular/router": "^4.4.1",
+    "@angular/platform-browser": "^4.4.3",
+    "@angular/platform-browser-dynamic": "^4.4.3",
+    "@angular/platform-server": "^4.4.3",
+    "@angular/router": "^4.4.3",
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^4.0.3",
     "@nguniversal/express-engine": "^1.0.0-beta.3",
@@ -36,8 +37,8 @@
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "^1.4.2",
-    "@angular/compiler-cli": "^4.4.1",
+    "@angular/cli": "^1.4.3",
+    "@angular/compiler-cli": "^4.4.3",
     "@angular/language-service": "^4.0.0",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",

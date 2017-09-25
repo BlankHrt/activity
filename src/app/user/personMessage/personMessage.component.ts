@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
-import {MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-person-message',
@@ -102,7 +102,7 @@ export class PersonMessageComponent implements OnInit {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

@@ -6,11 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { TravelService } from '../travel.service';
 import { Common } from '../../shared/Common';
-import {MdDialog, MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { TravelDialogComponent } from '../travel.dialog';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
-import {Subscription} from "rxjs/Subscription";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-travel-gonglue',
@@ -33,7 +32,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
-  constructor(private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService, public snackBar: MdSnackBar,
+  constructor(private renderer: Renderer, private cookieService: CookieService, public snackBar: MdSnackBar,
     private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -54,7 +53,6 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
-              // big: '\'' + imageList[j].url + '\'',
             });
           }
           travelList[i].imageList = list;
@@ -86,7 +84,6 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             searchTravelList[i].imageList = list;
@@ -139,12 +136,9 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
       travelGonglue.articleUserSupport = true;
       this.travelService.support(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -155,12 +149,9 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
       travelGonglue.articleUserSupport = false;
       this.travelService.unSupport(travelGonglue.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -168,12 +159,9 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       this.router.navigate(['../gonglueAdd'], { relativeTo: this.route, queryParams: { id: this.ArticleType } });
     } else {
-      const dialogRef = this.dialog.open(TravelDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -224,7 +212,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
