@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ng build --prod && ng build --prod --app universal --output-hashing=none",
-    "start": "ng serve --port 80 soucemap=false"
+    "start": "ng serve --host 192.168.1.105 --port 80 soucemap=false"
   },
   "private": true,
   "dependencies": {
