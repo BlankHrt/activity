@@ -75,7 +75,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
                         this.router.navigate(['../list'], { relativeTo: this.route });
                     }, error => this.errorHandle(error));
             } else {
-                alert('登陆超时，请重新登录');
+                alert('登录超时，请重新登录');
             }
         }
     }
@@ -111,7 +111,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
     errorHandle(error) {
         if (error.status === 401) {
             this.store.dispatch({ type: 'DELETE_USER', payload: {} });
-            this.snackBar.open('认证失败，请登陆先');
+            this.snackBar.open('认证失败，请登录先');
             setTimeout(() => {
                 this.snackBar.dismiss();
             }, 1500);

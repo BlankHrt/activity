@@ -3,15 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
-import {MdDialog, MdSnackBar} from '@angular/material';
-import { ActivityDialogComponent } from './activity.dialog';
-import { ActivityJoinDialogComponent } from './activityjoin.dialog';
+import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
 
+declare var wx;
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -33,7 +32,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   notificationLength = 0;
   galleryOptions = [
     { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
-    { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
+    { 'breakpoint': 500, 'width': '100%', 'height': '250px' }
   ];
 
   status = 0;
@@ -42,7 +41,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
-  constructor(public snackBar: MdSnackBar, private renderer: Renderer, public dialog: MdDialog, private cookieService: CookieService,
+
+  constructor(public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
   }
 
@@ -72,9 +72,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.getNotification(this.user.user.id);
       }
     });
-    /*this.hotService.getHotByPageAndLimitNumber(this.articleType, 10).subscribe(data => {
-     this.todayHotList = data;
-     });*/
   }
 
   search() {
@@ -109,7 +106,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-
     this.searchWord = '';
     this.searchStatus = 0;
     this.bottomStatus = 0;
@@ -135,7 +131,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             activityList[i].imageList = list;
@@ -166,12 +161,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
       activity.activityUserSupport = true;
       this.activityService.support(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -182,12 +174,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
       activity.activityUserSupport = false;
       this.activityService.unSupport(activity.id, this.user.user.id).subscribe(() => { }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -195,12 +184,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
     if (this.user.isLogin) {
       this.router.navigate(['../activityAdd'], { relativeTo: this.route, queryParams: { id: this.ActivityType } });
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -217,7 +203,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
                   medium: '\'' + imageList[j].url + '\'',
-                  // big: '\'' + imageList[j].url + '\'',
                 });
               }
               activityList[i].imageList = list;
@@ -235,14 +220,11 @@ export class ActivityComponent implements OnInit, OnDestroy {
           }
         }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        } else {
-          this.status = 0;
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      } else {
+        this.status = 0;
+      }
     }
   }
 
@@ -259,7 +241,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
                   medium: '\'' + imageList[j].url + '\'',
-                  // big: '\'' + imageList[j].url + '\'',
                 });
               }
               activityList[i].imageList = list;
@@ -277,19 +258,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
           }
         }, error => this.errorHandle(error));
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
   getAllSchool() {
     this.activityService.getActivityByPage(this.nowPage, this.ActivityType,
       this.user.isLogin, this.user.user.id).subscribe(activityList => {
-
         if (this.nowPage > 1 && (activityList.length === 0)) {
           this.bottomStatus = 1;
         }
@@ -299,7 +276,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
-                // big: '\'' + imageList[j].url + '\'',
               });
             }
             activityList[i].imageList = list;
@@ -323,24 +299,19 @@ export class ActivityComponent implements OnInit, OnDestroy {
     e.stopPropagation();
     if (this.user.isLogin) {
       if (!activity.activityJoin) {
-        const dialogJoinRef = this.dialog.open(ActivityJoinDialogComponent);
-        dialogJoinRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
-              activity.activityJoin = {
-                isSuccess: 1
-              };
-            }, error => this.errorHandle(error));
-          }
-        });
+        const result = prompt('请填写您的联系方式(必填)', '');
+        if (result) {
+          this.activityService.joinInsert(activity.id, this.user.user.id, result).subscribe(data => {
+            activity.activityJoin = {
+              isSuccess: 1
+            };
+          }, error => this.errorHandle(error));
+        }
       }
     } else {
-      const dialogRef = this.dialog.open(ActivityDialogComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.login();
-        }
-      });
+      if (confirm('您尚未登录,是否跳转登录页面?')) {
+        this.login();
+      }
     }
   }
 
@@ -391,12 +362,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   personActivity() {
-    /*this.store.dispatch({
-     type: 'SAVE_PREV_ROUTER',
-     payload: {
-     url: '/activity'
-     }
-     });*/
     this.router.navigate(['/user/personActivity'], { queryParams: { title: '我的活动' } });
   }
 
@@ -411,6 +376,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    if (this.intervalSubscribe) {
+      this.intervalSubscribe.unsubscribe();
+    }
     this.cookieService.removeAll();
     this.store.dispatch({
       type: 'DELETE_USER',
@@ -449,14 +417,14 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   getNotification(id) {
-      const notification = Observable.combineLatest(
+    const notification = Observable.combineLatest(
       this.activityService.getUnReadActivitySupportByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityCommentByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinSponsorByUserIDAndActivityType(id, this.ActivityType),
       this.activityService.getUnReadActivityJoinParticipantByUserIDAndActivityType(id, this.ActivityType),
     );
     this.intervalSubscribe = Observable.interval(2000).subscribe(() => {
-          notification.subscribe(data => {
+      notification.subscribe(data => {
         this.notificationLength = data[0] + data[1] + data[2] + data[3];
       });
     });
@@ -469,8 +437,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
         url: '/activity'
       }
     });
-   this.router.navigate(['/user/feedback']);
+    this.router.navigate(['/user/feedback']);
   }
+
   ngOnDestroy(): void {
     if (this.intervalSubscribe) {
       this.intervalSubscribe.unsubscribe();

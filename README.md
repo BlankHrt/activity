@@ -1,6 +1,6 @@
 # ActivityFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.2.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.3.
 
 using jquery
 
@@ -9,5 +9,3 @@ using jquery
 lqh,kj
 
 # Bug
-
-###详情输入id 不存在时会报错

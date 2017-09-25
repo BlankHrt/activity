@@ -7,6 +7,8 @@ import { MdSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
   name;
   password;
   showError = false;
-  constructor(private cookieService: CookieService, private store: Store<any>, private router: Router, private route: ActivatedRoute,
+  constructor(private location: Location, private cookieService: CookieService,
+    private store: Store<any>, private router: Router, private route: ActivatedRoute,
     public snackBar: MdSnackBar, private userService: UserService
   ) { }
   ngOnInit() {
@@ -60,10 +63,12 @@ export class LoginComponent implements OnInit {
       this.router.navigate([x.url]);
     });
   }
-
+  back() {
+    this.location.back();
+  }
   errorHandle(error) {
     if (error.status === 401) {
-      this.snackBar.open('认证失败，请登陆先');
+      this.snackBar.open('认证失败，请登录先');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);

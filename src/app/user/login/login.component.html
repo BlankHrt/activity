@@ -1,34 +1,53 @@
-<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar style="background-color:#87cefa">
-    <div style="text-align:center;width:100%">登陆</div>
-    <i class="fa fa-home" style="float:right" (click)="home()"></i>
-  </md-toolbar>
-</md-sidenav-container>
-<div style="height:200px!important;margin:40px;">
-  <div *ngIf="showError" style="color:red;" class="text-center"><small>账号或密码错误</small></div>
-  <form>
-    <table cellspacing="0" style="width:100%;text-align:center">
-      <tr>
-        <td>
-          手机号:
-          <md-input-container>
-            <input mdInput placeholder="手机号" [(ngModel)]="name" name="name">
-          </md-input-container>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          密码:
-          <md-input-container>
-            <input mdInput type="password" placeholder="密码" [(ngModel)]="password" name="password">
-          </md-input-container>
-        </td>
-      </tr>
-    </table>
-    <button (click)="login()" class="btn btn-info btn-block">登录</button>
-  </form>
-  <div style="margin-top:25px;">
-    <a routerLink="/user/register" class="btn btn-link pull-right">新用户注册</a>
-    <a routerLink="/user/forgetpassword" class="btn btn-link pull-right">忘记密码？</a>
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
+          <i class="fa fa-long-arrow-left" style="float:left"></i>
+      </button>
+      <div style="text-align:center;width:100%">登录</div>
+      <i class="fa fa-home" style="float:right" (click)="home()"></i>
+
+    </md-toolbar>
+  </md-sidenav-container>
+  <div class="inner-sidenav-content">
+
+    <div style="height:200px!important;margin:40px;">
+      <div *ngIf="showError" style="color:red;" class="text-center"><small>账号或密码错误</small></div>
+      <form>
+        <table cellspacing="0" style="width:100%;text-align:center">
+          <tr>
+            <td>
+              手机号:
+              <md-input-container>
+                <input mdInput placeholder="手机号" [(ngModel)]="name" name="name">
+              </md-input-container>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              密码:
+              <md-input-container>
+                <input mdInput type="password" placeholder="密码" [(ngModel)]="password" name="password">
+              </md-input-container>
+            </td>
+          </tr>
+        </table>
+        <button (click)="login()" class="btn btn-info btn-block">登录</button>
+      </form>
+      <div style="margin-top:25px;">
+        <a routerLink="/user/register" class="btn btn-link pull-right">新用户注册</a>
+        <a routerLink="/user/forgetpassword" class="btn btn-link pull-right">忘记密码？</a>
+      </div>
+    </div>
   </div>
 </div>
+<style>
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 54px;
+  }
+</style>

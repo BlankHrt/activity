@@ -1,114 +1,123 @@
-<md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-  <md-toolbar color="primary">
-    <button md-icon-button (click)="back()">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;">
+  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <md-toolbar style="background-color:#87cefa">
+      <button md-icon-button (click)="back()">
         <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
-    <div style="text-align:center;width:100%">我的消息</div>
-  </md-toolbar>
-</md-sidenav-container>
+      <div style="text-align:center;width:100%">我的消息</div>
+    </md-toolbar>
+  </md-sidenav-container>
+  <div class="inner-sidenav-content">
 
-<md-tab-group [(selectedIndex)]="index" (selectChange)="selectChange()">
-  <md-tab>
-    <ng-template md-tab-label>
-      我收到的评论
-      <span class="badge" style="background:red" *ngIf="commentList|filterLength:'read':true">{{commentList|filterLength:'read':true}}</span>
-    </ng-template>
-    <md-card *ngFor="let a of commentList | sort:'time'" (click)="gotoCommentDetail(a)">
-      <md-card-header>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
-        <div class="circle" *ngIf="!a.read"></div>
-        <md-card-title>
-          <div>
-            <strong>{{a?.user.name}}</strong>{{a.time|date:'yy/MM/dd HH:mm:ss'}}评论了你:
-          </div>
-          {{a?.comment}}
-        </md-card-title>
-        <md-card-subtitle>
-          {{a?.article?.title||a?.activity?.title}}
-        </md-card-subtitle>
-      </md-card-header>
-    </md-card>
-  </md-tab>
+    <md-tab-group [(selectedIndex)]="index" (selectChange)="selectChange()" md-stretch-tabs>
+      <md-tab>
+        <ng-template md-tab-label>
+          评论
+          <span class="badge" style="background:red" *ngIf="commentList|filterLength:'read':true">{{commentList|filterLength:'read':true}}</span>
+        </ng-template>
+        <md-card *ngFor="let a of commentList | sort:'time'" (click)="gotoCommentDetail(a)">
+          <md-card-header>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
+            <div class="circle" *ngIf="!a.read"></div>
+            <md-card-title>
+              <div>
+                <strong>{{a?.user.name}}</strong>{{a.time|date:'yy/MM/dd HH:mm:ss'}}评论了你:
+              </div>
+              {{a?.comment}}
+            </md-card-title>
+            <md-card-subtitle>
+              {{a?.article?.title||a?.activity?.title}}
+            </md-card-subtitle>
+          </md-card-header>
+        </md-card>
+      </md-tab>
 
-  <md-tab>
-    <ng-template md-tab-label>
-      我收到的👍
-      <span class="badge" style="background:red" *ngIf="supportList|filterLength:'read':true">{{supportList|filterLength:'read':true}}</span>
-    </ng-template>
-    <md-card *ngFor="let a of supportList| sort:'time'" (click)="gotoSupportDetail(a)">
-      <md-card-header>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.user.headUrl"></div>
-        <div class="circle" *ngIf="!a.read"></div>
-        <md-card-title>
-          {{a?.user.name}}给你👍{{a.time|date:'yy/MM/dd HH:mm:ss'}}
-        </md-card-title>
-        <md-card-subtitle>
-          {{a?.article?.title||a?.activity?.title}}
-        </md-card-subtitle>
-      </md-card-header>
-    </md-card>
-  </md-tab>
+      <md-tab>
+        <ng-template md-tab-label>
+          👍
+          <span class="badge" style="background:red" *ngIf="supportList|filterLength:'read':true">{{supportList|filterLength:'read':true}}</span>
+        </ng-template>
+        <md-card *ngFor="let a of supportList| sort:'time'" (click)="gotoSupportDetail(a)">
+          <md-card-header>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.user.headUrl+')','background-size': 'cover'}" *ngIf="a.user.headUrl"></div>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.user.headUrl"></div>
+            <div class="circle" *ngIf="!a.read"></div>
+            <md-card-title>
+              {{a?.user.name}}给你👍{{a.time|date:'yy/MM/dd HH:mm:ss'}}
+            </md-card-title>
+            <md-card-subtitle>
+              {{a?.article?.title||a?.activity?.title}}
+            </md-card-subtitle>
+          </md-card-header>
+        </md-card>
+      </md-tab>
 
-  <md-tab>
-    <ng-template md-tab-label>
-      发起的活动消息
-      <span class="badge" style="background:red" *ngIf="sponsorList|filterLength:'sponsorRead':true">{{sponsorList|filterLength:'sponsorRead':true}}</span>
-    </ng-template>
-    <md-card *ngFor="let a of sponsorList| sort:'time'" (click)="gotoSponsorActivityDetail(a)">
-      <md-card-header>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="a.joinUser.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.joinUser.headUrl"></div>
-        <div class="circle" *ngIf="!a?.sponsorRead"></div>
-        <md-card-title>
-          {{a?.joinUser?.name}}报名参与你发起的活动
-          <div *ngIf="a.isSuccess===1">未审核</div>
-          <div *ngIf="a.isSuccess===0">审核未通过</div>
-          <div *ngIf="a.isSuccess===2">审核成功</div>
-          <div>{{a.time|date:'yy/MM/dd HH:mm:ss'}}</div>
-        </md-card-title>
-        <md-card-subtitle>
-          {{a?.activity?.title}}
-        </md-card-subtitle>
-      </md-card-header>
-    </md-card>
-  </md-tab>
+      <md-tab>
+        <ng-template md-tab-label>
+          发起
+          <span class="badge" style="background:red" *ngIf="sponsorList|filterLength:'sponsorRead':true">{{sponsorList|filterLength:'sponsorRead':true}}</span>
+        </ng-template>
+        <md-card *ngFor="let a of sponsorList| sort:'time'" (click)="gotoSponsorActivityDetail(a)">
+          <md-card-header>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="a.joinUser.headUrl"></div>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.joinUser.headUrl"></div>
+            <div class="circle" *ngIf="!a?.sponsorRead"></div>
+            <md-card-title>
+              {{a?.joinUser?.name}}报名参与你发起的活动
+              <div *ngIf="a.isSuccess===1">未审核</div>
+              <div *ngIf="a.isSuccess===0">审核未通过</div>
+              <div *ngIf="a.isSuccess===2">审核成功</div>
+              <div>{{a.time|date:'yy/MM/dd HH:mm:ss'}}</div>
+            </md-card-title>
+            <md-card-subtitle>
+              {{a?.activity?.title}}
+            </md-card-subtitle>
+          </md-card-header>
+        </md-card>
+      </md-tab>
 
-  <md-tab>
-    <ng-template md-tab-label>
-      参与的活动消息
-      <span class="badge" style="background:red" *ngIf="participantList|filterLength:'participantRead':true">{{participantList|filterLength:'participantRead':true}}</span>
-    </ng-template>
-    <md-card *ngFor="let a of participantList| sort:'time'" (click)="gotoParticipantActivityDetail(a)">
-      <md-card-header>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.publishUser.headUrl+')','background-size': 'cover'}" *ngIf="a.publishUser.headUrl"></div>
-        <div md-card-avatar [ngStyle]="{'background-image': 'url(../../../../assets/img/default.jpeg)'}" *ngIf="!a.publishUser.headUrl"></div>
-        <div class="circle" *ngIf="!a?.participantRead"></div>
-        <md-card-title>
-          {{a?.publishUser?.name}}发起的活动你参与的
-          <div *ngIf="a.isSuccess===1">未审核</div>
-          <div *ngIf="a.isSuccess===0">审核未通过</div>
-          <div *ngIf="a.isSuccess===2">审核成功</div>
-          <div>{{a.time|date:'yy/MM/dd HH:mm:ss'}}</div>
-        </md-card-title>
-        <md-card-subtitle>
-          {{a?.activity?.title}}
-        </md-card-subtitle>
-      </md-card-header>
-    </md-card>
-  </md-tab>
+      <md-tab>
+        <ng-template md-tab-label>
+          参与
+          <span class="badge" style="background:red" *ngIf="participantList|filterLength:'participantRead':true">{{participantList|filterLength:'participantRead':true}}</span>
+        </ng-template>
+        <md-card *ngFor="let a of participantList| sort:'time'" (click)="gotoParticipantActivityDetail(a)">
+          <md-card-header>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url('+a.publishUser.headUrl+')','background-size': 'cover'}" *ngIf="a.publishUser.headUrl"></div>
+            <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!a.publishUser.headUrl"></div>
+            <div class="circle" *ngIf="!a?.participantRead"></div>
+            <md-card-title>
+              {{a?.publishUser?.name}}发起的活动你参与的
+              <div *ngIf="a.isSuccess===1">未审核</div>
+              <div *ngIf="a.isSuccess===0">审核未通过</div>
+              <div *ngIf="a.isSuccess===2">审核成功</div>
+              <div>{{a.time|date:'yy/MM/dd HH:mm:ss'}}</div>
+            </md-card-title>
+            <md-card-subtitle>
+              {{a?.activity?.title}}
+            </md-card-subtitle>
+          </md-card-header>
+        </md-card>
+      </md-tab>
 
-</md-tab-group>
+    </md-tab-group>
+  </div>
+</div>
 <style>
-  /deep/ .mat-tab-label {
-    min-width: 24% !important;
-  }
-
   .circle {
     width: 8px;
     height: 8px;
     background: red;
     border-radius: 33.3%;
+  }
+
+  .inner-sidenav-content {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 54px;
   }
 </style>
