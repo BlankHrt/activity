@@ -113,7 +113,7 @@ export class RegisterComponent implements OnInit {
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
-    } else if (this.followProtocal) {
+    } else if (!this.followProtocal) {
       this.snackBar.open('请认真阅读用户协议');
       setTimeout(() => {
         this.snackBar.dismiss();
