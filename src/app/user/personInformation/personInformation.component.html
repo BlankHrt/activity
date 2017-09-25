@@ -43,7 +43,7 @@
             </div>
             <div [hidden]="true">
               <image-upload [max]="1" [url]="HeadUpload" [buttonCaption]="'头像'" [dropBoxMessage]="''" [extensions]="['jpg','png','gif']"
-                [preview]="false" (onFileUploadFinish)="imageUploaded($event)" [maxFileSize]="1048576/2" #imageView></image-upload>
+                [preview]="false" (uploadFinished)="imageUploaded($event)" [maxFileSize]="1048576/2" #imageView></image-upload>
             </div>
           </div>
           <div>
@@ -122,6 +122,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    top: 64px;
+    top: 54px;
   }
 </style>

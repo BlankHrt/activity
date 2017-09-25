@@ -138,8 +138,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
       if (confirm('您尚未登录,是否跳转登录页面?')) {
         this.login();
       } else {
-        this.showSpinner = false;
-        this.comment = '';
+        this.showChildSpinner = false;
       }
     }
   }

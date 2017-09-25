@@ -45,7 +45,6 @@ export class PersonInformationComponent implements OnInit {
 
   showUpload() {
     // const x = this.elementRef.nativeElement.querySelector('#imageView');
-
     const event = new MouseEvent('click', { bubbles: true });
     this.renderer.invokeElementMethod(
       this.imageView.inputElement.nativeElement, 'dispatchEvent', [event]);

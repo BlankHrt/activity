@@ -78,7 +78,7 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
             this.selectedIndex--;
             this.onActiveChange.emit(this.selectedIndex);
         } else {
-            alert('已经是第一张');
+            // alert('已经是第一张');
         }
     }
 

@@ -18,7 +18,12 @@
           <ng-template #elseHeadImageUrl>
             <img src="../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,activity)" class="img-rounded circle">
           </ng-template>
-          {{activity.title}}
+          <small>    
+              <a routerLink="/follow" class="btn btn-link">关注我们</a>
+              </small>
+          <div>
+            {{activity.title}}
+          </div>
         </h3>
         <div class="row">
           <div class="row">
@@ -234,6 +239,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    top: 64px;
+    top: 54px;
   }
 </style>

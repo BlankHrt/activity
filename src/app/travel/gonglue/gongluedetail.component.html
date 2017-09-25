@@ -18,9 +18,15 @@
         <ng-template #elseHeadImageUrl>
           <img src="../../../../assets/img/default.jpeg" (click)="gotoPublishPersonDetail($event,article)" class="img-rounded circle">
         </ng-template>
-        <small>
+        <small>    
+            <a routerLink="/follow" class="btn btn-link">关注我们</a>
+            </small>
+        <div>
+          <small>
             {{article?.user?.name}} {{article?.publishTime|date:'yyyy-MM-dd HH:mm'}}
         </small>
+        </div>
+
       </div>
     </div>
 

@@ -168,8 +168,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       if (confirm('您尚未登录,是否跳转登录页面?')) {
         this.login();
       } else {
-        this.showSpinner = false;
-        this.comment = '';
+        this.showChildSpinner = false;
       }
     }
   }
