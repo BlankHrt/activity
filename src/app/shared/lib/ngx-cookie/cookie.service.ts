@@ -3,7 +3,6 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { CookieOptionsProvider } from './cookie-options-provider';
 import { CookieOptions } from './cookie-options.model';
 import { isBlank, isString, mergeOptions, safeDecodeURIComponent, safeJsonParse } from './utils';
-import { isPlatformBrowser } from '@angular/common';
 
 declare interface Document {
   cookie: string;

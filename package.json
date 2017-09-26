@@ -5,10 +5,6 @@
   "scripts": {
     "build": "ng build --prod --build-optimizer&& ng build --prod --build-optimizer --app universal --output-hashing=none",
     "start": "ng serve --port 80 soucemap=false"
-<<<<<<< HEAD
-
-=======
->>>>>>> 831e76dd584dfef385734d511c91111b337bf96a
   },
   "private": true,
   "dependencies": {

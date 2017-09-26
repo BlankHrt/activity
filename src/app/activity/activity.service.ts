@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptions,Jsonp } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/publishReplay';
@@ -8,17 +8,21 @@ import { Common } from '../shared/Common';
 import { DatePipe } from '@angular/common';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 
-
 @Injectable()
 export class ActivityService {
   HttpUrl = Common.HttpUrl;
   getActivityByPageCache: Observable<any>;
-  constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
+  constructor(private jsonp:Jsonp,private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
   }
 
   private setOptions(): RequestOptions {
     const headers = new Headers();
     headers.append('Authorization', this.cookieService.get('token'));
+    return new RequestOptions({ headers: headers });
+  }
+  private setWxOptions(): RequestOptions {
+    const headers = new Headers();
+    headers.append('Access-Control-Allow-Origin', '*');
     return new RequestOptions({ headers: headers });
   }
 
@@ -120,6 +124,8 @@ export class ActivityService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+
 
   getSelfSchoolActivityByPage(page: any, type: any, isLogin: any, userID: any, schoolId: any): Observable<any> {
     const urlSearchParams = new URLSearchParams();
@@ -270,6 +276,12 @@ export class ActivityService {
 
   clearCache() {
     this.getActivityByPageCache = null;
+  }
+
+  getAccessToken(postUrl) {
+    console.log(postUrl)
+    return this.jsonp.request(postUrl, { method: 'Get' }).map(res => res.json())
+      .catch(this.handleError);
   }
 
   extractData(res: Response) {

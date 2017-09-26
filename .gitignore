@@ -39,6 +39,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
+package.json
 # ignore file
 /src/app/shared/common.ts

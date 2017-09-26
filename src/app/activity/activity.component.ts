@@ -9,8 +9,8 @@ import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
-
 declare var wx;
+
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -18,6 +18,11 @@ declare var wx;
 })
 export class ActivityComponent implements OnInit, OnDestroy {
 
+  createNonceStr;
+  createTimestamp;
+  postUrl;
+  appId = Common.code.id;
+  appSecret = Common.code.secret;
   @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
   user: any = { id: 0 };
   ActivityType = Common.ActivityType.xiaoyuan;
@@ -72,6 +77,43 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.getNotification(this.user.user.id);
       }
     });
+    this.createNonceStr = this.functionNonceStr();
+    this.createTimestamp = this.functionTimestamp();
+    this.createTimestamp = this.functionTimestamp();
+    // if ((!this.cookieService.get('access_token')) || ( this.cookieService.get('expires_in') < 10 )) {
+    if (!this.cookieService.get('access_token')) {
+
+        this.postUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + this.appId + '&secret=' + this.appSecret+'&callback=callbackcallback';
+        this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
+        this.cookieService.put('access_token', data.access_token);
+        this.cookieService.put('expires_in', data.expires_in);
+        console.log("data.access_token")
+        console.log(data.access_token)
+        console.log("data.expires_in")
+        console.log(data.expires_in)
+      });
+    }
+
+     wx.config({
+     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+     appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+     timestamp: this.createTimestamp, // 必填，生成签名的时间戳
+     nonceStr: this.createNonceStr, // 必填，生成签名的随机串
+
+    // signature: '',// 必填，签名，见附录1
+     //jsApiList: [checkJsApi,
+    // onMenuShareTimeline,
+    // onMenuShareAppMessage] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+     });
+
+  }
+
+  functionNonceStr() {
+    return Math.random().toString(36).substr(2, 15);
+  }
+
+  functionTimestamp() {
+    return parseInt(( new Date().getTime() / 1000 ).toString(), 10) + '';
   }
 
   search() {
