@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
               user: data.user
             }
           });
-          this.cookieService.put('token', data.token, { expires: '6000' });
+          this.cookieService.put('token', data.token, { expires: (new Date(Date.now() + 2592000 * 1000)).toString() });
           this.showError = false;
           this.store.select('router').subscribe((x: any) => {
             this.router.navigate([x.url]);
