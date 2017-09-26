@@ -47,7 +47,7 @@ export class HotComponent implements OnInit, OnDestroy {
   notificationLength = 0;
   galleryOptions = [
     {
-      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      'thumbnails': false, 'preview': false, previewCloseOnClick: true, previewSwipe: true
       , arrowPrevIcon: false, arrowNextIcon: false, imageArrows: false, 'imageSwipe': true
     },
     { 'breakpoint': 500, 'width': '100%', 'height': '280px' }
@@ -102,6 +102,7 @@ export class HotComponent implements OnInit, OnDestroy {
       }
       if (this.nowPage === 1) {
         this.hotList = hotList;
+        console.log(this.hotList);
       } else {
         this.hotList = this.hotList.concat(hotList);
       }

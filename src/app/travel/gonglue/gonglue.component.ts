@@ -27,7 +27,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   bottomStatus = 0;
   galleryOptions = [
     {
-      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      'thumbnails': false, 'preview': false, previewCloseOnClick: true, previewSwipe: true
       , arrowPrevIcon: false, arrowNextIcon: false, imageArrows: false, 'imageSwipe': true
     },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
