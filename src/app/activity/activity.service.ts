@@ -11,6 +11,7 @@ import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 
 @Injectable()
 export class ActivityService {
+  jsonp: any;
   HttpUrl = Common.HttpUrl;
   getActivityByPageCache: Observable<any>;
   constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
@@ -270,6 +271,12 @@ export class ActivityService {
 
   clearCache() {
     this.getActivityByPageCache = null;
+  }
+
+  getAccessToken(postUrl) {
+    console.log(postUrl)
+    return this.jsonp.request(postUrl, { method: 'Get' }).map(res => res.json())
+      .catch(this.handleError);
   }
 
   extractData(res: Response) {
