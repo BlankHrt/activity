@@ -92,7 +92,6 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
             contentType: false,
             processData: false,
             success: function (url) {
-                console.log(url);
                 $('#summernote').summernote('insertImage', url, function ($image) {
                     $image.css('width', '100%');
                     $image.attr('data-filename', 'retriever');

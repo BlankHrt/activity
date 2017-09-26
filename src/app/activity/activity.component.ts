@@ -85,22 +85,21 @@ export class ActivityComponent implements OnInit, OnDestroy {
     // if ((!this.cookieService.get('access_token')) || ( this.cookieService.get('expires_in') < 10 )) {
     if (!this.cookieService.get('access_token')) {
       this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
-        console.log('data');
         this.cookieService.put('access_token', data.access_token, data.expires_in);
       });
     }
 
-    wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
-      timestamp: this.createTimestamp, // 必填，生成签名的时间戳
-      nonceStr: this.createNonceStr, // 必填，生成签名的随机串
+    // wx.config({
+    //   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    //   appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+    //   timestamp: this.createTimestamp, // 必填，生成签名的时间戳
+    //   nonceStr: this.createNonceStr, // 必填，生成签名的随机串
 
-      // signature: '',// 必填，签名，见附录1
-      // jsApiList: [checkJsApi,
-      // onMenuShareTimeline,
-      // onMenuShareAppMessage] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    });
+    //   // signature: '',// 必填，签名，见附录1
+    //   // jsApiList: [checkJsApi,
+    //   // onMenuShareTimeline,
+    //   // onMenuShareAppMessage] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    // });
   }
 
   functionNonceStr() {
