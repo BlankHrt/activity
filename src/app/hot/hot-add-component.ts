@@ -2,7 +2,7 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit, ElementRef, Inject, Renderer, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, Inject, Renderer, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Common } from '../shared/Common';
@@ -15,7 +15,7 @@ import { MdSnackBar } from '@angular/material';
     templateUrl: './hot-add.component.html',
 })
 
-export class HotAddComponent implements OnInit, OnDestroy {
+export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
     user;
     schoolId;
     HttpUrl = Common.HttpUrl;
@@ -44,7 +44,26 @@ export class HotAddComponent implements OnInit, OnDestroy {
         private router: Router, private hotService: HotService,
         private route: ActivatedRoute, public snackBar: MdSnackBar) {
     }
-
+    ngAfterViewInit(): void {
+        $('#summernote').summernote({
+            height: 200,
+            toolbar: [
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['insert', ['picture']]
+            ],
+            callbacks: {
+                onImageUpload: (files) => {
+                    this.sendFile(files[0]);
+                },
+            },
+            dialogsInBody: true,
+            dialogsFade: true,
+            placeholder: '话题内容'
+        });
+    }
     ngOnInit() {
         this.routerSubscribe = this.route.queryParams.subscribe(params => {
             if (params.id) {
@@ -62,6 +81,24 @@ export class HotAddComponent implements OnInit, OnDestroy {
 
     }
 
+    sendFile(file: any) {
+        const data = new FormData();
+        data.append('file', file);
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: this.ArticleUrl,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (url) {
+                $('#summernote').summernote('insertImage', url, function ($image) {
+                    $image.css('width', $image.width() / 5);
+                    $image.attr('data-filename', 'retriever');
+                });
+            }
+        });
+    }
     commit() {
         if (this.article.title) {
             this.showSpinner = true;
@@ -70,6 +107,7 @@ export class HotAddComponent implements OnInit, OnDestroy {
                 for (let i = 0; i < this.imageList.length; i++) {
                     this.imageList[i] = '\"' + this.imageList[i] + '\"';
                 }
+                this.article.content = $('#summernote').summernote('code');
                 this.hotService.insert(this.article, this.user.user.id, this.articleType,
                     this.schoolId, this.imageList).subscribe(data => {
                         this.router.navigate(['../list'], { relativeTo: this.route });

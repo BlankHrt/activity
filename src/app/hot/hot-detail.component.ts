@@ -90,6 +90,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   getArticleByIdWithUser(id) {
     this.hotService.getArticleByIdWithUser(id).subscribe(data => {
       this.article = data;
+      $('#summernote').html(this.article.content);
     }, error => { this.errorHandle(error); });
   }
 

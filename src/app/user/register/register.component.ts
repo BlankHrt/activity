@@ -15,13 +15,15 @@ import { Location } from '@angular/common';
 })
 
 export class RegisterComponent implements OnInit {
-
+  showProtocal = false;
+  followProtocal = false;
   provinceList: Array<any>;
   schoolList: Array<any>;
   selectedProvince: any;
   selectedSchool: any;
   serverCode: any;
   @ViewChild('mobile') mobileTmp;
+
   // form
   UserRegister = {
     name: null,
@@ -101,13 +103,18 @@ export class RegisterComponent implements OnInit {
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
-    } if (this.UserRegister.password.length < 6) {
+    } else if (this.UserRegister.password.length < 6) {
       this.snackBar.open('密码过短');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
     } else if (this.UserRegister.password !== this.UserRegister.passwordAgain) {
       this.snackBar.open('两次密码不一致');
+      setTimeout(() => {
+        this.snackBar.dismiss();
+      }, 1500);
+    } else if (!this.followProtocal) {
+      this.snackBar.open('请认真阅读用户协议');
       setTimeout(() => {
         this.snackBar.dismiss();
       }, 1500);
