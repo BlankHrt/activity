@@ -3,9 +3,10 @@ import {
   MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdSnackBarModule,
   MdDialogModule, MdGridListModule, MdSelectModule, MdChipsModule, MdProgressSpinnerModule
 } from '@angular/material';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
+import { HttpModule ,JsonpModule} from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimeAgoPipe } from './timeAgo.pipe';
 import { ArraySortPipe } from './sort.pipe';
@@ -38,7 +39,8 @@ import { DateTimePickerModule } from 'ng-pick-datetime';
     ImageUploadModule.forRoot(),
     NgxGalleryModule,
     MdProgressSpinnerModule,
-    DateTimePickerModule
+    DateTimePickerModule,
+    JsonpModule
   ],
   declarations: [TimeAgoPipe, ArraySortPipe, LimitSortPipe, FilterLengthPipe, FilterHanziPipe],
   exports: [
@@ -68,7 +70,8 @@ import { DateTimePickerModule } from 'ng-pick-datetime';
     ImageUploadModule,
     NgxGalleryModule,
     MdProgressSpinnerModule,
-    DateTimePickerModule
+    DateTimePickerModule,
+    JsonpModule
   ],
 })
 export class SharedModule { }
