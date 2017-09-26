@@ -83,7 +83,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     sendFile(file: any) {
         const data = new FormData();
-        data.append('file', file);
+        data.append('image', file);
         $.ajax({
             data: data,
             type: 'POST',
@@ -92,8 +92,9 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
             contentType: false,
             processData: false,
             success: function (url) {
+                console.log(url);
                 $('#summernote').summernote('insertImage', url, function ($image) {
-                    $image.css('width', $image.width() / 5);
+                    $image.css('width', '100%');
                     $image.attr('data-filename', 'retriever');
                 });
             }

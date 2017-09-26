@@ -46,8 +46,11 @@ export class HotComponent implements OnInit, OnDestroy {
   hotList = [];
   notificationLength = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
-    { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
+    {
+      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      , arrowPrevIcon: false, arrowNextIcon: false, imageArrows: false, 'imageSwipe': true
+    },
+    { 'breakpoint': 500, 'width': '100%', 'height': '280px' }
   ];
 
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
@@ -86,6 +89,7 @@ export class HotComponent implements OnInit, OnDestroy {
           for (let j = 0; j < imageList.length; j++) {
             list.push({
               medium: '\'' + imageList[j].url + '\'',
+              big: imageList[j].url,
             });
           }
           hotList[i].imageList = list;
@@ -131,6 +135,7 @@ export class HotComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: '\'' + imageList[j].url + '\'',
+                big: imageList[j].url,
               });
             }
             searchHotList[i].imageList = list;

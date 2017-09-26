@@ -11,7 +11,6 @@ import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 
 @Injectable()
 export class ActivityService {
-  jsonp: any;
   HttpUrl = Common.HttpUrl;
   getActivityByPageCache: Observable<any>;
   constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
@@ -20,6 +19,12 @@ export class ActivityService {
   private setOptions(): RequestOptions {
     const headers = new Headers();
     headers.append('Authorization', this.cookieService.get('token'));
+    return new RequestOptions({ headers: headers });
+  }
+
+  private setWxOptions(): RequestOptions {
+    const headers = new Headers();
+    headers.append('Access-Control-Allow-Origin', '*');
     return new RequestOptions({ headers: headers });
   }
 
@@ -255,7 +260,8 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinSponsorByUserIDAndActivityType', urlSearchParams, this.setOptions())
+    return this.http.post(this.HttpUrl +
+      '/joinActivity/getUnReadActivityJoinSponsorByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -264,7 +270,8 @@ export class ActivityService {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userID', userID);
     urlSearchParams.append('activityType', activityType);
-    return this.http.post(this.HttpUrl + '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams, this.setOptions())
+    return this.http.post(this.HttpUrl +
+      '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -274,8 +281,9 @@ export class ActivityService {
   }
 
   getAccessToken(postUrl) {
-    console.log(postUrl)
-    return this.jsonp.request(postUrl, { method: 'Get' }).map(res => res.json())
+    console.log(postUrl);
+    return this.http.post(this.HttpUrl + '/user/getWx', this.setOptions())
+      .map(this.extractData)
       .catch(this.handleError);
   }
 

@@ -50,7 +50,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
+    {
+      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      , imageArrows: false, 'imageSwipe': true
+    },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
@@ -77,7 +80,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
           const list = [];
           for (let j = 0; j < imageList.length; j++) {
             list.push({
-              medium: '\'' + imageList[j].url + '\'',
+              medium: imageList[j].url,
+              big: imageList[j].url,
             });
           }
           this.imageList = list;
@@ -163,7 +167,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.activity.countCommentNumber++;
         this.showChildSpinner = false;
         comment.showChildComment = false;
-      }, error => this.errorHandle(error));
+      }, error => {
+        this.showChildSpinner = false;
+        this.errorHandle(error);
+      });
     } else {
       if (confirm('您尚未登录,是否跳转登录页面?')) {
         this.login();

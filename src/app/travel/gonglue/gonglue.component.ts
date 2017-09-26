@@ -26,7 +26,10 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   searchStatus = 0;
   bottomStatus = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
+    {
+      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      , arrowPrevIcon: false, arrowNextIcon: false, imageArrows: false, 'imageSwipe': true
+    },
     { 'breakpoint': 500, 'width': '100%', 'height': '300px' }
   ];
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
@@ -52,7 +55,8 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
           const list = [];
           for (let j = 0; j < imageList.length; j++) {
             list.push({
-              medium: '\'' + imageList[j].url + '\'',
+              medium: imageList[j].url,
+              big: imageList[j].url,
             });
           }
           travelList[i].imageList = list;
@@ -83,7 +87,8 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
             const list = [];
             for (let j = 0; j < imageList.length; j++) {
               list.push({
-                medium: '\'' + imageList[j].url + '\'',
+                medium: imageList[j].url,
+                big: imageList[j].url,
               });
             }
             searchTravelList[i].imageList = list;

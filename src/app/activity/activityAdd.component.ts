@@ -72,7 +72,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
         ['para', ['ul', 'ol', 'paragraph']],
         ['fontsize', ['fontsize']],
         ['style', ['bold', 'italic', 'underline', 'clear']],
-        // ['insert', ['picture']]
+        ['insert', ['picture']]
       ],
       callbacks: {
         onImageUpload: (files) => {
@@ -91,7 +91,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sendFile(file: any) {
     const data = new FormData();
-    data.append('file', file);
+    data.append('image', file);
     $.ajax({
       data: data,
       type: 'POST',
@@ -101,7 +101,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
       processData: false,
       success: function (url) {
         $('#summernote').summernote('insertImage', url, function ($image) {
-          $image.css('width', $image.width() / 5);
+          $image.css('width', '100%');
           $image.attr('data-filename', 'retriever');
         });
       }

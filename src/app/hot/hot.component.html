@@ -43,14 +43,13 @@
                 </div>
             </div>
         </md-sidenav>
-
-        <md-input-container class="container-width">
-            <input mdInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
-        </md-input-container>
-        <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-        <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-        <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
         <div class="inner-sidenav-content">
+            <md-input-container class="container-width">
+                <input mdInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
+            </md-input-container>
+            <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
+            <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
+            <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
             <md-card>
                 <div class="row">
                     <div style="color:#eb7350;border-bottom:1px solid #eee;">
@@ -186,6 +185,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-        top: 110px;
+        top: 54px;
     }
 </style>

@@ -72,7 +72,7 @@
       </table>
       <div>
         <div id="summernote"></div>
-        <image-upload [max]="6" [url]="ActivityUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传6张照片'" [extensions]="['jpg','png','gif']"
+        <image-upload [max]="1" [url]="ActivityUrl" [buttonCaption]="'封面'" [dropBoxMessage]="'最多上传1张照片'" [extensions]="['jpg','png','gif']"
           (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
       </div>
 

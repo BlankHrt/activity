@@ -14,6 +14,7 @@ export class NgxGalleryPreviewComponent implements OnChanges {
     srcIndex: number;
     description: string;
     showSpinner = false;
+    showLast = false;
 
     @Input() images: string[] | SafeResourceUrl[];
     @Input() descriptions: string[];
@@ -38,12 +39,12 @@ export class NgxGalleryPreviewComponent implements OnChanges {
     private isOpen = false;
 
     constructor(private sanitization: DomSanitizer,
-        private elementRef: ElementRef, private helperService: NgxGalleryHelperService) {}
+        private elementRef: ElementRef, private helperService: NgxGalleryHelperService) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['swipe']) {
             this.helperService.manageSwipe(this.swipe, this.elementRef,
-            'preview', () => this.showNext(), () => this.showPrev());
+                'preview', () => this.showNext(), () => this.showPrev());
         }
     }
 
@@ -90,6 +91,11 @@ export class NgxGalleryPreviewComponent implements OnChanges {
         if (this.canShowNext()) {
             this.index++;
             this.show();
+        } else {
+            this.showLast = true;
+            setTimeout(() => {
+                this.showLast = false;
+            }, 600);
         }
     }
 
@@ -129,7 +135,7 @@ export class NgxGalleryPreviewComponent implements OnChanges {
         }
     }
 
-    getSafeUrl(image: string): SafeUrl {
+    getSafeUrl(image: string) {
         return this.sanitization.bypassSecurityTrustUrl(image);
     }
 

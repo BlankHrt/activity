@@ -21,8 +21,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   createNonceStr;
   createTimestamp;
   postUrl;
-  appId = Common.code.id;
-  appSecret = Common.code.secret;
 
   @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
   user: any = { id: 0 };
@@ -37,7 +35,10 @@ export class ActivityComponent implements OnInit, OnDestroy {
   bottomStatus = 0;
   notificationLength = 0;
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
+    {
+      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      , arrowPrevIcon: false, arrowNextIcon: false, imageArrows: false, 'imageSwipe': true
+    },
     { 'breakpoint': 500, 'width': '100%', 'height': '250px' }
   ];
 
@@ -83,15 +84,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.createTimestamp = this.functionTimestamp();
     // if ((!this.cookieService.get('access_token')) || ( this.cookieService.get('expires_in') < 10 )) {
     if (!this.cookieService.get('access_token')) {
-
-      this.postUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + this.appId + '&secret=' + this.appSecret+'&callback=callbackcallback';
       this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
-        this.cookieService.put('access_token', data.access_token);
-        this.cookieService.put('expires_in', data.expires_in);
-        console.log("data.access_token")
-        console.log(data.access_token)
-        console.log("data.expires_in")
-        console.log(data.expires_in)
+        console.log('data');
+        this.cookieService.put('access_token', data.access_token, data.expires_in);
       });
     }
 
@@ -102,7 +97,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
       nonceStr: this.createNonceStr, // 必填，生成签名的随机串
 
       // signature: '',// 必填，签名，见附录1
-      //jsApiList: [checkJsApi,
+      // jsApiList: [checkJsApi,
       // onMenuShareTimeline,
       // onMenuShareAppMessage] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
@@ -113,7 +108,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   functionTimestamp() {
-    return parseInt(( new Date().getTime() / 1000 ).toString(), 10) + '';
+    return parseInt((new Date().getTime() / 1000).toString(), 10) + '';
   }
   search() {
 
@@ -171,7 +166,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
             const list = [];
             for (let j = 0; j < imageList.length; j++) {
               list.push({
-                medium: '\'' + imageList[j].url + '\'',
+                medium: imageList[j].url,
+                big: imageList[j].url,
               });
             }
             activityList[i].imageList = list;
@@ -243,7 +239,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
               const list = [];
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
-                  medium: '\'' + imageList[j].url + '\'',
+                  medium: imageList[j].url,
+                  big: imageList[j].url,
                 });
               }
               activityList[i].imageList = list;
@@ -281,7 +278,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
               const list = [];
               for (let j = 0; j < imageList.length; j++) {
                 list.push({
-                  medium: '\'' + imageList[j].url + '\'',
+                  medium: imageList[j].url,
+                  big: imageList[j].url,
                 });
               }
               activityList[i].imageList = list;
@@ -316,7 +314,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
             const list = [];
             for (let j = 0; j < imageList.length; j++) {
               list.push({
-                medium: '\'' + imageList[j].url + '\'',
+                medium: imageList[j].url,
+                big: imageList[j].url,
               });
             }
             activityList[i].imageList = list;

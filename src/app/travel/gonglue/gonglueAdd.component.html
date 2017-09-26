@@ -33,7 +33,7 @@
       </tr>
 
       <tr>
-        <image-upload [max]="6" [url]="ArticleUrl" [buttonCaption]="'添加图片'" [dropBoxMessage]="'最多上传6张照片'" [extensions]="['jpg','png','gif']"
+        <image-upload [max]="1" [url]="ArticleUrl" [buttonCaption]="'封面'" [dropBoxMessage]="'只能上传1张照片'" [extensions]="['jpg','png','gif']"
           (uploadFinished)="imageUploaded($event)" (removed)="imageRemoved($event)"></image-upload>
       </tr>
 

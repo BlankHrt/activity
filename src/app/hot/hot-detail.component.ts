@@ -41,7 +41,10 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   };
 
   galleryOptions = [
-    { 'thumbnails': false, 'preview': false, 'imageSwipe': true },
+    {
+      'thumbnails': false, 'preview': true, previewCloseOnClick: true, previewSwipe: true
+      , imageArrows: false, 'imageSwipe': true
+    },
     { 'breakpoint': 500, 'width': '100%', 'height': '400px' }
   ];
 
@@ -66,7 +69,8 @@ export class HotDetailComponent implements OnInit, OnDestroy {
           const list = [];
           for (let j = 0; j < imageList.length; j++) {
             list.push({
-              medium: '\'' + imageList[j].url + '\'',
+              medium: imageList[j].url,
+              big: imageList[j].url,
             });
           }
           this.imageList = list;
@@ -134,7 +138,10 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.showChildSpinner = false;
         comment.showChildComment = false;
 
-      }, error => this.errorHandle(error));
+      }, error => {
+        this.showChildSpinner = false;
+        this.errorHandle(error);
+      });
     } else {
       if (confirm('您尚未登录,是否跳转登录页面?')) {
         this.login();
