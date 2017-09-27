@@ -11,7 +11,7 @@
     <form>
       <table style="margin:6px auto;">
         <tr>
-          <td >
+          <td>
             用&nbsp;&nbsp;户&nbsp;&nbsp;名:
           </td>
           <td>
@@ -85,7 +85,9 @@
       </table>
       <button (click)="register()" [disabled]="!followProtocal" class="btn btn-info btn-block">注册</button>
     </form>
-    <input type="checkbox" style="margin-left:10px;" [(ngModel)]="followProtocal"> <a (click)="showProtocal=true" style="padding:6px 0;" class="btn btn-link">用户协议</a>
+    <md-checkbox [(ngModel)]="followProtocal">
+      <a (click)="showProtocal=true" style="padding:6px 0;" class="btn btn-link">用户协议</a>
+    </md-checkbox>
     <a routerLink="/user/login" class="btn btn-link" style="float:right">已有账号，请登录</a>
   </div>
 </div>
@@ -252,15 +254,7 @@
   <button (click)="showProtocal=false" class="btn btn-info btn-block">关闭</button>
 </div>
 <style>
-  .inner-sidenav-content {
-    overflow: auto;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 54px;
-  }
-  td{
+  td {
     padding: 1px 10px;
   }
 </style>

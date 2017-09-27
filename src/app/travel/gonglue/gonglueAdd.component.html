@@ -17,9 +17,6 @@
           <input mdInput placeholder="标题" required maxlength="30" name="title" [(ngModel)]="article.title" #title="ngModel">
           <md-hint align="end">{{title.model?.length}} / 30</md-hint>
         </md-input-container>
-        <div *ngIf="title.invalid && (title.dirty || title.touched)" style="color:#a94442">
-          <div *ngIf="title.hasError('required')">请填写标题</div>
-        </div>
       </tr>
       <tr>
         <h4><i class="fa fa-map-marker" style="margin:10px;color:#eb7350"></i>地址</h4>
@@ -27,9 +24,6 @@
           <input mdInput placeholder="地址" required maxlength="50" name="address" [(ngModel)]="article.address" #address="ngModel">
           <md-hint align="end">{{address.model?.length}} / 50</md-hint>
         </md-input-container>
-        <div *ngIf="address.invalid && (address.dirty || address.touched)" style="color:#a94442">
-          <div *ngIf="address.hasError('required')">请填写地址</div>
-        </div>
       </tr>
 
       <tr>
@@ -39,7 +33,7 @@
 
       <tr>
         <div>
-          <h4><i class="fa fa-file-text" style="color:green;margin:10px;"></i>活动介绍</h4>
+          <h4><i class="fa fa-file-text" style="color:#eb7350;margin:10px;"></i>旅游详情</h4>
           <div id="summernote"></div>
         </div>
       </tr>
@@ -77,14 +71,5 @@
 
   /deep/ .button span {
     /* background-color: yellow!important; */
-  }
-
-  .inner-sidenav-content {
-    overflow: auto;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 54px;
   }
 </style>
