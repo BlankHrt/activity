@@ -37,7 +37,8 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
     readNumber: null,
     commentNumber: null,
     countCommentNumber: null,
-    publishTime: null
+    publishTime: null,
+    address:null
   };
   galleryOptions = [
     {

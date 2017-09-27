@@ -102,7 +102,6 @@ export class HotComponent implements OnInit, OnDestroy {
       }
       if (this.nowPage === 1) {
         this.hotList = hotList;
-        console.log(this.hotList);
       } else {
         this.hotList = this.hotList.concat(hotList);
       }

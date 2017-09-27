@@ -75,7 +75,7 @@
               <div class="col-xs-2">
                 <i class="fa fa-clock-o fa-2x" style="color:#eb7350" aria-hidden="true"></i>
               </div>
-              <div class="col-xs-10">
+              <div class="col-xs-10" style="line-height:30px">
                 <strong>时间:</strong> {{activity.startTime|date:'MM月dd HH:mm'}}-{{activity.endTime|date:'MM月ddHH:mm'}}
               </div>
             </div>
@@ -83,7 +83,7 @@
               <div class="col-xs-2">
                 <i class="fa fa-map-marker fa-2x" style="color:#eb7350" aria-hidden="true"></i>
               </div>
-              <div class="col-xs-10">
+              <div class="col-xs-10" style="line-height:30px">
                 <strong>地址:</strong>{{activity?.address}}
               </div>
             </div>
@@ -137,10 +137,10 @@
           </md-card-content>
           <md-card-actions>
             <div class="row" *ngIf="c.showChildComment">
-              <div class="col-xs-8 col-sm-8">
+              <div class="col-xs-8 col-sm-8" style="padding:0 5px;">
                 <input placeholder="说说你的看法" class="form-control col-md-10" [(ngModel)]="childComment[i]" autofocus />
               </div>
-              <div class="col-xs-4 col-sm-4">
+              <div class="col-xs-4 col-sm-4" style="padding:0 5px;">
                 <button class="btn btn-info col-xs-6 col-sm-6" (click)="childPublish(c,i)" #commitChildButton [disabled]="!childComment[i]">
               <md-progress-spinner *ngIf="showChildSpinner" mode="indeterminate" strokeWidth="15" color="accent">
               </md-progress-spinner>
