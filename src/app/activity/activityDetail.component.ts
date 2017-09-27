@@ -88,35 +88,44 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.activityService.read(params.id).subscribe();
-        this.getActivityByIdWithUser(params.id);
-        this.getAllCommentByActivityId(params.id);
-        this.activityService.getActivityImageByActivityId(params.id).subscribe(imageList => {
-          const list = [];
-          for (let j = 0; j < imageList.length; j++) {
-            list.push({
-              medium: imageList[j].url,
-              big: imageList[j].url,
-            });
-          }
-          this.imageList = list;
-          wx.onMenuShareAppMessage({
-            title: this.activity.title, // 分享标题
-            desc: $('#summernote')[0].innerText, // 分享描述
-            link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: this.imageList[0].medium, // 分享图标
-            type: '', // 分享类型,music、video或link，不填默认为link
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-            success: function () {
-              this.snackBar.open('分享成功');
-              setTimeout(() => {
-                this.snackBar.dismiss();
-              }, 1500);
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
+        // this.getActivityByIdWithUser(params.id);
+        this.activityService.getActivityByIdWithUser(params.id).subscribe(data => {
+          this.activity = data;
+          this.activityService.getActivityImageByActivityId(params.id).subscribe(imageList => {
+            const list = [];
+            for (let j = 0; j < imageList.length; j++) {
+              list.push({
+                medium: imageList[j].url,
+                big: imageList[j].url,
+              });
             }
+            this.imageList = list;
+            wx.onMenuShareAppMessage({
+              title: this.activity.title, // 分享标题
+              desc: $('#summernote')[0].innerText, // 分享描述
+              link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: this.imageList[0].medium, // 分享图标
+              type: '', // 分享类型,music、video或link，不填默认为link
+              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+              success: function () {
+                this.snackBar.open('分享成功');
+                setTimeout(() => {
+                  this.snackBar.dismiss();
+                }, 1500);
+              },
+              cancel: function () {
+                // 用户取消分享后执行的回调函数
+              }
+            });
           });
-        });
+          this.meta.addTags([
+            { name: 'keywords', content: this.activity.title },
+            { name: 'description', content: this.activity.content }
+          ]);
+          $('#summernote').html(this.activity.content);
+        }, error => this.errorHandle(error));
+        this.getAllCommentByActivityId(params.id);
+
 
         if (this.user && this.user.isLogin) {
           this.getActivityJoinWithUser(params.id, this.user.user.id);
