@@ -103,6 +103,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
             // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
           });
+          console.log('后台返回');
+          console.log(data2);
+          this.newUrl = data2.url;
         });
       }
     });
