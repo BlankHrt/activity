@@ -83,11 +83,11 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.createNonceStr = this.functionNonceStr();
     this.createTimestamp = this.functionTimestamp();
     // if ((!this.cookieService.get('access_token')) || ( this.cookieService.get('expires_in') < 10 )) {
-    // if (!this.cookieService.get('access_token')) {
-    //   this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
-    //     this.cookieService.put('access_token', data.access_token, data.expires_in);
-    //   });
-    // }
+    if (!this.cookieService.get('access_token')) {
+      this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
+        this.cookieService.put('access_token', data.access_token, data.expires_in);
+      });
+    }
 
     // wx.config({
     //   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
