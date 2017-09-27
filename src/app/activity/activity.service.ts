@@ -280,13 +280,6 @@ export class ActivityService {
     this.getActivityByPageCache = null;
   }
 
-  getAccessToken(postUrl) {
-    console.log(postUrl);
-    return this.http.post(this.HttpUrl + '/user/getWx', this.setOptions())
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
   extractData(res: Response) {
     return res.text() ? res.json() : {};
   }

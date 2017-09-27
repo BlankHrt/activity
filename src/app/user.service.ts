@@ -278,6 +278,20 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  getAccessToken() {
+    return this.http.post(this.HttpUrl + '/user/getWx', null, this.setOptions())
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getJsapiTicket(ACCESS_TOKEN: any) {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('ACCESS_TOKEN', ACCESS_TOKEN);
+    return this.http.post(this.HttpUrl + '/user/getJsapiTicket', urlSearchParams, this.setOptions())
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   extractData(res: Response) {
     return res.text() ? res.json() : {};
   }
