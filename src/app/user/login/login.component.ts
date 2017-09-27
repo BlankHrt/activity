@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
 import { Location } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +20,16 @@ export class LoginComponent implements OnInit {
   password;
   showError = false;
   constructor(private location: Location, private cookieService: CookieService,
+    public meta: Meta, public title: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute,
     public snackBar: MdSnackBar, private userService: UserService
-  ) { }
+  ) {
+    this.title.setTitle('登陆');
+    this.meta.addTags([
+      { name: 'keywords', content: '动动七号登录' },
+      { name: 'description', content: '动动七号忘记密码' }
+    ]);
+  }
   ngOnInit() {
   }
   login() {

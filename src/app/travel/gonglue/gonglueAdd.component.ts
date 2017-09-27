@@ -2,15 +2,17 @@
  * Created by asus on 2017/8/15.
  */
 
-import {Component, OnInit, AfterViewInit, Renderer, ElementRef, Inject, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer, ElementRef, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {Subscription} from 'rxjs/Subscription';
-import {MdSnackBar} from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
+import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
+
 declare var $;
 @Component({
   selector: 'app-travel-gonglue-add',
@@ -42,10 +44,16 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   @ViewChild('commitButton') commitButton: ElementRef;
 
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
+    public meta: Meta, public title: Title,
     private store: Store<any>, private location: Location,
     private travelService: TravelService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {
     this.elementRef = elementRef;
+    this.title.setTitle('发布攻略');
+    this.meta.addTags([
+      { name: 'keywords', content: '大学生旅游攻略' },
+      { name: 'description', content: '大学生旅游攻略发布平台中心' }
+    ]);
   }
 
   ngAfterViewInit(): void {
@@ -121,20 +129,20 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
 
   commit() {
     if (this.article.title && this.article.address) {
-        this.showSpinner = true;
-        this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
-        if (this.user.user.id) {
-          for (let i = 0; i < this.imageList.length; i++) {
-            this.imageList[i] = '\"' + this.imageList[i] + '\"';
-          }
-          this.content = $('#summernote').summernote('code');
-          this.travelService.insert(this.article, this.content, this.user.user.id,
-            this.articleType, this.schoolId, [this.imageList]).subscribe(data => {
-            this.router.navigate(['../list'], {relativeTo: this.route});
-          }, error => this.errorHandle(error));
-        } else {
-          alert('登录超时，请重新登录');
+      this.showSpinner = true;
+      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      if (this.user.user.id) {
+        for (let i = 0; i < this.imageList.length; i++) {
+          this.imageList[i] = '\"' + this.imageList[i] + '\"';
         }
+        this.content = $('#summernote').summernote('code');
+        this.travelService.insert(this.article, this.content, this.user.user.id,
+          this.articleType, this.schoolId, [this.imageList]).subscribe(data => {
+            this.router.navigate(['../list'], { relativeTo: this.route });
+          }, error => this.errorHandle(error));
+      } else {
+        alert('登录超时，请重新登录');
+      }
     }
   }
 

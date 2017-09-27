@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/Common';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-activity',
@@ -19,8 +20,13 @@ export class ActivityComponent implements OnInit {
   pulishActivityList;
   joinActivityList;
   index = 0;
-  constructor(private location: Location,
+  constructor(private location: Location, public meta: Meta, public title: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
+    this.title.setTitle('活动列表');
+    this.meta.addTags([
+      { name: 'keywords', content: '大学生活动列表' },
+      { name: 'description', content: '大学生活动列表' }
+    ]);
   }
 
   ngOnInit() {

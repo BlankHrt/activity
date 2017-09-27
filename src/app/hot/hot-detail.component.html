@@ -9,8 +9,7 @@
     </md-toolbar>
   </md-toolbar>
   <div class="inner-sidenav-content">
-
-    <div style="margin:10px;padding:10px;">
+    <div style="margin:0 20px;">
       <div style="text-align:center;">
         <h3>
           {{article?.title}}
@@ -152,37 +151,21 @@
     -webkit-transition: ease-out 0.2s;
   }
 
-  .child-comment {
-    margin: 0 0 0 40px;
-    padding: 10px;
-    background: #eee;
-  }
-
   .mat-progress-spinner {
     width: 20px;
     height: 20px;
     margin: 0 auto;
   }
 
-  .example-margin {
-    margin: 0 10px;
-  }
-
   .mat-input-container {
     width: 100%!important;
   }
 
-  /deep/ .button {
-    --active-color: #eb7350;
-    border-radius: 30px;
-    font-size: 10px!important;
-  }
-
-  /deep/ .button span {
-    /* background-color: yellow!important; */
-  }
-
   .mat-card-subtitle {
     color: black
+  }
+
+  .inner-sidenav-content{
+    top:64px
   }
 </style>

@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
 import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-person-message',
@@ -25,8 +26,15 @@ export class PersonMessageComponent implements OnInit {
   index = 0;
 
   constructor(
+    public meta: Meta, public title: Title,
     private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
-    private route: ActivatedRoute, private userService: UserService) { }
+    private route: ActivatedRoute, private userService: UserService) {
+    this.title.setTitle('我的消息');
+    this.meta.addTags([
+      { name: 'keywords', content: '我的消息,动动七号我的消息' },
+      { name: 'description', content: '动动七号我的消息' }
+    ]);
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: any) => {

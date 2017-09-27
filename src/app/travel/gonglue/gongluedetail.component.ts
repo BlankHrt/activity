@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-travel-gonglue-detail',
@@ -38,7 +39,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
     commentNumber: null,
     countCommentNumber: null,
     publishTime: null,
-    address:null
+    address: null
   };
   galleryOptions = [
     {
@@ -56,7 +57,10 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
   constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
-    private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
+    public meta: Meta, public title: Title,
+    private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
+    this.title.setTitle('旅游详情');
+  }
 
   ngOnInit() {
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
@@ -93,6 +97,10 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
   getArticleByIdWithUser(id) {
     this.travelService.getArticleByIdWithUser(id).subscribe(data => {
       this.article = data;
+      this.meta.addTags([
+        { name: 'keywords', content: this.article.title },
+        { name: 'description', content: this.article.content }
+      ]);
       $('#summernote').html(this.article.content);
     }, error => this.errorHandle(error));
   }

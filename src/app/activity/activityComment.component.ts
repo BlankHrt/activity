@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { ActivityService } from './activity.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-activity-comment',
@@ -20,8 +21,14 @@ export class ActivityCommentComponent implements OnInit, OnDestroy {
     // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
     routerSubscribe: Subscription;
     constructor(private store: Store<any>, private location: Location,
-        private router: Router, private activityService: ActivityService,
-        private route: ActivatedRoute) { }
+        public meta: Meta, public title: Title, private router: Router, private activityService: ActivityService,
+        private route: ActivatedRoute) {
+        this.title.setTitle('更多评论');
+        this.meta.addTags([
+            { name: 'keywords', content: '大学生活动评论' },
+            { name: 'description', content: '大学生活动评论' }
+        ]);
+    }
 
 
     ngOnInit() {

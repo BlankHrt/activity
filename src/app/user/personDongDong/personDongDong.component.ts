@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
 import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-person-dongdong',
@@ -20,7 +21,13 @@ export class PersonDongDongComponent implements OnInit {
   articleList;
   activityList;
   constructor(public snackBar: MdSnackBar,
+    public meta: Meta, public pageTitle: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
+    this.pageTitle.setTitle('我的驿站');
+    this.meta.addTags([
+      { name: 'keywords', content: '个人话题,动动七号个人话题' },
+      { name: 'description', content: '动动七号个人话题' }
+    ]);
   }
 
   ngOnInit() {

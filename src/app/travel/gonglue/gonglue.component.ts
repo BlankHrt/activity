@@ -10,6 +10,7 @@ import { MdSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-travel-gonglue',
@@ -36,7 +37,14 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   constructor(private renderer: Renderer, private cookieService: CookieService, public snackBar: MdSnackBar,
-    private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) { }
+    public meta: Meta, public title: Title,
+    private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
+    title.setTitle('大学生旅游');
+    meta.addTags([
+      { name: 'keywords', content: '大学生,大学生旅游,大学生旅游攻略,动动七号' },
+      { name: 'description', content: '大学生旅游攻略中心' }
+    ]);
+  }
 
   ngOnInit() {
     this.storeSubscribe = this.store.select('user').subscribe(data => {

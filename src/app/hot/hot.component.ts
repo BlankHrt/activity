@@ -18,6 +18,7 @@ import { MdSnackBar } from '@angular/material';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hot',
@@ -59,8 +60,13 @@ export class HotComponent implements OnInit, OnDestroy {
   intervalSubscribe;
 
   constructor(private renderer: Renderer, public snackBar: MdSnackBar,
-    private cookieService: CookieService, private store: Store<any>,
+    public meta: Meta, public title: Title, private cookieService: CookieService, private store: Store<any>,
     private hotService: HotService, private router: Router, private route: ActivatedRoute) {
+    title.setTitle('大学生话题');
+    meta.addTags([
+      { name: 'keywords', content: '大学生,大学生话题,大学生话题中心,动动七号' },
+      { name: 'description', content: '大学生话题中心' }
+    ]);
   }
 
   ngOnInit(): void {

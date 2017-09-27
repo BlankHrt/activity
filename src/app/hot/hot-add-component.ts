@@ -9,6 +9,7 @@ import { Common } from '../shared/Common';
 import { HotService } from './hot.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-hot-add',
@@ -40,9 +41,15 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('commitButton') commitButton: ElementRef;
 
     constructor(
+        public meta: Meta, public title: Title,
         private renderer: Renderer, private store: Store<any>,
         private router: Router, private hotService: HotService,
         private route: ActivatedRoute, public snackBar: MdSnackBar) {
+        this.title.setTitle('发布话题');
+        this.meta.addTags([
+            { name: 'keywords', content: '大学生话题发布' },
+            { name: 'description', content: '大学生活动话题平台中心' }
+        ]);
     }
     ngAfterViewInit(): void {
         $('#summernote').summernote({
@@ -65,6 +72,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
     ngOnInit() {
+
         this.routerSubscribe = this.route.queryParams.subscribe(params => {
             if (params.id) {
                 this.articleType = params.id;

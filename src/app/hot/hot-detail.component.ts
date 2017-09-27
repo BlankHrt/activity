@@ -9,6 +9,7 @@ import { MdSnackBar } from '@angular/material';
 import { HotService } from './hot.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hot-detail',
@@ -57,7 +58,10 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
   constructor(private store: Store<any>, private hotService: HotService, private renderer: Renderer,
-    private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MdSnackBar) { }
+    public meta: Meta, public title: Title,
+    private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MdSnackBar) {
+    this.title.setTitle('话题详情');
+  }
 
   ngOnInit() {
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
@@ -94,6 +98,10 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   getArticleByIdWithUser(id) {
     this.hotService.getArticleByIdWithUser(id).subscribe(data => {
       this.article = data;
+      this.meta.addTags([
+        { name: 'keywords', content: this.article.title },
+        { name: 'description', content: this.article.content }
+      ]);
       $('#summernote').html(this.article.content);
     }, error => { this.errorHandle(error); });
   }

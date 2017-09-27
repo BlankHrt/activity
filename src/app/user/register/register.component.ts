@@ -8,6 +8,7 @@ import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -34,8 +35,15 @@ export class RegisterComponent implements OnInit {
   };
 
   constructor(private location: Location,
+    public meta: Meta, public title: Title,
     public snackBar: MdSnackBar, private userService: UserService,
-    private router: Router, private route: ActivatedRoute) { }
+    private router: Router, private route: ActivatedRoute) {
+    this.title.setTitle('注册');
+    this.meta.addTags([
+      { name: 'keywords', content: '动动七号注册' },
+      { name: 'description', content: '动动七号注册' }
+    ]);
+  }
 
   ngOnInit() {
 

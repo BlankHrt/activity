@@ -9,6 +9,7 @@ import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
+import { Meta, Title } from '@angular/platform-browser';
 
 declare var wx;
 @Component({
@@ -49,8 +50,14 @@ export class ActivityComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
   intervalSubscribe;
 
-  constructor(public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
+  constructor(public meta: Meta, public title: Title,
+    public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
+    title.setTitle('大学生活动');
+    meta.addTags([
+      { name: 'keywords', content: '大学生,大学生活动,大学生活动中心,动动七号' },
+      { name: 'description', content: '大学生活动中心' }
+    ]);
   }
 
   changeStatus() {

@@ -6,7 +6,9 @@ import { Common } from '../../shared/Common';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../user.service';
-import {MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-person-message-activity',
   templateUrl: './personMessageActivity.component.html',
@@ -22,7 +24,14 @@ export class PersonMessageActivityComponent implements OnInit {
   sponsorList = [];
   participantList = [];
   constructor(private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
-    private route: ActivatedRoute, private userService: UserService) { }
+    public meta: Meta, public title: Title,
+    private route: ActivatedRoute, private userService: UserService) {
+    this.title.setTitle('我的消息');
+    this.meta.addTags([
+      { name: 'keywords', content: '我的消息,动动七号我的消息' },
+      { name: 'description', content: '动动七号我的消息' }
+    ]);
+  }
   ngOnInit() {
     this.activityType = Common.ActivityType.xiaoyuan;
     this.store.select('activity_tab').subscribe((data: any) => {

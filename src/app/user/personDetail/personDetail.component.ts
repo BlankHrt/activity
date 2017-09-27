@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-person-detail',
@@ -24,6 +25,7 @@ export class PersonDetailComponent implements OnInit {
   };
   userID: any;
   constructor(private location: Location,
+    public meta: Meta, public title: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
   }
 
@@ -33,6 +35,11 @@ export class PersonDetailComponent implements OnInit {
         this.userID = params.id;
         this.userService.getBriefPersonInfo(this.userID).subscribe(data => {
           this.user = data;
+          this.title.setTitle(this.user.name + '的资料');
+          this.meta.addTags([
+            { name: 'keywords', content: this.user.name + '的资料,' + this.user.name },
+            { name: 'description', content: this.user.name + '的资料' }
+          ]);
         });
       } else {
         this.router.navigate(['/404']);

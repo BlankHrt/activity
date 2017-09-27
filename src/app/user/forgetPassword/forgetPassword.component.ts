@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { UserService } from '../../user.service';
 import { Store } from '@ngrx/store';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-forget',
@@ -26,8 +27,14 @@ export class ForgetPasswordComponent implements OnInit {
   };
 
   constructor(
-    private store: Store<any>, public snackBar: MdSnackBar,
-    private router: Router, private route: ActivatedRoute, private userService: UserService) { }
+    public meta: Meta, public title: Title, private store: Store<any>, public snackBar: MdSnackBar,
+    private router: Router, private route: ActivatedRoute, private userService: UserService) {
+    this.title.setTitle('忘记密码');
+    this.meta.addTags([
+      { name: 'keywords', content: '动动七号忘记密码' },
+      { name: 'description', content: '动动七号忘记密码' }
+    ]);
+  }
   ngOnInit() {
 
   }

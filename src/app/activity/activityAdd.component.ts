@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { MdSnackBar } from '@angular/material';
 declare var $;
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-activity-add',
@@ -58,10 +59,15 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ActivityUpload = Common.ActivityUpload;
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
-    private store: Store<any>, private location: Location,
+    public meta: Meta, public title: Title, private store: Store<any>, private location: Location,
     private activityService: ActivityService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {
     this.elementRef = elementRef;
+    this.title.setTitle('发布活动');
+    this.meta.addTags([
+      { name: 'keywords', content: '大学生活动发布' },
+      { name: 'description', content: '大学生活动发布平台中心' }
+    ]);
   }
 
   ngAfterViewInit(): void {
@@ -109,6 +115,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.activityType = params.id;

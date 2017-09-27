@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-travel',
@@ -19,7 +20,13 @@ export class TravelComponent implements OnInit {
     articleList;
     activityList;
     constructor(private location: Location,
+        public meta: Meta, public title: Title,
         private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
+        this.title.setTitle('旅游列表');
+        this.meta.addTags([
+            { name: 'keywords', content: '旅游列表' },
+            { name: 'description', content: '旅游列表' }
+        ]);
     }
 
     ngOnInit() {

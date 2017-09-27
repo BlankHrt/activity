@@ -9,6 +9,8 @@ import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
+import { Meta, Title } from '@angular/platform-browser';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'app-activity-detail',
@@ -65,7 +67,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
   constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
-    private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) { }
+    public meta: Meta, public title: Title,
+    private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
+    this.title.setTitle('活动详情');
+  }
 
   ngOnInit() {
     this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
@@ -122,6 +127,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getActivityByIdWithUser(id: any) {
     this.activityService.getActivityByIdWithUser(id).subscribe(data => {
       this.activity = data;
+      this.meta.addTags([
+        { name: 'keywords', content: this.activity.title },
+        { name: 'description', content: this.activity.content }
+      ]);
       $('#summernote').html(this.activity.content);
     }, error => this.errorHandle(error));
   }

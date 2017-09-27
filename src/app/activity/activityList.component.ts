@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-activity-list',
@@ -33,12 +34,17 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
 
   constructor(private store: Store<any>, private location: Location, private formBuilder: FormBuilder,
+    public meta: Meta, public title: Title,
     private activityService: ActivityService, private router: Router, public snackBar: MdSnackBar,
     private route: ActivatedRoute) {
+    this.title.setTitle('报名列表');
+    this.meta.addTags([
+      { name: 'keywords', content: '活动报名列表,活动报名详情' },
+      { name: 'description', content: '活动报名列表详情' }
+    ]);
   }
 
   ngOnInit() {
-
     this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
     });
@@ -48,6 +54,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
         this.getPublishUserId(params.id);
         this.getAllJoinByActivityId(params.id);
       } else {
+        this.router.navigate(['/404']);
       }
     });
   }

@@ -10,7 +10,7 @@ import { Common } from '../shared/Common';
 import { HotService } from './hot.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Meta, Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-hot-comment',
     templateUrl: './hot-comment.component.html',
@@ -23,8 +23,14 @@ export class HotCommentComponent implements OnInit, OnDestroy {
     // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
     routerSubscribe: Subscription;
     constructor(private store: Store<any>, private location: Location,
-        private router: Router, private hotService: HotService,
-        private route: ActivatedRoute) { }
+        public meta: Meta, public title: Title, private router: Router, private hotService: HotService,
+        private route: ActivatedRoute) {
+        title.setTitle('更多评论');
+        meta.addTags([
+            { name: 'keywords', content: '大学生话题评论' },
+            { name: 'description', content: '大学生话题评论' }
+        ]);
+    }
 
 
     ngOnInit() {

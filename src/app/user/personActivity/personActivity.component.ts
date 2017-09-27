@@ -9,6 +9,8 @@ import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { MdSnackBar } from '@angular/material';
+import { Meta, Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-person-activity',
   templateUrl: './personActivity.component.html',
@@ -22,7 +24,14 @@ export class PersonActivityComponent implements OnInit {
   joinActivityList;
   index = 0;
   constructor(private store: Store<any>, private router: Router, private location: Location,
-    public snackBar: MdSnackBar, private route: ActivatedRoute, private userService: UserService) { }
+    public meta: Meta, public title: Title,
+    public snackBar: MdSnackBar, private route: ActivatedRoute, private userService: UserService) {
+    this.title.setTitle('我的活动');
+    this.meta.addTags([
+      { name: 'keywords', content: '动动七号我的活动' },
+      { name: 'description', content: '动动七号我的活动' }
+    ]);
+  }
 
   ngOnInit() {
     this.activityType = Common.ActivityType.xiaoyuan;
