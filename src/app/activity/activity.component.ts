@@ -10,8 +10,9 @@ import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
 import { Meta, Title } from '@angular/platform-browser';
-
+import * as jsSHA from '../shared/lib/wx/sha.js';
 declare var wx;
+
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -19,10 +20,12 @@ declare var wx;
 })
 export class ActivityComponent implements OnInit, OnDestroy {
 
-  createNonceStr;
-  createTimestamp;
-  postUrl;
-
+  ACCESS_TOKEN;
+  shaObj;
+  signature;
+  url= Common.Url;
+  newUrl;
+  str;
   @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
   user: any = { id: 0 };
   ActivityType = Common.ActivityType.xiaoyuan;
@@ -86,36 +89,98 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.getNotification(this.user.user.id);
       }
     });
+    this.store.select('wx').subscribe( data => {
+      if ( data.JsapiTicket ) {
+        this.newUrl = this.url + '/activity/list'
+        this.result(data);
+        this.getSignature();
+        this.config(data);
+      }
+    });
 
-    this.createNonceStr = this.functionNonceStr();
-    this.createTimestamp = this.functionTimestamp();
-    // if ((!this.cookieService.get('access_token')) || ( this.cookieService.get('expires_in') < 10 )) {
-    if (!this.cookieService.get('access_token')) {
-      this.activityService.getAccessToken(this.postUrl).subscribe((data: any) => {
-        this.cookieService.put('access_token', data.access_token, data.expires_in);
-      });
-    }
-
-    // wx.config({
-    //   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-    //   appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
-    //   timestamp: this.createTimestamp, // 必填，生成签名的时间戳
-    //   nonceStr: this.createNonceStr, // 必填，生成签名的随机串
-
-    //   // signature: '',// 必填，签名，见附录1
-    //   // jsApiList: [checkJsApi,
-    //   // onMenuShareTimeline,
-    //   // onMenuShareAppMessage] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    // });
+    wx.onMenuShareAppMessage({
+      title: '大学生活动列表', // 分享标题
+      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
+      link: this.newUrl , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: '../../assets/img/logo.jpg', // 分享图标
+      type: '', // 分享类型,music、video或link，不填默认为link
+      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+      success: function () {
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareTimeline({
+      title: '大学生活动列表', // 分享标题
+      link: this.newUrl , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: '../../assets/img/logo.jpg', // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQQ({
+      title: '大学生活动列表', // 分享标题
+      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
+      link: this.newUrl , // 分享链接
+      imgUrl: '../../assets/img/logo.jpg', // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQZone({
+      title: '大学生活动列表', // 分享标题
+      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
+      link: this.newUrl , // 分享链接
+      imgUrl: '../../assets/img/logo.jpg', // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+  }
+  result(data) {
+    this.str = 'jsapi_ticket=' + data.JsapiTicket + '&noncestr=' + data.nonceStr + '&timestamp=' + data.timestamp + '&url=' + this.newUrl;
+  }
+  getSignature() {
+    this.shaObj = new jsSHA(this.str, 'TEXT');
+    this.signature = this.shaObj.getHash('SHA-1', 'HEX');
+  }
+  config(data) {
+    wx.config({
+      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+      timestamp: data.timestamp, // 必填，生成签名的时间戳
+      nonceStr: data.nonceStr, // 必填，生成签名的随机串
+      signature: this.signature, // 必填，签名，见附录1
+      jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
   }
 
-  functionNonceStr() {
-    return Math.random().toString(36).substr(2, 15);
-  }
-
-  functionTimestamp() {
-    return parseInt((new Date().getTime() / 1000).toString(), 10) + '';
-  }
   search() {
 
     this.bottomStatus = 0;

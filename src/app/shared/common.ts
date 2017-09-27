@@ -6,13 +6,15 @@ export class Common {
   // public static ArticleUpload = 'http://192.168.1.108:8000/upload/article';
   // public static ActivityUpload = 'http://192.168.1.108:8000/upload/activity';
   // public static HeadUpload = 'http://192.168.1.108:8000/upload/head';
-  // public static HttpUrl = 'http://192.168.1.100:8000';
+  // public static HttpUrl = 'http://localhost:8000';
+  // public static Url = 'http://localhost';
 
   /* server */
   public static ArticleUpload = 'http://www.ddshidai.com:8080/backend/upload/article';
   public static ActivityUpload = 'http://www.ddshidai.com:8080/backend/upload/activity';
   public static HeadUpload = 'http://www.ddshidai.com:8080/backend/upload/head';
   public static HttpUrl = 'http://www.ddshidai.com:8080/backend';
+  public static Url = 'http://www.ddshidai.com';
 
   public static ActivityType = {
     xiaoyuan: 1,
