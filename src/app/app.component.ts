@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {CookieService} from './shared/lib/ngx-cookie/cookie.service';
-import {UserService} from './user.service';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { CookieService } from './shared/lib/ngx-cookie/cookie.service';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ import {UserService} from './user.service';
 export class AppComponent implements OnInit {
 
   constructor(private store: Store<any>, private cookieService: CookieService,
-              private userService: UserService) {
+    private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -32,17 +32,16 @@ export class AppComponent implements OnInit {
 
   getToken() {
     if (!this.cookieService.get('access_token')) {
-      console.log(1)
       this.cookieService.put('timestamp', this.functionTimestamp());
       this.cookieService.put('nonceStr', this.functionNonceStr());
       this.userService.getAccessToken().subscribe((data) => {
-        this.cookieService.put('access_token', data.access_token, {expires: (new Date(Date.now() + data.expires_in * 1000)).toString()});
+        this.cookieService.put('access_token', data.access_token, { expires: (new Date(Date.now() + data.expires_in * 1000)).toString() });
         this.userService.getJsapiTicket(this.cookieService.get('access_token')).subscribe((data2) => {
-          this.cookieService.put('JsapiTicket', data2.ticket, {expires: (new Date(Date.now() + data2.expires_in * 1000)).toString()});
+          this.cookieService.put('JsapiTicket', data2.ticket, { expires: (new Date(Date.now() + data2.expires_in * 1000)).toString() });
           this.store.dispatch({
             type: 'SAVE_WX',
             payload: {
-              timestamp:  this.cookieService.get('timestamp'),
+              timestamp: this.cookieService.get('timestamp'),
               nonceStr: this.cookieService.get('nonceStr'),
               access_token: data.access_token,
               JsapiTicket: data2.ticket
@@ -50,19 +49,18 @@ export class AppComponent implements OnInit {
           });
         });
       });
-    }else {
-      console.log(2)
+    } else {
       this.store.dispatch({
         type: 'SAVE_WX',
         payload: {
-          timestamp:  this.cookieService.get('timestamp'),
+          timestamp: this.cookieService.get('timestamp'),
           nonceStr: this.cookieService.get('nonceStr'),
           access_token: this.cookieService.get('access_token'),
           JsapiTicket: this.cookieService.get('JsapiTicket')
         }
-      })
+      });
     }
-  }//getToken
+  }
 
   functionNonceStr() {
     return Math.random().toString(36).substr(2, 15);

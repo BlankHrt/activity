@@ -10,7 +10,6 @@ import { SharedModule } from './shared/shared.module';
 import { PageModule } from './page/page.module';
 import { CookieModule } from './shared/lib/ngx-cookie/index';
 import { UserService } from './user.service';
-import {ActivityService} from "./activity/activity.service";
 
 @NgModule({
   declarations: [

@@ -23,7 +23,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   ACCESS_TOKEN;
   shaObj;
   signature;
-  url= Common.Url;
+  url = Common.Url;
   newUrl;
   str;
   @ViewChildren('view', { read: ElementRef }) viewList: QueryList<any>;
@@ -89,9 +89,9 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.getNotification(this.user.user.id);
       }
     });
-    this.store.select('wx').subscribe( data => {
-      if ( data.JsapiTicket ) {
-        this.newUrl = this.url + '/activity/list'
+    this.store.select('wx').subscribe(data => {
+      if (data.JsapiTicket) {
+        this.newUrl = this.url + '/activity/list';
         this.result(data);
         this.getSignature();
         this.config(data);
@@ -101,7 +101,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     wx.onMenuShareAppMessage({
       title: '大学生活动列表', // 分享标题
       desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '../../assets/img/logo.jpg', // 分享图标
       type: '', // 分享类型,music、video或link，不填默认为link
       dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -117,7 +117,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     });
     wx.onMenuShareTimeline({
       title: '大学生活动列表', // 分享标题
-      link: this.newUrl , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '../../assets/img/logo.jpg', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -133,7 +133,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     wx.onMenuShareQQ({
       title: '大学生活动列表', // 分享标题
       desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl , // 分享链接
+      link: this.newUrl, // 分享链接
       imgUrl: '../../assets/img/logo.jpg', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -149,7 +149,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     wx.onMenuShareQZone({
       title: '大学生活动列表', // 分享标题
       desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl , // 分享链接
+      link: this.newUrl, // 分享链接
       imgUrl: '../../assets/img/logo.jpg', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
