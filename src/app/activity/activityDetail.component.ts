@@ -117,8 +117,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
           if (data.JsapiTicket) {
             this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
             this.result(data);
-            this.getSignature();
-            this.config(data);
+            this.activityService.signature(data.JsapiTicket, data.nonceStr, data.timestamp, this.newUrl).subscribe( data2 => {
+              wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+                timestamp: data2.timestamp, // 必填，生成签名的时间戳
+                nonceStr: data2.nonceStr, // 必填，生成签名的随机串
+                signature: data2.signature, // 必填，签名，见附录1
+                jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+              });
+            })
           }
         });
         // wx
@@ -193,20 +201,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }//ngOnInit
   result(data) {
     this.str = 'jsapi_ticket=' + data.JsapiTicket + '&noncestr=' + data.nonceStr + '&timestamp=' + data.timestamp + '&url=' + this.newUrl;
-  }
-  getSignature() {
-    this.shaObj = new jsSHA(this.str, 'TEXT');
-    this.signature = this.shaObj.getHash('SHA-1', 'HEX');
-  }
-  config(data) {
-    wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
-      timestamp: data.timestamp, // 必填，生成签名的时间戳
-      nonceStr: data.nonceStr, // 必填，生成签名的随机串
-      signature: this.signature, // 必填，签名，见附录1
-      jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    });
   }
 
   ngAfterViewInit(): void {

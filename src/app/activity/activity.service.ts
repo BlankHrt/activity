@@ -1,31 +1,32 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams, Headers, RequestOptions } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/publishReplay';
-import { Observable } from 'rxjs/Observable';
-import { Common } from '../shared/Common';
-import { DatePipe } from '@angular/common';
-import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
+import {Observable} from 'rxjs/Observable';
+import {Common} from '../shared/Common';
+import {DatePipe} from '@angular/common';
+import {CookieService} from '../shared/lib/ngx-cookie/cookie.service';
 
 
 @Injectable()
 export class ActivityService {
   HttpUrl = Common.HttpUrl;
   getActivityByPageCache: Observable<any>;
+
   constructor(private cookieService: CookieService, private http: Http, private datePipe: DatePipe) {
   }
 
   private setOptions(): RequestOptions {
     const headers = new Headers();
     headers.append('Authorization', this.cookieService.get('token'));
-    return new RequestOptions({ headers: headers });
+    return new RequestOptions({headers: headers});
   }
 
   private setWxOptions(): RequestOptions {
     const headers = new Headers();
     headers.append('Access-Control-Allow-Origin', '*');
-    return new RequestOptions({ headers: headers });
+    return new RequestOptions({headers: headers});
   }
 
   insert(params: any, startTime: any, endTime: any, content: any, userID: any
@@ -103,13 +104,13 @@ export class ActivityService {
     urlSearchParams.append('isLogin', isLogin);
     urlSearchParams.append('userID', userID);
     /* if (!this.getActivityByPageCache) {
-      this.getActivityByPageCache = this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
-        .map(this.extractData)
-        .publishReplay(1)
-        .refCount()
-        .catch(this.handleError);
-    }
-    return this.getActivityByPageCache; */
+     this.getActivityByPageCache = this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
+     .map(this.extractData)
+     .publishReplay(1)
+     .refCount()
+     .catch(this.handleError);
+     }
+     return this.getActivityByPageCache; */
     return this.getActivityByPageCache = this.http.post(this.HttpUrl + '/activity/getActivityByPage', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
@@ -198,6 +199,7 @@ export class ActivityService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
   getAllJoinByActivityId(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
@@ -205,6 +207,7 @@ export class ActivityService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
   getPublishUserId(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
@@ -212,6 +215,7 @@ export class ActivityService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
   joinActivitySuccessUpdate(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
@@ -220,6 +224,7 @@ export class ActivityService {
       .catch(this.handleError);
 
   }
+
   joinActivityFailUpdate(id: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('id', id);
@@ -272,6 +277,18 @@ export class ActivityService {
     urlSearchParams.append('activityType', activityType);
     return this.http.post(this.HttpUrl +
       '/joinActivity/getUnReadActivityJoinParticipantByUserIDAndActivityType', urlSearchParams, this.setOptions())
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  signature(jsapi_ticket: any, nonce_str: any, timestamp: any, url: any) {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('jsapi_ticket', jsapi_ticket);
+    urlSearchParams.append('nonce_str', nonce_str);
+    urlSearchParams.append('timestamp', timestamp);
+    urlSearchParams.append('url', url);
+    return this.http.post(this.HttpUrl +
+      '/user/signature', urlSearchParams, this.setOptions())
       .map(this.extractData)
       .catch(this.handleError);
   }
