@@ -11,6 +11,7 @@ import { MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
 import { Meta, Title } from '@angular/platform-browser';
+import { Common } from '../../shared/Common';
 declare var wx;
 
 @Component({
@@ -19,7 +20,8 @@ declare var wx;
 })
 
 export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
-
+  newUrl;
+  url = Common.Url;
   showSpinner = false;
   showChildSpinner = false;
   imageList = [];
@@ -131,20 +133,56 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit() {
+    this.initWx('', '', '', 'http://www.ddshidai.com/assets/img/dd_7.jpg');
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.travelService.read(params.id).subscribe();
-        this.getArticleByIdWithUser(params.id);
         this.getAllCommentByArticleId(params.id);
-        this.travelService.getArticleImageByArticleId(params.id).subscribe(imageList => {
-          const list = [];
-          for (let j = 0; j < imageList.length; j++) {
-            list.push({
-              medium: imageList[j].url,
-              big: imageList[j].url,
-            });
+
+        this.travelService.getArticleByIdWithUser(params.id).subscribe(data => {
+          this.article = data;
+          this.meta.addTags([
+            { name: 'keywords', content: this.article.title },
+            { name: 'description', content: this.article.content }
+          ]);
+          $('#summernote').html(this.article.content);
+
+          this.travelService.getArticleImageByArticleId(params.id).subscribe(imageList => {
+            const list = [];
+            for (let j = 0; j < imageList.length; j++) {
+              list.push({
+                medium: imageList[j].url,
+              });
+            }
+            this.imageList = list;
+            let image;
+            if (this.imageList[0]) {
+              image = this.imageList[0].medium;
+            } else {
+              image = 'http://www.ddshidai.com/assets/img/logo.jpg';
+            }
+            this.initWx(this.article.title, $('#summernote')[0].innerText, this.newUrl, image);
+
+          });
+        }, error => this.errorHandle(error));
+
+        // wx
+        this.store.select('wx').subscribe(data1 => {
+          if (data1.JsapiTicket) {
+            this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
+            this.travelService.signature(data1.JsapiTicket,
+              this.newUrl).subscribe(data2 => {
+                wx.config({
+                  // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                  appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+                  timestamp: data2.timestamp, // 必填，生成签名的时间戳
+                  nonceStr: data2.nonceStr, // 必填，生成签名的随机串
+                  signature: data2.signature, // 必填，签名，见附录1
+                  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                  jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
+                });
+              });
           }
-          this.imageList = list;
         });
         this.storeSubscribe = this.store.select('user').subscribe(data => {
           this.user = data;
@@ -160,17 +198,6 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/404']);
       }
     });
-  }
-
-  getArticleByIdWithUser(id) {
-    this.travelService.getArticleByIdWithUser(id).subscribe(data => {
-      this.article = data;
-      this.meta.addTags([
-        { name: 'keywords', content: this.article.title },
-        { name: 'description', content: this.article.content }
-      ]);
-      $('#summernote').html(this.article.content);
-    }, error => this.errorHandle(error));
   }
 
   publish() {

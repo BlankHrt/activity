@@ -164,7 +164,6 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: imageList[j].url,
-                big: imageList[j].url,
               });
             }
             this.imageList = list;

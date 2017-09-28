@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { Common } from '../shared/Common';
-import {CookieService} from '../shared/lib/ngx-cookie/cookie.service';
+import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 
 
 @Injectable()
@@ -15,9 +15,9 @@ export class TravelService {
     }
 
     private setOptions(): RequestOptions {
-      const headers = new Headers();
-      headers.append('Authorization', this.cookieService.get('token'));
-      return new RequestOptions({ headers: headers });
+        const headers = new Headers();
+        headers.append('Authorization', this.cookieService.get('token'));
+        return new RequestOptions({ headers: headers });
     }
 
     select(userId: any) {
@@ -73,9 +73,9 @@ export class TravelService {
     }
 
     logout() {
-      return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
-        .map(this.extractData)
-        .catch(this.handleError);
+        return this.http.post(this.HttpUrl + '/auth/logout', {}, this.setOptions())
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     unSupport(id: any, userID: any) {
@@ -164,7 +164,15 @@ export class TravelService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+    signature(jsapi_ticket: any, url: any) {
+        const urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('jsapi_ticket', jsapi_ticket);
+        urlSearchParams.append('url', url);
+        return this.http.post(this.HttpUrl +
+            '/user/signature', urlSearchParams, this.setOptions())
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     extractData(res: Response) {
         if (res.text()) {
             return res.json() || [];

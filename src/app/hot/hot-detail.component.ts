@@ -135,6 +135,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit() {
+    this.initWx('', '', '', 'http://www.ddshidai.com/assets/img/dd_7.jpg');
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.hotService.read(params.id).subscribe();
@@ -153,7 +154,6 @@ export class HotDetailComponent implements OnInit, OnDestroy {
             for (let j = 0; j < imageList.length; j++) {
               list.push({
                 medium: imageList[j].url,
-                big: imageList[j].url,
               });
             }
             this.imageList = list;
