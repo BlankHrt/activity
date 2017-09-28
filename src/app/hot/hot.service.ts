@@ -169,7 +169,15 @@ export class HotService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+    signature(jsapi_ticket: any, url: any) {
+        const urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('jsapi_ticket', jsapi_ticket);
+        urlSearchParams.append('url', url);
+        return this.http.post(this.HttpUrl +
+            '/user/signature', urlSearchParams, this.setOptions())
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     extractData(res: Response) {
         if (res.text()) {
             return res.json() || [];

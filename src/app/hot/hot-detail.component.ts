@@ -10,6 +10,8 @@ import { HotService } from './hot.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { Meta, Title } from '@angular/platform-browser';
+import { Common } from '../shared/Common';
+declare var wx;
 
 @Component({
   selector: 'app-hot-detail',
@@ -17,6 +19,8 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 
 export class HotDetailComponent implements OnInit, OnDestroy {
+  newUrl;
+  url = Common.Url;
 
   showSpinner = false;
   showChildSpinner = false;
@@ -63,22 +67,125 @@ export class HotDetailComponent implements OnInit, OnDestroy {
     this.title.setTitle('话题详情');
   }
 
+  initWx(title, desc, url, image) {
+    wx.onMenuShareAppMessage({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      type: '', // 分享类型,music、video或link，不填默认为link
+      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+      success: function () {
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: title, // 分享标题
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQQ({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQZone({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+  }
   ngOnInit() {
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.hotService.read(params.id).subscribe();
-        this.getArticleByIdWithUser(params.id);
         this.getAllCommentByArticleId(params.id);
-        this.hotService.getArticleImageByArticleId(params.id).subscribe(imageList => {
-          const list = [];
-          for (let j = 0; j < imageList.length; j++) {
-            list.push({
-              medium: imageList[j].url,
-              big: imageList[j].url,
-            });
+
+        this.hotService.getArticleByIdWithUser(params.id).subscribe(data => {
+          this.article = data;
+          this.meta.addTags([
+            { name: 'keywords', content: this.article.title },
+            { name: 'description', content: this.article.content }
+          ]);
+          $('#summernote').html(this.article.content);
+
+          this.hotService.getArticleImageByArticleId(params.id).subscribe(imageList => {
+            const list = [];
+            for (let j = 0; j < imageList.length; j++) {
+              list.push({
+                medium: imageList[j].url,
+                big: imageList[j].url,
+              });
+            }
+            this.imageList = list;
+            let image;
+            if (this.imageList[0]) {
+              image = this.imageList[0].medium;
+            } else {
+              image = 'http://www.ddshidai.com/assets/img/logo.jpg';
+            }
+            this.initWx(this.article.title, $('#summernote')[0].innerText, this.newUrl, image);
+
+          }, error => this.errorHandle(error));
+        }, error => { this.errorHandle(error); });
+
+        // wx
+        this.store.select('wx').subscribe(data1 => {
+          if (data1.JsapiTicket) {
+            this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
+            this.hotService.signature(data1.JsapiTicket,
+              this.newUrl).subscribe(data2 => {
+                wx.config({
+                  // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                  appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+                  timestamp: data2.timestamp, // 必填，生成签名的时间戳
+                  nonceStr: data2.nonceStr, // 必填，生成签名的随机串
+                  signature: data2.signature, // 必填，签名，见附录1
+                  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                  jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
+                });
+              });
           }
-          this.imageList = list;
-        }, error => this.errorHandle(error));
+        });
         this.storeSubscribe = this.store.select('user').subscribe(data => {
           this.user = data;
           if (this.user && this.user.user && this.user.user.id) {
@@ -93,17 +200,6 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/404']);
       }
     });
-  }
-
-  getArticleByIdWithUser(id) {
-    this.hotService.getArticleByIdWithUser(id).subscribe(data => {
-      this.article = data;
-      this.meta.addTags([
-        { name: 'keywords', content: this.article.title },
-        { name: 'description', content: this.article.content }
-      ]);
-      $('#summernote').html(this.article.content);
-    }, error => { this.errorHandle(error); });
   }
 
   publish() {

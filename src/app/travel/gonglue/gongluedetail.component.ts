@@ -11,6 +11,7 @@ import { MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
 import { Meta, Title } from '@angular/platform-browser';
+declare var wx;
 
 @Component({
   selector: 'app-travel-gonglue-detail',
@@ -62,6 +63,73 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
     this.title.setTitle('旅游详情');
   }
 
+  initWx(title, desc, url, image) {
+    wx.onMenuShareAppMessage({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      type: '', // 分享类型,music、video或link，不填默认为link
+      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+      success: function () {
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: title, // 分享标题
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQQ({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQZone({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+  }
   ngOnInit() {
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {

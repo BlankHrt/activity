@@ -20,12 +20,8 @@ declare var wx;
 })
 export class ActivityDetailComponent implements OnInit, OnDestroy {
 
-  ACCESS_TOKEN;
-  shaObj;
-  signature;
   url = Common.Url;
   newUrl;
-  str;
   showSpinner = false;
   showChildSpinner = false;
   imageList = [{ medium: '#' }];
@@ -158,6 +154,11 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
         // this.getActivityByIdWithUser(params.id);
         this.activityService.getActivityByIdWithUser(params.id).subscribe(data => {
           this.activity = data;
+          this.meta.addTags([
+            { name: 'keywords', content: this.activity.title },
+            { name: 'description', content: this.activity.content }
+          ]);
+          $('#summernote').html(this.activity.content);
           this.activityService.getActivityImageByActivityId(params.id).subscribe(imageList => {
             const list = [];
             for (let j = 0; j < imageList.length; j++) {
@@ -171,14 +172,10 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
             if (this.imageList[0]) {
               image = this.imageList[0].medium;
             } else {
-              image = 'http://www.ddshidai.com/assets/img/dd_7.jpg';
+              image = 'http://www.ddshidai.com/assets/img/logo.jpg';
             }
-            this.initWx(this.activity.title, this.activity.content, this.newUrl, image);
-            this.meta.addTags([
-              { name: 'keywords', content: this.activity.title },
-              { name: 'description', content: this.activity.content }
-            ]);
-            $('#summernote').html(this.activity.content);
+            this.initWx(this.activity.title, $('#summernote')[0].innerText, this.newUrl, image);
+
           }, error => this.errorHandle(error));
           this.getAllCommentByActivityId(params.id);
 
