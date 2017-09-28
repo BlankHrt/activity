@@ -90,7 +90,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.store.select('wx').subscribe(data => {
+    /* this.store.select('wx').subscribe(data => {
       if (data.JsapiTicket) {
         this.newUrl = this.url + '/activity/list';
         this.activityService.signature(data.JsapiTicket, data.nonceStr, data.timestamp, this.newUrl).subscribe(data2 => {
@@ -105,72 +105,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
           });
         });
       }
-    });
-
-    wx.onMenuShareAppMessage({
-      title: '大学生活动列表', // 分享标题
-      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      imgUrl: '../../assets/img/logo.jpg', // 分享图标
-      type: '', // 分享类型,music、video或link，不填默认为link
-      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-      success: function () {
-        this.snackBar.open('分享成功');
-        setTimeout(() => {
-          this.snackBar.dismiss();
-        }, 1500);
-      },
-      cancel: function () {
-        // 用户取消分享后执行的回调函数
-      }
-    });
-    wx.onMenuShareTimeline({
-      title: '大学生活动列表', // 分享标题
-      link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      imgUrl: '../../assets/img/logo.jpg', // 分享图标
-      success: function () {
-        // 用户确认分享后执行的回调函数
-        this.snackBar.open('分享成功');
-        setTimeout(() => {
-          this.snackBar.dismiss();
-        }, 1500);
-      },
-      cancel: function () {
-        // 用户取消分享后执行的回调函数
-      }
-    });
-    wx.onMenuShareQQ({
-      title: '大学生活动列表', // 分享标题
-      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl, // 分享链接
-      imgUrl: '../../assets/img/logo.jpg', // 分享图标
-      success: function () {
-        // 用户确认分享后执行的回调函数
-        this.snackBar.open('分享成功');
-        setTimeout(() => {
-          this.snackBar.dismiss();
-        }, 1500);
-      },
-      cancel: function () {
-        // 用户取消分享后执行的回调函数
-      }
-    });
-    wx.onMenuShareQZone({
-      title: '大学生活动列表', // 分享标题
-      desc: '这里有丰富多彩的活动，邀请您一起参与', // 分享描述
-      link: this.newUrl, // 分享链接
-      imgUrl: '../../assets/img/logo.jpg', // 分享图标
-      success: function () {
-        // 用户确认分享后执行的回调函数
-        this.snackBar.open('分享成功');
-        setTimeout(() => {
-          this.snackBar.dismiss();
-        }, 1500);
-      },
-      cancel: function () {
-        // 用户取消分享后执行的回调函数
-      }
-    });
+    }); */
   }
 
 
