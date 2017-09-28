@@ -171,7 +171,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
         // wx
         this.store.select('wx').subscribe(data1 => {
           if (data1.JsapiTicket) {
-            this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
+            this.newUrl = this.url + '/hot/detail?id=' + params.id;
             this.hotService.signature(data1.JsapiTicket,
               this.newUrl).subscribe(data2 => {
                 wx.config({

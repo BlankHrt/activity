@@ -169,7 +169,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
         // wx
         this.store.select('wx').subscribe(data1 => {
           if (data1.JsapiTicket) {
-            this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
+            this.newUrl = this.url + '/travel/gonglueDetail?id=' + params.id;
             this.travelService.signature(data1.JsapiTicket,
               this.newUrl).subscribe(data2 => {
                 wx.config({
