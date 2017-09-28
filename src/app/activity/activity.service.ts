@@ -281,11 +281,9 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  signature(jsapi_ticket: any, nonce_str: any, timestamp: any, url: any) {
+  signature(jsapi_ticket: any, url: any) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('jsapi_ticket', jsapi_ticket);
-    urlSearchParams.append('nonce_str', nonce_str);
-    urlSearchParams.append('timestamp', timestamp);
     urlSearchParams.append('url', url);
     return this.http.post(this.HttpUrl +
       '/user/signature', urlSearchParams, this.setOptions())

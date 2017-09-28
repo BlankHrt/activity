@@ -12,14 +12,13 @@ import { Common } from '../shared/Common';
 declare var $;
 import { Meta, Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
-import * as jsSHA from '../shared/lib/wx/sha.js';
 declare var wx;
 
 @Component({
   selector: 'app-activity-detail',
   templateUrl: './activityDetail.component.html',
 })
-export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ActivityDetailComponent implements OnInit, OnDestroy {
 
   ACCESS_TOKEN;
   shaObj;
@@ -81,7 +80,75 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.title.setTitle('活动详情');
   }
 
+  initWx(title, desc, url, image) {
+    wx.onMenuShareAppMessage({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      type: '', // 分享类型,music、video或link，不填默认为link
+      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+      success: function () {
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: title, // 分享标题
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQQ({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+    wx.onMenuShareQZone({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: url, // 分享链接
+      imgUrl: image, // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+        this.snackBar.open('分享成功');
+        setTimeout(() => {
+          this.snackBar.dismiss();
+        }, 1500);
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    });
+  }
   ngOnInit() {
+    this.initWx('', '', '', 'http://www.ddshidai.com/assets/img/dd_7.jpg');
     this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
     });
@@ -100,119 +167,57 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
               });
             }
             this.imageList = list;
-            wx.onMenuShareAppMessage({
-              title: this.activity.title, // 分享标题
-              desc: $('#summernote')[0].innerText, // 分享描述
-              link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: this.imageList[0].medium || 'http://www.ddshidai.com/assets/img/dd_7.jpg', // 分享图标
-              type: '', // 分享类型,music、video或link，不填默认为link
-              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-              success: function () {
-                this.snackBar.open('分享成功');
-                setTimeout(() => {
-                  this.snackBar.dismiss();
-                }, 1500);
-              },
-              cancel: function () {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-
-            wx.onMenuShareTimeline({
-              title: this.activity.title, // 分享标题
-              link: this.newUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: 'http://www.ddshidai.com/assets/img/dd_7.jpg', // 分享图标
-              success: function () {
-                // 用户确认分享后执行的回调函数
-                this.snackBar.open('分享成功');
-                setTimeout(() => {
-                  this.snackBar.dismiss();
-                }, 1500);
-              },
-              cancel: function () {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-            wx.onMenuShareQQ({
-              title: this.activity.title, // 分享标题
-              desc: $('#summernote')[0].innerText, // 分享描述
-              link: this.newUrl, // 分享链接
-              imgUrl: this.imageList[0].medium, // 分享图标
-              success: function () {
-                // 用户确认分享后执行的回调函数
-                this.snackBar.open('分享成功');
-                setTimeout(() => {
-                  this.snackBar.dismiss();
-                }, 1500);
-              },
-              cancel: function () {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-            wx.onMenuShareQZone({
-              title: this.activity.title, // 分享标题
-              desc: $('#summernote')[0].innerText, // 分享描述
-              link: this.newUrl, // 分享链接
-              imgUrl: this.imageList[0].medium, // 分享图标
-              success: function () {
-                // 用户确认分享后执行的回调函数
-                this.snackBar.open('分享成功');
-                setTimeout(() => {
-                  this.snackBar.dismiss();
-                }, 1500);
-              },
-              cancel: function () {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-          });
-          this.meta.addTags([
-            { name: 'keywords', content: this.activity.title },
-            { name: 'description', content: this.activity.content }
-          ]);
-          $('#summernote').html(this.activity.content);
-        }, error => this.errorHandle(error));
-        this.getAllCommentByActivityId(params.id);
+            let image;
+            if (this.imageList[0]) {
+              image = this.imageList[0].medium;
+            } else {
+              image = 'http://www.ddshidai.com/assets/img/dd_7.jpg';
+            }
+            this.initWx(this.activity.title, this.activity.content, this.newUrl, image);
+            this.meta.addTags([
+              { name: 'keywords', content: this.activity.title },
+              { name: 'description', content: this.activity.content }
+            ]);
+            $('#summernote').html(this.activity.content);
+          }, error => this.errorHandle(error));
+          this.getAllCommentByActivityId(params.id);
 
 
-        if (this.user && this.user.isLogin) {
-          this.getActivityJoinWithUser(params.id, this.user.user.id);
-        }
+          if (this.user && this.user.isLogin) {
+            this.getActivityJoinWithUser(params.id, this.user.user.id);
+          }
 
-        if (this.user && this.user.user && this.user.user.id) {
-          this.activityService.getActivitySupportByUserIdAndActivityID(this.user.user.id, params.id).subscribe(support => {
-            if (support.id) {
-              this.isUserSupport = true;
+          if (this.user && this.user.user && this.user.user.id) {
+            this.activityService.getActivitySupportByUserIdAndActivityID(this.user.user.id, params.id).subscribe(support => {
+              if (support.id) {
+                this.isUserSupport = true;
+              }
+            });
+          }
+          // wx
+          this.store.select('wx').subscribe(data1 => {
+            if (data1.JsapiTicket) {
+              this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
+              this.activityService.signature(data1.JsapiTicket,
+                this.newUrl).subscribe(data2 => {
+                  wx.config({
+                    // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
+                    timestamp: data2.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data2.nonceStr, // 必填，生成签名的随机串
+                    signature: data2.signature, // 必填，签名，见附录1
+                    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
+                  });
+                });
             }
           });
-        }
-        // wx
-        this.store.select('wx').subscribe(data => {
-          if (data.JsapiTicket) {
-            this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
-            this.activityService.signature(data.JsapiTicket, data.nonceStr, data.timestamp,
-              this.newUrl).subscribe(data2 => {
-                wx.config({
-                  // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                  appId: 'wx3b6fe19df1feedfa', // 必填，公众号的唯一标识
-                  timestamp: data2.timestamp, // 必填，生成签名的时间戳
-                  nonceStr: data2.nonceStr, // 必填，生成签名的随机串
-                  signature: data2.signature, // 必填，签名，见附录1
-                  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                  jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
-                });
-              });
-          }
         });
-        // wx
       } else {
         this.router.navigate(['/404']);
       }
     });
 
-  }
-
-  ngAfterViewInit(): void {
   }
 
   // 根据登录的用户ID，判断该用户是否已经报名
