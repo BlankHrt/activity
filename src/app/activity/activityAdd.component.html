@@ -54,7 +54,7 @@
             </h4>
           </td>
           <td>
-            <owl-date-time [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required #starttimeTemplate>
+            <owl-date-time [showButtons]="true" [locale]="en" name="date" placeHolder="请填写开始时间*" [(ngModel)]="startTime" required #starttimeTemplate>
             </owl-date-time>
           </td>
         </tr>
@@ -64,7 +64,7 @@
             <h4><i class="fa fa-clock-o" style="margin:10px;color:#eb7350"></i>结束时间</h4>
           </td>
           <td>
-            <owl-date-time [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime>now?startTime:now" [(ngModel)]="endTime"
+            <owl-date-time [showButtons]="true" [locale]="en" name="date" placeHolder="请填写结束时间*" [min]="startTime>now?startTime:now" [(ngModel)]="endTime"
               required #endtimeTemplate>
             </owl-date-time>
           </td>

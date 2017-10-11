@@ -82,6 +82,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit() {
+    alert(location.href.split('#')[0])
     this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
     });
@@ -116,7 +117,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.store.select('wx').subscribe(data => {
           if (data.JsapiTicket) {
             this.newUrl = this.url + '/activity/activityDetail?id=' + params.id;
-            this.result(data);
+            console.log("this.newUrl")
+            console.log(this.newUrl)
             this.activityService.signature(data.JsapiTicket, data.nonceStr, data.timestamp, this.newUrl).subscribe( data2 => {
               wx.config({
                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -199,9 +201,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit, OnDestroy
       }
     });
   }//ngOnInit
-  result(data) {
-    this.str = 'jsapi_ticket=' + data.JsapiTicket + '&noncestr=' + data.nonceStr + '&timestamp=' + data.timestamp + '&url=' + this.newUrl;
-  }
 
   ngAfterViewInit(): void {
   }
