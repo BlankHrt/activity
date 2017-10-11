@@ -77,6 +77,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.storeSubscribe = this.store.select('user').subscribe((data: any) => {
       this.user = data;
       if (this.user.isLogin) {

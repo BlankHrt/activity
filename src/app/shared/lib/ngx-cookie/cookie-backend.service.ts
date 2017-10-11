@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CookieService } from './cookie.service';
-
+declare var global;
 @Injectable()
 export class CookieBackendService extends CookieService {
   protected get cookieString(): string {
