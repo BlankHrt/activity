@@ -22,7 +22,8 @@ import { UserService } from './user.service';
     StoreModule.forRoot(reducer),
     SharedModule,
     PageModule,
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    BrowserModule.withServerTransition({appId: 'my-app'}),
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
 
   getToken() {
     if (!this.cookieService.get('access_token')) {
+      console.log(1)
       this.cookieService.put('timestamp', this.functionTimestamp());
       this.cookieService.put('nonceStr', this.functionNonceStr());
       this.userService.getAccessToken().subscribe((data) => {
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
         });
       });
     } else {
+      console.log(2)
       this.store.dispatch({
         type: 'SAVE_WX',
         payload: {
