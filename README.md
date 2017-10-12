@@ -10,4 +10,6 @@ lqh,kj
 
 # Bug
 
-justTest
+image-upload.component.ts/cookie.service.ts/ngx-gallery.component.ts/ngx-gallery-preview.compenent.ts
+
+
