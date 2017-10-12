@@ -93,8 +93,20 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'height', 'auto');
       this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-timer-text')[i], 'width', '120%');
     }
+    this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[0].innerText = '确认';
+    this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[1].innerText = '关闭';
+    this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[2].innerText = '确认';
+    this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[3].innerText = '关闭';
+    for (let i = 0; i < this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn').length; i++) {
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'height', 'auto');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'width', '50%');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'margin', '0 auto');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'background-color', '#9e9d9d');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'border-right-color', 'white');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'border-right-width', '1px');
+      this.renderer.setElementStyle(this.elementRef.nativeElement.querySelectorAll('.owl-dateTime-btn')[i], 'border-left-color', 'white');
+    }
   }
-
   sendFile(file: any) {
     const data = new FormData();
     data.append('image', file);
@@ -115,7 +127,6 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.routerSubscribe = this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.activityType = params.id;
