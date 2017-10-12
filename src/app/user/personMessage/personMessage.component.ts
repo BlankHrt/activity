@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -27,7 +27,7 @@ export class PersonMessageComponent implements OnInit {
 
   constructor(
     public meta: Meta, public title: Title,
-    private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
+    private store: Store<any>, private router: Router, public snackBar: MatSnackBar,
     private route: ActivatedRoute, private userService: UserService) {
     this.title.setTitle('我的消息');
     this.meta.addTags([

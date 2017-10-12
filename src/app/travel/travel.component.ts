@@ -8,7 +8,7 @@ import { Common } from '../shared/Common';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 /**
  * Created by asus on 2017/8/15.
@@ -34,7 +34,7 @@ export class TravelComponent implements OnInit , OnDestroy {
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
   intervalSubscribe;
-  constructor(private cookieService: CookieService, private store: Store<any>, public snackBar: MdSnackBar,
+  constructor(private cookieService: CookieService, private store: Store<any>, public snackBar: MatSnackBar,
     private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
   }
 

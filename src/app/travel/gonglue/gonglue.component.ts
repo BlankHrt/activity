@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { TravelService } from '../travel.service';
 import { Common } from '../../shared/Common';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -36,7 +36,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
-  constructor(private renderer: Renderer, private cookieService: CookieService, public snackBar: MdSnackBar,
+  constructor(private renderer: Renderer, private cookieService: CookieService, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生旅游');

@@ -10,7 +10,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 declare var $;
 import { Meta, Title } from '@angular/platform-browser';
 
@@ -58,7 +58,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('endtimeTemplate') endtimeTemplate: ElementRef;
 
   ActivityUpload = Common.ActivityUpload;
-  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
+  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title, private store: Store<any>, private location: Location,
     private activityService: ActivityService, private router: Router,
     private route: ActivatedRoute, private renderer: Renderer) {

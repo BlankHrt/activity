@@ -4,7 +4,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserService } from '../../user.service';
 import { Store } from '@ngrx/store';
 import { Meta, Title } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ export class ForgetPasswordComponent implements OnInit {
   };
 
   constructor(
-    public meta: Meta, public title: Title, private store: Store<any>, public snackBar: MdSnackBar,
+    public meta: Meta, public title: Title, private store: Store<any>, public snackBar: MatSnackBar,
     private router: Router, private route: ActivatedRoute, private userService: UserService) {
     this.title.setTitle('忘记密码');
     this.meta.addTags([

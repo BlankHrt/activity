@@ -9,7 +9,7 @@ import { ActivityService } from './activity.service';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -35,7 +35,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<any>, private location: Location, private formBuilder: FormBuilder,
     public meta: Meta, public title: Title,
-    private activityService: ActivityService, private router: Router, public snackBar: MdSnackBar,
+    private activityService: ActivityService, private router: Router, public snackBar: MatSnackBar,
     private route: ActivatedRoute) {
     this.title.setTitle('报名列表');
     this.meta.addTags([

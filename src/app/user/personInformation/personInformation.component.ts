@@ -8,7 +8,7 @@ import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
 import { Common } from '../../shared/Common';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -29,7 +29,7 @@ export class PersonInformationComponent implements OnInit {
 
   constructor( @Inject(ElementRef) elementRef: ElementRef, private renderer: Renderer,
     public meta: Meta, public title: Title,
-    private location: Location, private cookieService: CookieService, public snackBar: MdSnackBar,
+    private location: Location, private cookieService: CookieService, public snackBar: MatSnackBar,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
     this.elementRef = elementRef;
     this.title.setTitle('个人消息');

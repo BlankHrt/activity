@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { CookieService } from '../../shared/lib/ngx-cookie/cookie.service';
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   constructor(private location: Location, private cookieService: CookieService,
     public meta: Meta, public title: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute,
-    public snackBar: MdSnackBar, private userService: UserService
+    public snackBar: MatSnackBar, private userService: UserService
   ) {
     this.title.setTitle('登陆');
     this.meta.addTags([

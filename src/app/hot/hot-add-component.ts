@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { Common } from '../shared/Common';
 import { HotService } from './hot.service';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -44,7 +44,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
         public meta: Meta, public title: Title,
         private renderer: Renderer, private store: Store<any>,
         private router: Router, private hotService: HotService,
-        private route: ActivatedRoute, public snackBar: MdSnackBar) {
+        private route: ActivatedRoute, public snackBar: MatSnackBar) {
         this.title.setTitle('发布话题');
         this.meta.addTags([
             { name: 'keywords', content: '大学生话题发布' },
