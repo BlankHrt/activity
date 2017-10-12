@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
 
   getToken() {
     if (!this.cookieService.get('access_token')) {
-      console.log(1)
       this.cookieService.put('timestamp', this.functionTimestamp());
       this.cookieService.put('nonceStr', this.functionNonceStr());
       this.userService.getAccessToken().subscribe((data) => {

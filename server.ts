@@ -8,10 +8,21 @@ import { enableProdMode } from '@angular/core';
 import * as express from 'express';
 import { join } from 'path';
 import { readFileSync } from 'fs';
-require('jsdom-global')();
+// require('jsdom-global')();
+// import * as jsdom from 'jsdom-global';
+
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
+// const window = global;
+// const document = global;
+// jsdom();
+// global['CSS'] = null;
+// global['window'] = window;
+// global['document'] = document;
+// global['navigator'] = {
+//   userAgent: 'node.js'
+// };
 // Express server
 const app = express();
 

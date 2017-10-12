@@ -2,7 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: {  server: './server.ts' },
+  entry: {
+    server: './server.ts',
+    // prerender: './prerender.ts'
+  },
   resolve: { extensions: ['.ts', '.js'] },
   target: 'node',
   // this makes sure we include node_modules and other 3rd party libraries
@@ -13,7 +16,8 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.css$/, loaders: ["style-loader", "css-loader"] },
+      { test: /\.ts$/, loader: 'ts-loader' },
     ]
   },
   plugins: [

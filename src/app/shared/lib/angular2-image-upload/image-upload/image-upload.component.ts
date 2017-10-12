@@ -4,7 +4,7 @@ import { Headers } from '@angular/http';
 import { ImageService } from './image.service';
 import { Style } from './style';
 import { UploadMetadata } from './before-upload.interface';
-
+declare var document;
 export class FileHolder {
   public pending: boolean = false;
   public serverResponse: { status: number, response: any };

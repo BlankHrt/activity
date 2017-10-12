@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, Eleme
 import { SafeResourceUrl, DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
-
+declare var document;
 @Component({
     selector: 'ngx-gallery-preview',
     templateUrl: './ngx-gallery-preview.component.html',
