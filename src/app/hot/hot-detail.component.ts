@@ -61,7 +61,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(private store: Store<any>, private hotService: HotService, private renderer: Renderer,
+  constructor(private store: Store<any>, private hotService: HotService, private Renderer2: Renderer,
     public meta: Meta, public title: Title,
     private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MatSnackBar) {
     this.title.setTitle('话题详情');
@@ -204,7 +204,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
 
   publish() {
     this.showSpinner = true;
-    this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+    this.Renderer2.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
     if (this.user.isLogin && this.comment) {
       this.hotService.comment(this.article.id, this.user.user.id, this.comment).subscribe(data => {
         this.getAllCommentByArticleId(this.article.id);
@@ -223,7 +223,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
   }
   childPublish(comment, index) {
     this.showChildSpinner = true;
-    this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
+    this.Renderer2.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
     if (this.user.isLogin && this.childComment) {
       if (!comment.childrenCommentList) {
         comment.childrenCommentList = [];

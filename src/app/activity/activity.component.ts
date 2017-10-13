@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Renderer, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer2, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
@@ -52,7 +52,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   intervalSubscribe;
 
   constructor(public meta: Meta, public title: Title,
-    public snackBar: MatSnackBar, private renderer: Renderer, private cookieService: CookieService,
+    public snackBar: MatSnackBar, private renderer: Renderer2, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生活动');
     meta.addTags([

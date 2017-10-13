@@ -59,7 +59,7 @@ export class HotComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
   intervalSubscribe;
 
-  constructor(private renderer: Renderer, public snackBar: MatSnackBar,
+  constructor(private Renderer2: Renderer, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title, private cookieService: CookieService, private store: Store<any>,
     private hotService: HotService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生话题');
@@ -100,7 +100,7 @@ export class HotComponent implements OnInit, OnDestroy {
           }
           hotList[i].imageList = list;
           this.viewList.forEach(view => {
-            this.renderer.listen(view.nativeElement, 'click', (event) => {
+            this.Renderer2.listen(view.nativeElement, 'click', (event) => {
               event.stopPropagation();
             });
           });
@@ -146,7 +146,7 @@ export class HotComponent implements OnInit, OnDestroy {
             }
             searchHotList[i].imageList = list;
             this.viewList.forEach(view => {
-              this.renderer.listen(view.nativeElement, 'click', (event) => {
+              this.Renderer2.listen(view.nativeElement, 'click', (event) => {
                 event.stopPropagation();
               });
             });

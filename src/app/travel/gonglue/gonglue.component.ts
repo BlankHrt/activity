@@ -1,7 +1,7 @@
 /**
  * Created by asus on 2017/8/15.
  */
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { TravelService } from '../travel.service';
@@ -36,7 +36,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
   // unsubscribe :forms,router,render service,Infinite Observables ,Redux Store
   // don't unsubscribe:Async pipe,@HostListener ,Finite Observable
   storeSubscribe: Subscription;
-  constructor(private renderer: Renderer, private cookieService: CookieService, public snackBar: MatSnackBar,
+  constructor(private render: Renderer2, private cookieService: CookieService, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private store: Store<any>, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生旅游');
@@ -69,7 +69,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
           }
           travelList[i].imageList = list;
           this.viewList.forEach(view => {
-            this.renderer.listen(view.nativeElement, 'click', (event) => {
+            this.render.listen(view.nativeElement, 'click', (event) => {
               event.stopPropagation();
             });
           });
@@ -101,7 +101,7 @@ export class TravelGonglueComponent implements OnInit, OnDestroy {
             }
             searchTravelList[i].imageList = list;
             this.viewList.forEach(view => {
-              this.renderer.listen(view.nativeElement, 'click', (event) => {
+              this.render.listen(view.nativeElement, 'click', (event) => {
                 event.stopPropagation();
               });
             });
