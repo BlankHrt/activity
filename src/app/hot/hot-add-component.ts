@@ -59,7 +59,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['fontsize', ['fontsize']],
                 ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['insert', ['picture']]
+                ['insert', ['picture', 'video']]
             ],
             callbacks: {
                 onImageUpload: (files) => {

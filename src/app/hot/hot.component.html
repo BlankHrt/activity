@@ -4,7 +4,7 @@
             <button mat-icon-button (click)="sidenav.open()">
                 <i class="fa fa-bars" style="float:left"></i>
                 <span class="bg-red" *ngIf="notificationLength"></span>
-              </button>
+            </button>
             <div style="text-align:center;width:100%">动动七号</div>
         </mat-toolbar>
         <mat-sidenav #sidenav class="sidenav">
@@ -15,31 +15,41 @@
                         <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
                     </ng-template>
                     <div style="font-size:20px;">
-                        <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+                        <i class="fa fa-user"></i>
+                        <span class="margin-left">{{user?.user?.name}}</span>
                     </div>
                 </div>
                 <div (click)="personDongDong()" class="primary">
-                    <i class="fa fa-envelope"></i> <span class="margin-left">我的驿站</span>
+                    <i class="fa fa-envelope"></i>
+                    <span class="margin-left">我的驿站</span>
                 </div>
                 <div (click)="personMessage()" class="primary">
-                    <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span></span>
+                    <i class="fa fa-bell"></i>
+                    <span class="margin-left">我的消息
+                        <span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span>
+                    </span>
                 </div>
                 <div (click)="logout()" class="primary">
-                    <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
+                    <i class="fa fa-sign-out"></i>
+                    <span class="margin-left">退出</span>
                 </div>
                 <div (click)="feedback()" class="primary">
-                    <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+                    <i class="fa fa-times-rectangle"></i>
+                    <span class="margin-left">我要吐槽</span>
                 </div>
             </div>
             <div *ngIf="!user?.isLogin">
                 <div (click)="login()" class="primary">
-                    <i class="fa fa-sign-in"></i> <span class="margin-left">登录</span>
+                    <i class="fa fa-sign-in"></i>
+                    <span class="margin-left">登录</span>
                 </div>
                 <div (click)="register()" class="primary">
-                    <i class="fa fa-user"></i> <span class="margin-left">注册</span>
+                    <i class="fa fa-user"></i>
+                    <span class="margin-left">注册</span>
                 </div>
                 <div (click)="feedback()" class="primary">
-                    <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+                    <i class="fa fa-times-rectangle"></i>
+                    <span class="margin-left">我要吐槽</span>
                 </div>
             </div>
         </mat-sidenav>
@@ -47,9 +57,15 @@
             <mat-input-container class="container-width">
                 <input matInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
             </mat-input-container>
-            <button mat-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-            <button mat-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-            <button mat-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+            <button mat-icon-button>
+                <i class="fa fa-search" (click)="search()"></i>
+            </button>
+            <button mat-icon-button>
+                <i class="fa fa-plus" (click)="gotoAddDetail()"></i>
+            </button>
+            <button mat-icon-button>
+                <i class="fa fa-refresh" (click)="refresh()"></i>
+            </button>
             <mat-card>
                 <div class="row">
                     <div style="color:#eb7350;border-bottom:1px solid #eee;">
@@ -81,16 +97,21 @@
                 <mat-card-actions>
                     <div class="row" style="border-top:1px solid #FCFCFC;">
                         <div class="col-xs-4">
-                            <button mat-icon-button><i class="fa fa-eye" style="color:#999">{{h.readNumber}}</i>
+                            <button mat-icon-button>
+                                <i class="fa fa-eye" style="color:#999">{{h.readNumber}}</i>
                             </button>
                         </div>
                         <div class="col-xs-4">
-                            <button mat-icon-button><i class="fa fa-commenting" style="color:#999">{{h.countCommentNumber}}</i></button>
+                            <button mat-icon-button>
+                                <i class="fa fa-commenting" style="color:#999">{{h.countCommentNumber}}</i>
+                            </button>
                         </div>
                         <div class="col-xs-4">
-                            <button mat-icon-button *ngIf="!h.articleUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{h.countSupportNumber}}</i>
+                            <button mat-icon-button *ngIf="!h.articleUserSupport" (click)="support($event,h)">
+                                <i class="fa fa-thumbs-o-up" style="color:#999">{{h.countSupportNumber}}</i>
                             </button>
-                            <button mat-icon-button *ngIf="h.articleUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{h.countSupportNumber}}</i>
+                            <button mat-icon-button *ngIf="h.articleUserSupport" (click)="unSupport($event,h)">
+                                <i class="fa fa-thumbs-up" style="color:#eb7350">{{h.countSupportNumber}}</i>
                             </button>
                         </div>
                     </div>
@@ -177,5 +198,9 @@
 
     .supported {
         color: aqua
+    }
+
+    .inner-sidenav-content {
+        top: 64px;
     }
 </style>

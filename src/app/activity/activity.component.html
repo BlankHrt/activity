@@ -2,9 +2,9 @@
   <mat-sidenav-container style="margin: 0;padding: 0;width: 100%;height:100%" fullscreen>
     <mat-toolbar style="background-color:#87cefa">
       <button mat-icon-button (click)="sidenav.open()">
-      <i class="fa fa-bars" style="float:left"></i>
-      <span class="bg-red" *ngIf="notificationLength"></span>
-    </button>
+        <i class="fa fa-bars" style="float:left"></i>
+        <span class="bg-red" *ngIf="notificationLength"></span>
+      </button>
       <div style="text-align:center;width:100%">动动七号</div>
     </mat-toolbar>
 
@@ -16,32 +16,41 @@
             <img src="../../assets/img/default.jpeg" class="img-rounded circle" #elseHeadImageUrl>
           </ng-template>
           <div style="font-size:20px;">
-            <i class="fa fa-user"></i> <span class="margin-left">{{user?.user?.name}}</span>
+            <i class="fa fa-user"></i>
+            <span class="margin-left">{{user?.user?.name}}</span>
           </div>
         </div>
         <div (click)="personActivity()" class="primary">
-          <i class="fa fa-envelope"></i> <span class="margin-left">我的活动</span>
+          <i class="fa fa-envelope"></i>
+          <span class="margin-left">我的活动</span>
         </div>
         <div (click)="personMessageActivity()" class="primary">
-          <i class="fa fa-bell"></i> <span class="margin-left">我的消息<span class="badge" *ngIf="notificationLength"
-                                                                         style="background-color:red">{{notificationLength}}</span></span>
+          <i class="fa fa-bell"></i>
+          <span class="margin-left">我的消息
+            <span class="badge" *ngIf="notificationLength" style="background-color:red">{{notificationLength}}</span>
+          </span>
         </div>
         <div (click)="logout()" class="primary">
-          <i class="fa fa-sign-out"></i> <span class="margin-left">退出</span>
+          <i class="fa fa-sign-out"></i>
+          <span class="margin-left">退出</span>
         </div>
         <div (click)="feedback()" class="primary">
-          <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+          <i class="fa fa-times-rectangle"></i>
+          <span class="margin-left">我要吐槽</span>
         </div>
       </div>
       <div *ngIf="!user?.isLogin">
         <div (click)="login()" class="primary">
-          <i class="fa fa-sign-in"></i> <span class="margin-left">登录</span>
+          <i class="fa fa-sign-in"></i>
+          <span class="margin-left">登录</span>
         </div>
         <div (click)="register()" class="primary">
-          <i class="fa fa-user"></i> <span class="margin-left">注册</span>
+          <i class="fa fa-user"></i>
+          <span class="margin-left">注册</span>
         </div>
         <div (click)="feedback()" class="primary">
-          <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
+          <i class="fa fa-times-rectangle"></i>
+          <span class="margin-left">我要吐槽</span>
         </div>
       </div>
     </mat-sidenav>
@@ -59,9 +68,15 @@
         <input matInput placeholder="寻找你想要的校园活动" [(ngModel)]="searchWord">
       </mat-input-container>
 
-      <button mat-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-      <button mat-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-      <button mat-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+      <button mat-icon-button>
+        <i class="fa fa-search" (click)="search()"></i>
+      </button>
+      <button mat-icon-button>
+        <i class="fa fa-plus" (click)="gotoAddDetail()"></i>
+      </button>
+      <button mat-icon-button>
+        <i class="fa fa-refresh" (click)="refresh()"></i>
+      </button>
 
       <mat-card *ngFor="let activity of activityList" class="full-width" (click)="gotoActivityDetail(activity)">
         <mat-card-header>
@@ -73,7 +88,8 @@
             {{activity?.user?.name}}
           </mat-card-title>
           <mat-card-subtitle>
-            {{activity.publishTime|timeAgo}} <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list">报名列表</i>
+            {{activity.publishTime|timeAgo}}
+            <i (click)="gotoAttendanceList($event,activity)" class="fa fa-list">报名列表</i>
           </mat-card-subtitle>
         </mat-card-header>
 
@@ -81,8 +97,8 @@
           <div>
             {{activity.startTime|date:'MM/dd HH:mm'}}-{{activity.endTime|date:'MM/dd HH:mm'}}
             <small *ngIf="activity?.school?.name">
-            {{activity?.school?.name}}
-           </small>
+              {{activity?.school?.name}}
+            </small>
           </div>
           <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
             {{activity.title}}
@@ -93,26 +109,30 @@
         <mat-card-actions>
           <div class="row" style="border-top:1px solid #FCFCFC;">
             <div class="col-xs-3">
-              <button mat-icon-button><i class="fa fa-eye" style="color:#999">{{activity.readNumber}}</i>
-          </button>
+              <button mat-icon-button>
+                <i class="fa fa-eye" style="color:#999">{{activity.readNumber}}</i>
+              </button>
             </div>
             <div class="col-xs-3">
-              <button mat-icon-button><i class="fa fa-commenting" style="color:#999">{{activity.countCommentNumber}}</i>
-          </button>
+              <button mat-icon-button>
+                <i class="fa fa-commenting" style="color:#999">{{activity.countCommentNumber}}</i>
+              </button>
             </div>
             <div class="col-xs-3">
-              <button mat-icon-button *ngIf="!activity.activityUserSupport" (click)="support($event,activity)"><i
-            class="fa fa-thumbs-o-up" style="color:#999">{{activity.countSupportNumber}}</i>
-          </button>
-              <button mat-icon-button *ngIf="activity.activityUserSupport" (click)="unSupport($event,activity)"><i
-            class="fa fa-thumbs-up" style="color:#eb7350">{{activity.countSupportNumber}}</i>
-          </button>
+              <button mat-icon-button *ngIf="!activity.activityUserSupport" (click)="support($event,activity)">
+                <i class="fa fa-thumbs-o-up" style="color:#999">{{activity.countSupportNumber}}</i>
+              </button>
+              <button mat-icon-button *ngIf="activity.activityUserSupport" (click)="unSupport($event,activity)">
+                <i class="fa fa-thumbs-up" style="color:#eb7350">{{activity.countSupportNumber}}</i>
+              </button>
             </div>
             <div class="col-xs-3">
-              <button mat-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin" (click)="join($event,activity)"><i class="fa fa-heart" style="color:#999"></i>
-          </button>
-              <button mat-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)" (click)="gotoAttendanceList($event,activity)"><i class="fa fa-heart" style="color:#eb7350"></i>
-          </button>
+              <button mat-icon-button *ngIf="user.user.id!==activity.publishUserId&&!activity.activityJoin" (click)="join($event,activity)">
+                <i class="fa fa-heart" style="color:#999"></i>
+              </button>
+              <button mat-icon-button *ngIf="!(user.user.id!==activity.publishUserId&&!activity.activityJoin)" (click)="gotoAttendanceList($event,activity)">
+                <i class="fa fa-heart" style="color:#eb7350"></i>
+              </button>
             </div>
           </div>
         </mat-card-actions>
@@ -122,16 +142,16 @@
       </div>
       <button *ngIf="activityList.length && status === 0 && searchStatus === 0 && bottomStatus === 0" mat-raised-button class="btn-block"
         (click)="loadMoreALL()">继续加载
-  </button>
+      </button>
       <button *ngIf="activityList.length && status === 0 && searchStatus === 1 && bottomStatus === 0" mat-raised-button class="btn-block"
         (click)="loadMoreALLSearch()">继续加载
-  </button>
+      </button>
       <button *ngIf="activityList.length && status === 1 && searchStatus === 0 && bottomStatus === 0" mat-raised-button class="btn-block"
         (click)="loadMoreSelf()">继续加载
-  </button>
+      </button>
       <button *ngIf="activityList.length && status === 1 && searchStatus === 1 && bottomStatus === 0" mat-raised-button class="btn-block"
         (click)="loadMoreSelfSearch()">继续加载
-  </button>
+      </button>
       <div *ngIf="!activityList.length" class="btn btn-block">暂无数据</div>
       <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
     </div>
@@ -210,5 +230,8 @@
     border: 2px solid rgba(255, 255, 255, 0.8);
     -webkit-transition: ease-out 0.2s;
   }
-</style>
 
+  .inner-sidenav-content {
+    top: 64px;
+  }
+</style>
