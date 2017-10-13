@@ -1,73 +1,73 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-  <md-toolbar style="margin: 0;padding: 0;width: 100%">
-    <md-toolbar style="background-color:#87cefa">
-      <button md-icon-button (click)="back()">
+  <mat-toolbar style="margin: 0;padding: 0;width: 100%">
+    <mat-toolbar style="background-color:#87cefa">
+      <button mat-icon-button (click)="back()">
         <i class="fa fa-long-arrow-left" style="float:left"></i>
     </button>
       <div style="text-align:center;width:100%">报名列表</div>
-    </md-toolbar>
-  </md-toolbar>
+    </mat-toolbar>
+  </mat-toolbar>
   <div class="inner-sidenav-content">
-    <md-tab-group md-stretch-tabs>
-      <md-tab label="报名待审核">
+    <mat-tab-group mat-stretch-tabs>
+      <mat-tab label="报名待审核">
         <div *ngIf="waitList.length">
-          <md-card *ngFor="let wait of waitList;let i=index">
-            <md-card-header>
-              <div md-card-avatar [ngStyle]="{'background-image': 'url('+wait.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="wait.joinUser.headUrl"></div>
-              <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!wait.joinUser.headUrl"></div>
-              <md-card-title>{{wait.joinUser.name}}</md-card-title>
-              <md-card-subtitle>
+          <mat-card *ngFor="let wait of waitList;let i=index">
+            <mat-card-header>
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url('+wait.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="wait.joinUser.headUrl"></div>
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!wait.joinUser.headUrl"></div>
+              <mat-card-title>{{wait.joinUser.name}}</mat-card-title>
+              <mat-card-subtitle>
                 报名时间:{{wait.time|date:'yyyy-MM-dd HH:mm:ss'}}
-              </md-card-subtitle>
-            </md-card-header>
+              </mat-card-subtitle>
+            </mat-card-header>
             <button class="btn btn-primary" *ngIf="user.user.id===wait.activity.publishUserId &&(wait.isSuccess !== 2)" (click)="joinActivitySuccess(wait)">审核通过</button>
             <button class="btn btn-primary" *ngIf="user.user.id===wait.activity.publishUserId &&(wait.isSuccess !== 0)" (click)="joinActivityFail(wait)">审核不通过</button>
-          </md-card>
+          </mat-card>
         </div>
         <div *ngIf="!waitList.length" style="text-align:center;">
           暂无报名待审核人数
         </div>
-      </md-tab>
+      </mat-tab>
 
 
-      <md-tab label="审核通过">
+      <mat-tab label="审核通过">
         <div *ngIf="successList.length">
-          <md-card *ngFor="let success of successList;let i=index">
-            <md-card-header>
-              <div md-card-avatar [ngStyle]="{'background-image': 'url('+success.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="success.joinUser.headUrl"></div>
-              <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!success.joinUser.headUrl"></div>
-              <md-card-title>{{success.joinUser.name}}</md-card-title>
-              <md-card-subtitle>
+          <mat-card *ngFor="let success of successList;let i=index">
+            <mat-card-header>
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url('+success.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="success.joinUser.headUrl"></div>
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!success.joinUser.headUrl"></div>
+              <mat-card-title>{{success.joinUser.name}}</mat-card-title>
+              <mat-card-subtitle>
                 报名时间:{{success.time|date:'yyyy-MM-dd HH:mm:ss'}}
-              </md-card-subtitle>
-            </md-card-header>
-          </md-card>
+              </mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
         </div>
         <div *ngIf="!successList.length" style="text-align:center;">
           暂无审核通过人数
         </div>
-      </md-tab>
+      </mat-tab>
 
       <div *ngIf=" user?.user?.id === publishUserId">
-        <md-tab label="审核失败">
+        <mat-tab label="审核失败">
           <div *ngIf="failList.length">
-            <md-card *ngFor="let fail of failList;let i=index">
-              <md-card-header>
-                <div md-card-avatar [ngStyle]="{'background-image': 'url('+fail.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="fail.joinUser.headUrl"></div>
-                <div md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!fail.joinUser.headUrl"></div>
-                <md-card-title>{{fail.joinUser.name}}</md-card-title>
-                <md-card-subtitle>
+            <mat-card *ngFor="let fail of failList;let i=index">
+              <mat-card-header>
+                <div mat-card-avatar [ngStyle]="{'background-image': 'url('+fail.joinUser.headUrl+')','background-size': 'cover'}" *ngIf="fail.joinUser.headUrl"></div>
+                <div mat-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}" *ngIf="!fail.joinUser.headUrl"></div>
+                <mat-card-title>{{fail.joinUser.name}}</mat-card-title>
+                <mat-card-subtitle>
                   报名时间:{{fail.time|date:'yyyy-MM-dd HH:mm:ss'}}
-                </md-card-subtitle>
-              </md-card-header>
-            </md-card>
+                </mat-card-subtitle>
+              </mat-card-header>
+            </mat-card>
           </div>
 
           <div *ngIf="!failList.length" style="text-align:center;">
             暂无审核失败人数
           </div>
-        </md-tab>
+        </mat-tab>
       </div>
-    </md-tab-group>
+    </mat-tab-group>
   </div>
 </div>

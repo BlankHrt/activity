@@ -1,48 +1,48 @@
 <div class="inner-sidenav-content">
-  <md-input-container class="container-width">
-    <input mdInput placeholder="寻找你想要的攻略" [(ngModel)]="searchWord">
-  </md-input-container>
-  <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-  <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-  <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
-  <md-card *ngFor="let travelGonglue of travelGonglueList" class="full-width" (click)="gotoGonglueDetail(travelGonglue)">
-    <md-card-header>
-      <div (click)="gotoPersonDetail($event,travelGonglue)" md-card-avatar [ngStyle]="{'background-image': 'url('+travelGonglue.user.headUrl+')','background-size': 'cover'}"
+  <mat-input-container class="container-width">
+    <input matInput placeholder="寻找你想要的攻略" [(ngModel)]="searchWord">
+  </mat-input-container>
+  <button mat-icon-button><i class="fa fa-search" (click)="search()"></i></button>
+  <button mat-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
+  <button mat-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+  <mat-card *ngFor="let travelGonglue of travelGonglueList" class="full-width" (click)="gotoGonglueDetail(travelGonglue)">
+    <mat-card-header>
+      <div (click)="gotoPersonDetail($event,travelGonglue)" mat-card-avatar [ngStyle]="{'background-image': 'url('+travelGonglue.user.headUrl+')','background-size': 'cover'}"
         *ngIf="travelGonglue.user.headUrl"></div>
-      <div (click)="gotoPersonDetail($event,travelGonglue)" md-card-avatar [ngStyle]="{'background-image': 'url(../../../assets/img/default.jpeg)','background-size': 'cover'}"
+      <div (click)="gotoPersonDetail($event,travelGonglue)" mat-card-avatar [ngStyle]="{'background-image': 'url(../../../assets/img/default.jpeg)','background-size': 'cover'}"
         *ngIf="!travelGonglue.user.headUrl"></div>
-      <md-card-title>{{travelGonglue.user.name}}</md-card-title>
-      <md-card-subtitle>
+      <mat-card-title>{{travelGonglue.user.name}}</mat-card-title>
+      <mat-card-subtitle>
         {{travelGonglue.publishTime|timeAgo}}
-      </md-card-subtitle>
-    </md-card-header>
-    <md-card-content>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
       <div style="font-size:15px;font-weight:400;margin-bottom:10px;">{{travelGonglue.title}}</div>
       <ngx-gallery *ngIf="travelGonglue?.imageList?.length" [options]="galleryOptions" [images]="travelGonglue?.imageList" #view></ngx-gallery>
-    </md-card-content>
-    <md-card-actions>
+    </mat-card-content>
+    <mat-card-actions>
       <div class="row" style="border-top:1px solid #FCFCFC;">
         <div class="col-xs-4">
-          <button md-icon-button><i class="fa fa-eye" style="color:#999">{{travelGonglue.readNumber}}</i>
+          <button mat-icon-button><i class="fa fa-eye" style="color:#999">{{travelGonglue.readNumber}}</i>
             </button>
         </div>
         <div class="col-xs-4">
-          <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{travelGonglue.countCommentNumber}}</i></button>
+          <button mat-icon-button><i class="fa fa-commenting" style="color:#999">{{travelGonglue.countCommentNumber}}</i></button>
         </div>
         <div class="col-xs-4">
-          <button md-icon-button *ngIf="!travelGonglue.articleUserSupport" (click)="support($event,travelGonglue)"><i class="fa fa-thumbs-o-up" style="color:#999">{{travelGonglue.countSupportNumber}}</i>
+          <button mat-icon-button *ngIf="!travelGonglue.articleUserSupport" (click)="support($event,travelGonglue)"><i class="fa fa-thumbs-o-up" style="color:#999">{{travelGonglue.countSupportNumber}}</i>
             </button>
-          <button md-icon-button *ngIf="travelGonglue.articleUserSupport" (click)="unSupport($event,travelGonglue)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{travelGonglue.countSupportNumber}}</i>
+          <button mat-icon-button *ngIf="travelGonglue.articleUserSupport" (click)="unSupport($event,travelGonglue)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{travelGonglue.countSupportNumber}}</i>
             </button>
         </div>
       </div>
-    </md-card-actions>
-  </md-card>
+    </mat-card-actions>
+  </mat-card>
   <div class="text-center" *ngIf="!travelGonglueList">
     正在加载
   </div>
-  <button *ngIf="travelGonglueList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
-  <button *ngIf="travelGonglueList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
+  <button *ngIf="travelGonglueList.length && searchStatus===0 && bottomStatus === 0" mat-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
+  <button *ngIf="travelGonglueList.length && searchStatus===1 && bottomStatus === 0" mat-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
   <div *ngIf="!travelGonglueList.length" class="btn btn-block">暂无数据</div>
   <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
 </div>

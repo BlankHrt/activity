@@ -1,13 +1,13 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-    <md-sidenav-container style="margin: 0;padding: 0;width: 100%" fullscreen>
-        <md-toolbar style="background-color:#87cefa">
-            <button md-icon-button (click)="sidenav.open()">
+    <mat-sidenav-container style="margin: 0;padding: 0;width: 100%" fullscreen>
+        <mat-toolbar style="background-color:#87cefa">
+            <button mat-icon-button (click)="sidenav.open()">
                 <i class="fa fa-bars" style="float:left"></i>
                 <span class="bg-red" *ngIf="notificationLength"></span>
               </button>
             <div style="text-align:center;width:100%">动动七号</div>
-        </md-toolbar>
-        <md-sidenav #sidenav class="sidenav">
+        </mat-toolbar>
+        <mat-sidenav #sidenav class="sidenav">
             <div *ngIf="user?.isLogin">
                 <div (click)="personInformation()" class="primary">
                     <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
@@ -42,15 +42,15 @@
                     <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
                 </div>
             </div>
-        </md-sidenav>
+        </mat-sidenav>
         <div class="inner-sidenav-content">
-            <md-input-container class="container-width">
-                <input mdInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
-            </md-input-container>
-            <button md-icon-button><i class="fa fa-search" (click)="search()"></i></button>
-            <button md-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
-            <button md-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
-            <md-card>
+            <mat-input-container class="container-width">
+                <input matInput placeholder="寻找你想要的话题" [(ngModel)]="searchWord">
+            </mat-input-container>
+            <button mat-icon-button><i class="fa fa-search" (click)="search()"></i></button>
+            <button mat-icon-button><i class="fa fa-plus" (click)="gotoAddDetail()"></i></button>
+            <button mat-icon-button><i class="fa fa-refresh" (click)="refresh()"></i></button>
+            <mat-card>
                 <div class="row">
                     <div style="color:#eb7350;border-bottom:1px solid #eee;">
                         <span style="font-size:16px;">七号话题榜</span>
@@ -60,51 +60,51 @@
                         {{t.title|filterHanzi:8}}
                     </div>
                 </div>
-            </md-card>
-            <md-card *ngFor="let h of hotList" class="full-width" (click)="gotoDetail(h)">
-                <md-card-header>
-                    <div (click)="gotoPersonDetail($event,h)" md-card-avatar [ngStyle]="{'background-image': 'url('+h.user.headUrl+')','background-size': 'cover'}"
+            </mat-card>
+            <mat-card *ngFor="let h of hotList" class="full-width" (click)="gotoDetail(h)">
+                <mat-card-header>
+                    <div (click)="gotoPersonDetail($event,h)" mat-card-avatar [ngStyle]="{'background-image': 'url('+h.user.headUrl+')','background-size': 'cover'}"
                         *ngIf="h.user.headUrl"></div>
-                    <div (click)="gotoPersonDetail($event,h)" md-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
+                    <div (click)="gotoPersonDetail($event,h)" mat-card-avatar [ngStyle]="{'background-image': 'url(../../assets/img/default.jpeg)','background-size': 'cover'}"
                         *ngIf="!h.user.headUrl"></div>
-                    <md-card-title>{{h.user.name}}</md-card-title>
-                    <md-card-subtitle>
+                    <mat-card-title>{{h.user.name}}</mat-card-title>
+                    <mat-card-subtitle>
                         <small>{{h.publishTime|timeAgo}}</small>
-                    </md-card-subtitle>
-                </md-card-header>
-                <md-card-content>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
                     <div style="font-size:15px;font-weight:400;margin-bottom:10px;">
                         {{h.title}}
                     </div>
                     <ngx-gallery *ngIf="h?.imageList?.length" [options]="galleryOptions" [images]="h?.imageList" #view></ngx-gallery>
-                </md-card-content>
-                <md-card-actions>
+                </mat-card-content>
+                <mat-card-actions>
                     <div class="row" style="border-top:1px solid #FCFCFC;">
                         <div class="col-xs-4">
-                            <button md-icon-button><i class="fa fa-eye" style="color:#999">{{h.readNumber}}</i>
+                            <button mat-icon-button><i class="fa fa-eye" style="color:#999">{{h.readNumber}}</i>
                             </button>
                         </div>
                         <div class="col-xs-4">
-                            <button md-icon-button><i class="fa fa-commenting" style="color:#999">{{h.countCommentNumber}}</i></button>
+                            <button mat-icon-button><i class="fa fa-commenting" style="color:#999">{{h.countCommentNumber}}</i></button>
                         </div>
                         <div class="col-xs-4">
-                            <button md-icon-button *ngIf="!h.articleUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{h.countSupportNumber}}</i>
+                            <button mat-icon-button *ngIf="!h.articleUserSupport" (click)="support($event,h)"><i class="fa fa-thumbs-o-up" style="color:#999">{{h.countSupportNumber}}</i>
                             </button>
-                            <button md-icon-button *ngIf="h.articleUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{h.countSupportNumber}}</i>
+                            <button mat-icon-button *ngIf="h.articleUserSupport" (click)="unSupport($event,h)"><i class="fa fa-thumbs-up" style="color:#eb7350">{{h.countSupportNumber}}</i>
                             </button>
                         </div>
                     </div>
-                </md-card-actions>
-            </md-card>
+                </mat-card-actions>
+            </mat-card>
             <div class="text-center" *ngIf="!hotList">
                 正在加载
             </div>
-            <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
-            <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" md-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
+            <button *ngIf="hotList.length && searchStatus===0 && bottomStatus === 0" mat-raised-button class="btn-block" (click)="loadMoreALL()">继续加载</button>
+            <button *ngIf="hotList.length && searchStatus===1 && bottomStatus === 0" mat-raised-button class="btn-block" (click)="loadMoreSearch()">继续加载</button>
             <div *ngIf="!hotList.length" class="btn btn-block">暂无数据</div>
             <div *ngIf="bottomStatus === 1" class="btn btn-block">已经到底了</div>
         </div>
-    </md-sidenav-container>
+    </mat-sidenav-container>
 </div>
 <style>
     .sidenav {
