@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../shared/Common';
 import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
@@ -52,7 +52,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   intervalSubscribe;
 
   constructor(public meta: Meta, public title: Title,
-    public snackBar: MdSnackBar, private renderer: Renderer, private cookieService: CookieService,
+    public snackBar: MatSnackBar, private renderer: Renderer, private cookieService: CookieService,
     private store: Store<any>, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生活动');
     meta.addTags([

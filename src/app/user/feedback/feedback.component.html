@@ -1,22 +1,22 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-    <md-toolbar style="background-color:#87cefa">
-      <button md-icon-button (click)="back()">
+  <mat-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <mat-toolbar style="background-color:#87cefa">
+      <button mat-icon-button (click)="back()">
       <i class="fa fa-long-arrow-left" style="float:left"></i>
     </button>
       <div style="text-align:center;width:100%">我要吐槽</div>
-    </md-toolbar>
-  </md-sidenav-container>
+    </mat-toolbar>
+  </mat-sidenav-container>
   <div class="inner-sidenav-content">
     <form style="padding:5px" class="example-form">
-      <md-form-field class="example-full-width">
-        <textarea rows="10" mdInput placeholder="少年，请吐槽～" required name="content" [(ngModel)]="content"></textarea>
-      </md-form-field>
+      <mat-form-field class="example-full-width">
+        <textarea rows="10" matInput placeholder="少年，请吐槽～" required name="content" [(ngModel)]="content"></textarea>
+      </mat-form-field>
 
       <div class="text-right">
         <button (click)="commit()" #commitButton style="background:#eb7350;">
-      <md-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
-      </md-progress-spinner>
+      <mat-progress-spinner *ngIf="showSpinner" mode="indeterminate" strokeWidth="15" color="accent">
+      </mat-progress-spinner>
       <span *ngIf="!showSpinner">
                     fuck
               </span>

@@ -10,7 +10,7 @@ import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 declare var $;
@@ -43,7 +43,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
 
   @ViewChild('commitButton') commitButton: ElementRef;
 
-  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MdSnackBar,
+  constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private store: Store<any>, private location: Location,
     private travelService: TravelService, private router: Router,

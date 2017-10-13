@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import { HotService } from './hot.service';
 import { Common } from '../shared/Common';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { CookieService } from '../shared/lib/ngx-cookie/cookie.service';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
@@ -59,7 +59,7 @@ export class HotComponent implements OnInit, OnDestroy {
   storeSubscribe: Subscription;
   intervalSubscribe;
 
-  constructor(private renderer: Renderer, public snackBar: MdSnackBar,
+  constructor(private renderer: Renderer, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title, private cookieService: CookieService, private store: Store<any>,
     private hotService: HotService, private router: Router, private route: ActivatedRoute) {
     title.setTitle('大学生话题');

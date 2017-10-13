@@ -4,7 +4,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
@@ -70,7 +70,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
+  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
     this.title.setTitle('活动详情');

@@ -6,7 +6,7 @@ import { Common } from '../../shared/Common';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../user.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -23,7 +23,7 @@ export class PersonMessageActivityComponent implements OnInit {
   supportList = [];
   sponsorList = [];
   participantList = [];
-  constructor(private store: Store<any>, private router: Router, public snackBar: MdSnackBar,
+  constructor(private store: Store<any>, private router: Router, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private route: ActivatedRoute, private userService: UserService) {
     this.title.setTitle('我的消息');

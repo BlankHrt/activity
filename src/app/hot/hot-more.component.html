@@ -1,20 +1,20 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-  <md-toolbar style="margin: 0;padding: 0;width: 100%">
-    <md-toolbar style="background-color:#87cefa">
-      <button md-icon-button (click)="back()">
+  <mat-toolbar style="margin: 0;padding: 0;width: 100%">
+    <mat-toolbar style="background-color:#87cefa">
+      <button mat-icon-button (click)="back()">
           <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
       <div style="text-align:center;width:100%">七号话题榜</div>
-    </md-toolbar>
-  </md-toolbar>
+    </mat-toolbar>
+  </mat-toolbar>
   <div class="inner-sidenav-content">
 
-    <md-list>
-      <md-list-item *ngFor="let a of articleList;let i=index;">
+    <mat-list>
+      <mat-list-item *ngFor="let a of articleList;let i=index;">
         <div style="text-align:center;margin:15px;">
           <a (click)="gotoHotDetail(a)">{{i+1}} {{ a.title }}</a>
         </div>
-      </md-list-item>
-    </md-list>
+      </mat-list-item>
+    </mat-list>
   </div>
 </div>

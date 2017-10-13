@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -20,7 +20,7 @@ export class PersonDongDongComponent implements OnInit {
   articleType;
   articleList;
   activityList;
-  constructor(public snackBar: MdSnackBar,
+  constructor(public snackBar: MatSnackBar,
     public meta: Meta, public pageTitle: Title,
     private store: Store<any>, private router: Router, private route: ActivatedRoute, private userService: UserService) {
     this.pageTitle.setTitle('我的驿站');

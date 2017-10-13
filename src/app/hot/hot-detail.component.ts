@@ -5,7 +5,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { HotService } from './hot.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
@@ -63,7 +63,7 @@ export class HotDetailComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<any>, private hotService: HotService, private renderer: Renderer,
     public meta: Meta, public title: Title,
-    private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MdSnackBar) {
+    private location: Location, private router: Router, private route: ActivatedRoute, public snackBar: MatSnackBar) {
     this.title.setTitle('话题详情');
   }
 

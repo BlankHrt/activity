@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user.service';
 import { Common } from '../../shared/Common';
 import { Location } from '@angular/common';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -25,7 +25,7 @@ export class PersonActivityComponent implements OnInit {
   index = 0;
   constructor(private store: Store<any>, private router: Router, private location: Location,
     public meta: Meta, public title: Title,
-    public snackBar: MdSnackBar, private route: ActivatedRoute, private userService: UserService) {
+    public snackBar: MatSnackBar, private route: ActivatedRoute, private userService: UserService) {
     this.title.setTitle('我的活动');
     this.meta.addTags([
       { name: 'keywords', content: '动动七号我的活动' },

@@ -7,7 +7,7 @@ import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 declare var $;
 import { Meta, Title } from '@angular/platform-browser';
@@ -59,7 +59,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
-  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MdSnackBar,
+  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
     this.title.setTitle('旅游详情');

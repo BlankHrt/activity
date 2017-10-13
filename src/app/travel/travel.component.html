@@ -1,13 +1,13 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-  <md-sidenav-container style="margin: 0;padding: 0;width: 100%" fullscreen>
-    <md-toolbar style="background-color:#87cefa">
-      <button md-icon-button (click)="sidenav.open()">
+  <mat-sidenav-container style="margin: 0;padding: 0;width: 100%" fullscreen>
+    <mat-toolbar style="background-color:#87cefa">
+      <button mat-icon-button (click)="sidenav.open()">
         <i class="fa fa-bars" style="float:left"></i>
         <span class="bg-red" *ngIf="notificationLength"></span>
       </button>
       <div style="text-align:center;width:100%">动动七号</div>
-    </md-toolbar>
-    <md-sidenav #sidenav class="sidenav">
+    </mat-toolbar>
+    <mat-sidenav #sidenav class="sidenav">
       <div *ngIf="user?.isLogin">
         <div (click)="personInformation()" class="primary">
           <img [src]="user.user.headUrl" class="img-rounded circle" *ngIf="user?.user?.headUrl;else elseHeadImageUrl">
@@ -42,9 +42,9 @@
           <i class="fa fa-times-rectangle"></i> <span class="margin-left">我要吐槽</span>
         </div>
       </div>
-    </md-sidenav>
+    </mat-sidenav>
     <app-travel-gonglue></app-travel-gonglue>
-  </md-sidenav-container>
+  </mat-sidenav-container>
 </div>
 <style>
   .sidenav {
@@ -98,5 +98,5 @@
     border: 2px solid rgba(255, 255, 255, 0.8);
     -webkit-transition: ease-out 0.2s;
   }
-  
+
 </style>

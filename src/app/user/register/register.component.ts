@@ -1,10 +1,9 @@
 /**
  * Created by asus on 2017/8/17.
  */
-
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { Location } from '@angular/common';
@@ -36,7 +35,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(private location: Location,
     public meta: Meta, public title: Title,
-    public snackBar: MdSnackBar, private userService: UserService,
+    public snackBar: MatSnackBar, private userService: UserService,
     private router: Router, private route: ActivatedRoute) {
     this.title.setTitle('注册');
     this.meta.addTags([

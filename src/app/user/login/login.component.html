@@ -1,14 +1,14 @@
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;">
-  <md-sidenav-container style="margin: 0;padding: 0;width: 100%">
-    <md-toolbar style="background-color:#87cefa">
-      <button md-icon-button (click)="back()">
+  <mat-sidenav-container style="margin: 0;padding: 0;width: 100%">
+    <mat-toolbar style="background-color:#87cefa">
+      <button mat-icon-button (click)="back()">
           <i class="fa fa-long-arrow-left" style="float:left"></i>
       </button>
       <div style="text-align:center;width:100%">登录</div>
       <i class="fa fa-home" style="float:right" (click)="home()"></i>
 
-    </md-toolbar>
-  </md-sidenav-container>
+    </mat-toolbar>
+  </mat-sidenav-container>
   <div class="inner-sidenav-content">
 
     <div style="height:200px!important;margin:40px;">
@@ -18,17 +18,17 @@
           <tr>
             <td>
               手机号:
-              <md-input-container>
-                <input mdInput placeholder="手机号" [(ngModel)]="name" name="name">
-              </md-input-container>
+              <mat-input-container>
+                <input matInput placeholder="手机号" [(ngModel)]="name" name="name">
+              </mat-input-container>
             </td>
           </tr>
           <tr>
             <td>
               密码:
-              <md-input-container>
-                <input mdInput type="password" placeholder="密码" [(ngModel)]="password" name="password">
-              </md-input-container>
+              <mat-input-container>
+                <input matInput type="password" placeholder="密码" [(ngModel)]="password" name="password">
+              </mat-input-container>
             </td>
           </tr>
         </table>
