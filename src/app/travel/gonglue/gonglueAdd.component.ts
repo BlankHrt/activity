@@ -2,7 +2,7 @@
  * Created by asus on 2017/8/15.
  */
 
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef, Inject, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, ElementRef, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -47,7 +47,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
     public meta: Meta, public title: Title,
     private store: Store<any>, private location: Location,
     private travelService: TravelService, private router: Router,
-    private route: ActivatedRoute, private renderer: Renderer) {
+    private route: ActivatedRoute, private render: Renderer2) {
     this.elementRef = elementRef;
     this.title.setTitle('发布攻略');
     this.meta.addTags([
@@ -130,7 +130,7 @@ export class TravelGonglueAddComponent implements OnInit, AfterViewInit, OnDestr
   commit() {
     if (this.article.title && this.article.address) {
       this.showSpinner = true;
-      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      this.render.setAttribute(this.commitButton.nativeElement, 'disabled', 'true');
       if (this.user.user.id) {
         for (let i = 0; i < this.imageList.length; i++) {
           this.imageList[i] = '\"' + this.imageList[i] + '\"';

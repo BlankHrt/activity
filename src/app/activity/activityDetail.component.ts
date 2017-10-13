@@ -1,7 +1,7 @@
 /**
  * Created by asus on 2017/8/15.
  */
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from './activity.service';
 import { MatSnackBar } from '@angular/material';
@@ -70,7 +70,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
 
-  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MatSnackBar,
+  constructor(private store: Store<any>, private renderer: Renderer2, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private location: Location, private activityService: ActivityService, private router: Router, private route: ActivatedRoute) {
     this.title.setTitle('活动详情');
@@ -240,7 +240,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
 
   publish() {
     this.showSpinner = true;
-    this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+    this.renderer.setAttribute(this.commitButton.nativeElement, 'disabled', 'true');
     if (this.user.isLogin && this.comment) {
       this.activityService.comment(this.activity.id, this.user.user.id, this.comment).subscribe(data => {
         this.getAllCommentByActivityId(this.activity.id);
@@ -260,7 +260,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
 
   childPublish(comment, index) {
     this.showChildSpinner = true;
-    this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
+    this.renderer.setAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
     comment.showChildComment = false;
     if (this.user.isLogin && this.childComment) {
       if (!comment.childrenCommentList) {

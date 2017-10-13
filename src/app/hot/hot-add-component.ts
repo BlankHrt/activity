@@ -42,7 +42,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         public meta: Meta, public title: Title,
-        private renderer: Renderer, private store: Store<any>,
+        private Renderer2: Renderer, private store: Store<any>,
         private router: Router, private hotService: HotService,
         private route: ActivatedRoute, public snackBar: MatSnackBar) {
         this.title.setTitle('发布话题');
@@ -110,7 +110,7 @@ export class HotAddComponent implements OnInit, OnDestroy, AfterViewInit {
     commit() {
         if (this.article.title) {
             this.showSpinner = true;
-            this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+            this.Renderer2.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
             if (this.user.user.id) {
                 for (let i = 0; i < this.imageList.length; i++) {
                     this.imageList[i] = '\"' + this.imageList[i] + '\"';

@@ -2,7 +2,7 @@
  * Created by asus on 2017/8/15.
  */
 
-import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, } from '@angular/forms';
 import { Common } from '../shared/Common';
@@ -61,7 +61,7 @@ export class ActivityAddComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor( @Inject(ElementRef) elementRef: ElementRef, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title, private store: Store<any>, private location: Location,
     private activityService: ActivityService, private router: Router,
-    private route: ActivatedRoute, private renderer: Renderer) {
+    private route: ActivatedRoute, private renderer: Renderer2) {
     this.elementRef = elementRef;
     this.title.setTitle('发布活动');
     this.meta.addTags([

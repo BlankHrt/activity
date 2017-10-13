@@ -1,7 +1,7 @@
 /**
  * Created by asus on 2017/8/17.
  */
-import { Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../user.service';
@@ -20,7 +20,7 @@ export class FeedbackComponent implements OnInit {
   showSpinner = false;
   @ViewChild('commitButton') commitButton: ElementRef;
   constructor(private store: Store<any>, private router: Router, private route: ActivatedRoute,
-    public meta: Meta, public title: Title, private userService: UserService, private renderer: Renderer, public snackBar: MatSnackBar) {
+    public meta: Meta, public title: Title, private userService: UserService, private renderer: Renderer2, public snackBar: MatSnackBar) {
     this.title.setTitle('反馈');
     this.meta.addTags([
       { name: 'keywords', content: '动动七号反馈' },
@@ -37,7 +37,7 @@ export class FeedbackComponent implements OnInit {
   commit() {
     if (this.content) {
       this.showSpinner = true;
-      this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+      this.renderer.setAttribute(this.commitButton.nativeElement, 'disabled', 'true');
       this.userService.insert(this.content, this.user.isLogin, this.user.user.id).subscribe(() => {
         this.store.select('router').subscribe((data: any) => {
           this.router.navigate([data.url]);

@@ -2,7 +2,7 @@
  * Created by asus on 2017/8/15.
  */
 
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { TravelService } from '../travel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -59,7 +59,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('commitButton') commitButton: ElementRef;
   @ViewChild('commitChildButton') commitChildButton: ElementRef;
-  constructor(private store: Store<any>, private renderer: Renderer, public snackBar: MatSnackBar,
+  constructor(private store: Store<any>, private render: Renderer2, public snackBar: MatSnackBar,
     public meta: Meta, public title: Title,
     private location: Location, private travelService: TravelService, private router: Router, private route: ActivatedRoute) {
     this.title.setTitle('旅游详情');
@@ -202,7 +202,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   publish() {
     this.showSpinner = true;
-    this.renderer.setElementAttribute(this.commitButton.nativeElement, 'disabled', 'true');
+    this.render.setAttribute(this.commitButton.nativeElement, 'disabled', 'true');
     if (this.user.isLogin && this.comment) {
       this.travelService.comment(this.article.id, this.user.user.id, this.comment).subscribe(data => {
         this.getAllCommentByArticleId(this.article.id);
@@ -222,7 +222,7 @@ export class TravelGonglueDetailComponent implements OnInit, OnDestroy {
 
   childPublish(comment, index) {
     this.showChildSpinner = true;
-    this.renderer.setElementAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
+    this.render.setAttribute(this.commitChildButton.nativeElement, 'disabled', 'true');
     comment.showChildComment = false;
     if (this.user.isLogin && this.childComment) {
       if (!comment.childrenCommentList) {
